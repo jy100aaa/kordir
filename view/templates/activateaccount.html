@@ -1,0 +1,28 @@
+<html>
+<head>
+{% include "common/meta.html" %}
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common.css?version=1.0' />
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/activateaccount.css?version=1.0' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common_lowie.css'/>
+<![endif]-->
+</head>
+<body>
+{% include "common/header.html" %}
+<div id='content'>
+<span>&nbsp;</span>
+{% if user_type == 0 %}
+<h1>{{user_info.fullname}}님 인증 작업이 완료되었습니다.</h1>
+<h4>감사합니다.</h4>
+{% elif user_type == 1 %}
+<h1>이미 인증이 완료된 사용자 입니다.</h1>
+<h4>다시 한번 확인 해 주세요.</h4>
+{% elif user_type == 2 %}
+<h1>잘못된 인증코드 주소 입니다.</h1>
+<h4>다시 한번 확인 해 주세요.</h4>
+{% endif %}
+<a href='/'><button class='btn'>홈으로</button></a>
+</div>
+{% include "common/footer.html" %}
+</body>
+</html>

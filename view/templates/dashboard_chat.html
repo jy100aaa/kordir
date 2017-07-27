@@ -1,0 +1,96 @@
+{% load humanize %}
+{% load tz %}
+{% load customtags %}
+<head>
+<style>
+.dashboard-body{display:none;}
+</style>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/dashboard_chat.css' />
+</head>
+<div class='dashboard-body'>
+	<div class='chat-window-wrapper'>
+		<div class='chat-window' id='chat-history-window'>
+			<div class='window-title'>
+				<span>대화 목록</span>
+			</div>
+			<div class='window-body'>
+				{% if msg_list|length == 2 %}
+				<div id='no-chat-history' style='position:absolute; color:#aaa; font-size:12px; width:100%; text-align:center; margin-top:50%;'>대화 이력이 없습니다.</div>
+				{% else %}
+				<img id='loading-chat-history' src='/resources/images/progress_circle.gif' style='position:absolute; left:50%; margin-left:-16px; top:50%;'>
+				{% endif %}
+			</div>
+		</div>
+		<div class='chat-window' id='chat-control-window'>
+			<div class='window-title'>
+				<span>대화 윈도우</span>
+				<i class='previous'></i>
+			</div>
+			<div class='window-body'>
+				<div class='chat-content-wrapper'>
+					<img id='loading-chat-content' src='/resources/images/progress_circle.gif' style='position:absolute; left:50%; margin-left:-16px; top:50%; display:none;'>
+					<div id='no-chat-selected' style='position:absolute; color:#aaa; font-size:12px; width:100%; text-align:center; top:50%;'>대화목록이 선택되지 않았습니다.</div>
+					<div class='message-wrapper'></div>
+				</div>
+				<div class='chat-control-wrapper'>
+					<img src='{{"USER_PICTURE"|get_filelocation}}{{user_info.picture}}'>
+					<span class='textarea-wrapper'>
+						<textarea class='chat-message' disabled></textarea>
+						<button class='send-button btn' disabled>보내기</button>
+					</span>
+					<div class='tool-wrapper'>
+						<button class='send-button btn' disabled>보내기</button>
+						<input type='checkbox' class='send-upon-enterkey' disabled><span>엔터키 보내기</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div style='display:none'>
+		<div id='inbox-list-item-html'>
+		<div class='inbox-list-item'>
+		<div class='inbox-list-item-msg'></div>
+		<div class='inbox-list-item-new'>N</div>
+		<img src='/resources/images/inbox_incoming.png' class='direction incoming'>
+		<img src='/resources/images/inbox_outgoing.png' class='direction outgoing'>
+		<div class='inbox-list-item-check'></div>
+		<div class='inbox-list-item-remove'></div>
+		<div class='inbox-list-item-line'>
+		<span class='inbox-list-item-tag'>시간</span><span class='inbox-list-item-value inbox-list-item-time'></span>
+		</div>
+		<div class='inbox-list-item-line'>
+		<span class='inbox-list-item-tag'>접속여부</span><span class='inbox-list-item-value inbox-list-item-connection'></span>
+		</div>
+		<div class='inbox-list-item-line'>
+		<span class='inbox-list-item-tag'>재방문</span><span class='inbox-list-item-value inbox-list-item-returning'></span>
+		</div>
+		<div class='inbox-list-item-line'>
+		<span class='inbox-list-item-tag'>디바이스 타입</span><span class='inbox-list-item-value inbox-list-item-devicetype'></span>
+		</div>
+		<div class='inbox-list-item-line'>
+		<span class='inbox-list-item-tag'>페이지 뷰</span><span class='inbox-list-item-value inbox-list-item-pageview'></span>
+		</div>
+		</div>
+		</div>
+	</div>
+</div>
+<script>
+var chatMessage = [];
+var chatUrl = [];
+var userInfo = {};
+(function (d, s) {
+	var messageStr = '{{msg_list|safe}}'.replace(/\n/g, "\\n");
+	console.log('messageStr: ' + messageStr);
+	chatMessage = JSON.parse(messageStr);
+	{% for user in user_info.service.users.all %}
+	userInfo['{{user.id}}'] = {};
+	userInfo['{{user.id}}']['fullname'] = '{{user.fullname}}';
+	userInfo['{{user.id}}']['picture'] = '{{"USER_PICTURE"|get_filelocation}}{{user.picture}}';
+	{% endfor %}
+	
+	{% for url in chatUrl %}
+		chatUrl.push('{{url}}');
+	{% endfor %}
+})(document, 'script');
+</script>
+<script src='/resources/js/dashboard_chat.js'></script>

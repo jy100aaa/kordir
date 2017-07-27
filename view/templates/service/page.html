@@ -1,0 +1,250 @@
+<!doctype html>
+{% load customtags %}
+{% load tz %}
+<!--[if lt IE 7 ]> <html class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html class=""><!--<![endif]-->
+<head>
+{% include "service/common/servicemeta.html" %}
+<!-- COMPONENT -->
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/component.css?version=1.1' />
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/page.css?version=1.4' />
+<!--[if IE 9]>
+<style>
+.body-wrapper .body-content{
+	padding-left:0px !important;
+	padding-right:0px !important;
+	width:962px;
+}
+</style>
+<![endif]-->
+<!--[if lte IE 8]>
+<style>
+.body-wrapper .body-content{
+	padding-left:0px !important;
+	padding-right:0px !important;
+	width:962px;
+}
+.contact-form TEXTAREA{
+	padding-left:5px;
+	padding-right:0px;
+}
+.contact-form INPUT{
+	padding-left:5px;
+	padding-right:0px;
+}
+</style>
+<![endif]-->
+</head>
+<body>
+{% include "service/common/processor.html" %}
+{% include "service/common/serviceheader.html" %}
+{% if mode == "html" %}
+	{% autoescape off %}
+	<div id='content' class='content'>
+	<div class='custom-html'>
+	{{html}}
+	</div>
+	</div>
+	{% endautoescape %}
+{% elif mode == "editor" %}
+	{% include "service/common/servicenavigationbox.html" %}
+	<div id='content' class='content'>
+		{% autoescape off %}
+		{{body}}
+		{% endautoescape %}
+		{% include "service/common/serviceboardlist.html" %}
+	</div>
+{% endif %}
+
+{% include "service/common/serviceslide.html" %}
+{% include "service/common/servicephotoswipe.html" %}
+{% include "service/common/servicefeedbackplugin.html" %}
+{% include "service/common/servicefooter.html" %}
+</body>
+<!-- Back stretch -->
+<script type='text/javascript' src='/resources/plugins/backstretch/jquery.backstretch.min.js'></script>
+<!--  Lazy loading -->
+<script type='text/javascript' src='/resources/plugins/lazyloading/jquery.lazyload.min.js'></script>
+<!--[if lte IE 7]>
+<script type='text/javascript' src='/resources/js/boxsizingfix.js'></script>
+<![endif]-->
+<script>
+(function (d, s) {
+	$(".body-wrapper").each(function(){
+		if($(this).parent().hasClass('body-wrapper')){
+			$(this).unwrap();
+		}
+	});
+	// remove contenteditable to all elements
+	$('[contenteditable]').removeAttr('contenteditable');
+
+	// PROCESSING ATTRIBUTE SETTINGS
+	if($('html').is('.ie6, .ie7, .ie8, ie9') == true){
+		try{
+			// #backstretch
+			var contentBackground = $("#content").css('background-image');
+			var contentBackgroundRepeat = $("#content").css('background-repeat');
+			if(contentBackgroundRepeat.indexOf('no-repeat') != -1){
+				var u = contentBackground;
+				u = u.replace('url(', '');
+				u = u.replace(')', '');
+				u = u.replace(/"/g, "");
+				$("#content").backstretch(u);
+			}
+		}catch(err){console.log('err: ' + err);}
+	}
+	$(".hyperlink-added").each(function(){
+		var hyperlink = $(this).attr('data-hyperlink');
+		var hyperlinkTarget = $(this).attr('data-hyperlink-target');
+
+		if(hyperlinkTarget == '' || hyperlinkTarget == null || typeof hyperlinkTarget == 'undefined')
+			hyperlinkTarget = '_blank';
+
+		if(hyperlink.indexOf('/') == -1)
+			return;
+		$(this).bind('click', function(){
+			window.open(hyperlink, hyperlinkTarget);
+		});
+	});
+	$("img.lazy-loading").show().lazyload({
+		placeholder: 'https://kordir.s3.amazonaws.com/images/transparent.gif',
+		threshold: 240,
+		effect: 'fadeIn',
+		effectspeed: 1000
+	});
+	$(".mobile-fontsize").each(function(idx){
+		var addedClassName = 'mobile-fontsize-' + idx;
+		var fontsize = $(this).attr('data-mobile-fontsize');
+		$(this).addClass(addedClassName);
+		var query = "@media all and (max-width:480px){." + addedClassName + "{";
+		query += "font-size: " + fontsize + " !important;";
+		query += "}}";
+		try{
+			document.querySelector('style').textContent += query;
+		} catch (err){
+			$(this).css('font-size', fontsize);
+		}
+	});
+	$(".mobile-maxwidth").each(function(idx){
+		var addedClassName = 'mobile-maxwidth-' + idx;
+		var maxWidth = $(this).attr('data-mobile-maxwidth');
+		$(this).addClass(addedClassName);
+		var query = "@media all and (max-width:480px){img." + addedClassName + " {";
+		query += "max-width: " + maxWidth + " !important;";
+		query += "}}";
+		try{
+			document.querySelector('style').textContent += query;
+		}catch(err){
+			$(this).css('max-width', maxWidth);
+		}
+	});
+	$(".hover-added").hover(function(){
+		var background = $(this).attr('data-hover-background');
+		var text = $(this).attr('data-hover-text');
+
+		var originalBackgroundColor = $(this).css('background-color');
+		var originalTextColor = $(this).css('color');
+
+		$(this).attr('data-original-background', originalBackgroundColor);
+		$(this).attr('data-original-text', originalTextColor);
+
+		if(typeof background === 'string'){
+			$(this).css('background-color', background);
+		}
+		if(typeof text === 'string'){
+			$(this).css('color', text);
+		}
+	}, function(){
+		var originalBackgroundColor = $(this).attr('data-original-background');
+		var originalTextColor = $(this).attr('data-original-text');
+		$(this).css({
+			'background-color': originalBackgroundColor,
+			'color': originalTextColor
+		});
+	});
+	$("td").each(function(){
+		var t = $(this).parents('table').eq(0);
+		var w = $(t).width();
+		var h = $(t).height();
+		$(this).css({
+			'width': w + 'px'
+		});
+	});
+	if(oldIE){
+		$(".background-transparency").each(function(){
+			var rgba = $(this).attr('data-background-transparency');
+			if(rgba.indexOf('rgba') != -1){
+				rgba = rgba.replace('rgba(', '');
+				rgba = rgba.replace(')', '');
+				rgba = rgba.replace(/ /gi, "");
+				rgba = rgba.split(',');
+				var r, g, b, a = 0;
+				r = parseInt(rgba[0]).toString(16);
+				g = parseInt(rgba[1]).toString(16);
+				b = parseInt(rgba[2]).toString(16);
+				a = parseInt(parseFloat(rgba[3]) * 100);
+				a = Math.round(a * 255 / 100);
+				a = a.toString(16);
+				if(r.length == 1)
+					r = '0' + r;
+				if(g.length == 1)
+					g = '0' + g;
+				if(b.length == 1)
+					b = '0' + b;
+				if(a.length == 1)
+					a = '0' + a;
+				var hex = '#' + a + r + g + b;
+				var filter = "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='" + hex + "', endColorstr='" + hex + "')";
+				$(this).css('filter', filter);
+				$(this).css('zoom', '1');
+			}
+		});
+		var bg = $("#content").css('background-image');
+		var repeat = $("#content").css('background-repeat');
+		if(bg.indexOf('url') != -1 && repeat == 'no-repeat'){
+			$("#content").css({
+				'background-size': '100% 100%',
+		    	'background-image': bg,
+		    	'background-attachment': 'inherit',
+		    	'-webkit-background-size': '100% 100%',
+		    	'-moz-background-size': '100% 100%',
+		    	'-o-background-size': '100% 100%',
+		    	'-ms-background-size': '100% 100%'
+			});
+		}
+	}
+})(document, 'script');
+</script>
+{% include "service/common/servicenodejs.html" %}
+<!-- Google Map API -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={% settings_value "GOOGLE_API_KEY" %}"></script>
+
+<!-- Photoswipe plugin -->
+<script src="https://kordir.s3.amazonaws.com/resources/plugins/photoswipe/dist/photoswipe-ui-default.min.js"></script>
+<link rel='stylesheet' type='text/css' media='screen' href='https://kordir.s3.amazonaws.com/resources/plugins/photoswipe/3.0.5/photoswipe.css'>
+<script type='text/javascript' src='https://kordir.s3.amazonaws.com/resources/plugins/photoswipe/3.0.5/lib/klass.min.js'></script>
+<script type='text/javascript' src='https://kordir.s3.amazonaws.com/resources/plugins/photoswipe/3.0.5/code.photoswipe.jquery-3.0.5.js'></script>
+
+<link rel="stylesheet" href="https://kordir.s3.amazonaws.com/resources/plugins/photoswipe/dist/photoswipe.css">
+<link rel="stylesheet" href="https://kordir.s3.amazonaws.com/resources/plugins/photoswipe/dist/default-skin/default-skin.css">
+<script src="https://kordir.s3.amazonaws.com/resources/plugins/photoswipe/dist/photoswipe.min.js"></script>
+<script>
+var variable = {
+	slideIdx: 0,
+	slideObject: [],
+	pictureSlideObject: [],
+	resizeFunc: [],
+	fileSuffix: '{{"PAGE_PICTURE"|get_filelocation}}',
+	serviceId: '{{service.id}}',
+	mobileWidth: false
+};
+</script>
+<!--[if lte IE 9]>
+<script src='/resources/service/js/lowiefix.js'></script>
+<![endif]-->
+<script src='/resources/service/js/servicepage.js?version=1.3'></script>
+{% include "service/common/ga.html" %}
+</html>

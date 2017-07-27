@@ -1,0 +1,29 @@
+<html>
+<head>
+{% include "service/common/servicemeta.html" %}
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common.css?version=1.0' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common_lowie.css'/>
+<![endif]-->
+<style>
+#header-wrapper, #footer-wrapper{
+	position:absolute !important;
+}
+#footer-wrapper{
+	bottom:0;
+}
+</style>
+</head>
+<body>
+{% include "service/common/processor.html" %}
+{% include "service/common/serviceheader.html" %}
+{% include "service/common/servicegoogleadonerrorpage.html" %}
+<div id='content' style='display:table; width:100%;'>
+	<div style='display:table-cell; vertical-align:middle; width:100%; text-align:center;'>
+		<div id='heading' class='black-font' style='font-size:24px;'>서버에서 작업 수행중에 문제가 발생하였습니다.</div>
+	</div>
+</div>
+{% include "service/common/servicefooter.html" %}
+</body>
+{% include "service/common/ga.html" %}
+</html>

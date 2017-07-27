@@ -1,0 +1,215 @@
+<!--
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/footer.css?version=1.0' />
+-->
+<style>
+#footer-wrapper{
+	position:relative;
+	width:100%;
+	border-top:1px solid #aaa;
+	background-color:#333333;
+	width:100%;
+	min-width:960px;
+	visibility:hidden;
+}
+#footer-wrapper .footer-top-image{
+	position:absolute;
+	margin-left:10px;
+	top:-100px;
+	height:100px;
+	width:auto;
+	max-width:95%;
+}
+#footer{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	max-width:960px;
+	width:100%;
+	text-align:center;
+	color:#efefef;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+}
+#footer .footer-item{
+	position:relative;
+    /*
+	width:280px;
+    */
+    width: 100%;
+	text-align:left;
+	font-size:13px;
+	/*
+	float:left;
+	*/
+	display:inline-block;
+	vertical-align:top;
+	overflow:hidden;
+	padding:10px;
+	padding-left:20px;
+	padding-right:20px;
+}
+#footer .footer-item-right{
+	float:none;
+}
+.footer-item .footer-item-logo-text{
+	height:46px;
+	line-height:46px;
+	font-size:32px;
+	font-weight:bold;
+}
+.footer-item .footer-item-title{
+	height:46px;
+	line-height:46px;
+	font-size:20px;
+	text-align:center;
+	border-bottom:1px solid #aaa;
+}
+.footer-item .footer-item-text{
+	font-size:12px;
+	margin-top:10px;
+}
+.footer-item-text .footer-contact-item{
+	position:relative;
+	height:24px;
+	padding-left:16px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+}
+.footer-contact-item .contact-icon{
+	position:absolute;
+	display:inline-block;
+	top:0;
+	left:0;
+	width:12px;
+	height:12px;
+	overflow:hidden;
+	background-image:url('/resources/images/footer_icons.png');
+}
+.footer-contact-item .telephone{
+}
+.footer-contact-item .email{
+	background-position:-12px 0px;
+}
+.footer-contact-item .location{
+	background-position:-24px 0px;
+}
+.footer-contact-item .registration{
+	background-position:-36px 0px;
+}
+#footer .footer-full-width{
+	padding-top:10px;
+	padding-bottom:10px;
+	width:100%;
+	font-size:12px;
+	text-align:center;
+}
+.footer-gap{
+	background-color:#F5EEE6;
+	height:80px;
+}
+.footer-item-logo-text a:link{text-decoration: none; color:orange;}
+.footer-item-logo-text a:active{text-decoration: none; color:orange;}
+.footer-item-logo-text a:visited{text-decoration: none; color:orange;}
+.footer-item-logo-text a:hover{text-decoration: none; color:white; font-weight:bold;}
+
+.footer-item-text a:link{text-decoration: none; color:#efefef;}
+.footer-item-text a:active{text-decoration: none; color:#efefef;;}
+.footer-item-text a:visited{text-decoration: none; color:#efefef;;}
+.footer-item-text a:hover{text-decoration: none; color:orange; font-weight:bold;}
+
+@media all and (max-width:480px){
+	.footer-gap{
+		height:100px;
+	}
+	#footer-wrapper{
+		width:100%;
+		min-width:100%;
+	}
+	#footer-wrapper .footer-top-image{
+		margin-left:0;
+	}
+	#footer-wrapper #footer{
+		padding-left:10px;
+   		padding-right:10px;
+	}
+	#footer .footer-item{
+		float:none;
+		width:100%;
+		-webkit-box-sizing: border-box;
+   		-moz-box-sizing: border-box;
+   		box-sizing: border-box;
+	}
+}
+</style>
+{% if page == "index" %}
+<style>
+#footer .footer-full-width{
+	border-top:1px solid #aaa;
+}
+</style>
+<div class='footer-gap'></div>
+{% endif %}
+<div id='footer-wrapper' class='black-font'>
+	{% if page == "index" %}
+	<img src='https://kordir.s3.amazonaws.com/images/city_silhouette_dark.png' class='footer-top-image'>
+	{% endif %}
+	<div id='footer'>
+		{% if page == "index" %}
+		<div class='footer-item footer-item-left inline-block-fallback'>
+			<div class='footer-item-logo-text'><a href='http://support.kordir.com/company' target='_blank'>코디알</a></div>
+			<div class='footer-item-text' style="line-height:1.6;">비지니스를 운영하시는 분들에게<br>고객과의 접점을 만들어 주는 서비스를 제공합니다.</div>
+		</div><!--
+		 --><div class='footer-item footer-item-center inline-block-fallback' style="display:none;">
+			<div class='footer-item-title'>사이트링크</div>
+			<div class='footer-item-text'>
+				<a href='http://kordir.com/trial/?reqtype=dashboard' style='line-height:20px;' class='not-support-low-ie'>&#8226; 관리자모드 체험</a><br>
+				<a href='#service' style='line-height:20px;'>&#8226; 서비스 설명</a><br>
+				<!--
+				<a href='/pricing' style='line-height:20px;'>&#8226; 요금</a><br>
+				<a href='/company' style='line-height:20px;' rel='회사소개'>&#8226; 회사소개</a><br>
+				-->
+				<a href='http://support.kordir.com/' style='line-height:20px;' rel='고객센터'>&#8226; 고객센터</a><br>
+				<a href='/terms' style='line-height:20px;'>&#8226; 이용 약관</a><br>
+				<a href='/privacy' style='line-height:20px;'>&#8226; 개인정보 취급방침</a><br>
+			</div>
+		</div><!--
+		--><div class='footer-item footer-item-right inline-block-fallback' style="display:none;">
+			<div class='footer-item-title'>Contact</div>
+			<div class='footer-item-text'>
+				<div class='footer-contact-item'><span class='contact-icon location'></span><span style='color:white;text-decoration:line-through;'>경기도 수원시 영통구 이의동 869 광교테크노벨리 중소기업청 창업보육센터 지하 2층</span></div><br>
+				<div class='footer-contact-item'><span class='contact-icon telephone'></span><span style='color:white;text-decoration:line-through;'>031-217-0107</span></div>
+				<div class='footer-contact-item'><span class='contact-icon email'></span><span style='color:white;text-decoration:line-through;'>hello@kordir.com</span></div>
+				<!--
+				<div class='footer-contact-item'><span class='contact-icon registration'></span>사업자등록번호: 135-32-70424</div>
+				 -->
+			</div>
+		</div>
+		{% endif %}
+		 <div class='footer-full-width'>
+			<span>Copyrights &#0169; 2015 - 2017, KORDIR. All rights reserved.</span>
+		</div>
+	</div>
+</div>
+<script>
+(function (d, s) {
+	footerAdjustment();
+	window.onresize = function(e){
+		footerAdjustment();
+	};
+})(document, 'script');
+function footerAdjustment(){
+	var hh = document.getElementById('header-wrapper').clientHeight;
+	var fh = document.getElementById('footer-wrapper').clientHeight;
+	var wh = document.documentElement.clientHeight;
+	var ah = screen.availHeight;
+	var dh = Math.min(wh, ah);
+	var gap = wh - hh - fh - 1;
+	try{
+		document.getElementById('content').style.minHeight = gap + 'px';
+		document.getElementById('footer-wrapper').style.visibility = 'visible';
+	} catch(err){}
+}
+</script>
+{% include "common/ga.html" %}

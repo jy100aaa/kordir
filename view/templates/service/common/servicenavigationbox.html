@@ -1,0 +1,107 @@
+<style>
+#navigation-box{
+	position:fixed;
+	visibility:hidden;
+	width:160px;
+	top:124px;
+	left:50%;
+	margin-left: -660px;
+	color:#4d4d4d;
+	border-top:1px solid #ddd;
+	border-left:1px solid #ddd;
+	border-right:1px solid #ddd;
+	background-color:#fafafa;
+	z-index:1;
+	box-shadow: 0 1px 10px rgba(31, 50, 63, 0.25);
+}
+#navigation-box .navigation-title{
+	padding-top:8px;
+	padding-bottom:8px;
+	border-bottom:1px solid #ccccbc;
+	text-align:center;
+	font-size:14px;
+	font-weight:bold;
+	color:#4d4d4d;
+	background-color:#fff;
+	background-size:100%;
+}
+#navigation-box .navigation-item{
+	widht:100%;
+	vertical-align:middle;
+	font-size:12px;
+	border-bottom:1px solid #ddd;
+}
+#navigation-box .current-location{
+	font-weight:bold;
+	background-color:#f4f4f4;
+}
+.navigation-item:hover{
+	background-color:#f4f4f4;
+	cursor:pointer;
+}
+.navigation-item span{
+	display:inline-block;
+	padding:12px 0px;
+	margin-left:10px;
+}
+</style>
+{% if sibling_list %}
+<div id='navigation-box'>
+	<div class='navigation-title'>{{parent.nodeName}}</div>
+	{% for s in sibling_list %}
+		<div class='navigation-item{% if s.url == tag %} current-location{% else %}{% endif %}' onclick="window.location.href='{{s.url}}'">
+			<span>{{s.nodeName}}</span>
+		</div>
+	{% endfor %}
+</div>
+{% endif %}
+<script>
+$(function(){
+	if($("#navigation-box").length != 0){
+		$("#navigation-box").data('data-visible', false);
+		serviceVariable.navigationBoxScrollTimer = null;
+		serviceVariable.navigationBoxScrollWaiting = false;
+		serviceVariable.scrollFunc['navigation-box'] = function(e){
+			if(serviceVariable.navigationBoxScrollWaiting == true)
+				clearTimeout(serviceVariable.navigationBoxScrollTimer);
+			serviceVariable.navigationBoxScrollWaiting = true;
+			serviceVariable.navigationBoxScrollTimer = setTimeout(function(){
+				navigation_box_overlapping();
+				serviceVariable.navigationBoxScrollWaiting = false;
+			}, 100);
+		};
+		navigation_box_overlapping();
+	}
+	serviceVariable.resizeFunc['navigation-box'] = navigation_box_overlapping;
+});
+function navigation_box_overlapping(){
+	var navObj = $("#navigation-box")[0];
+	if($("#navigation-box").length == 0)
+		return;
+	var visible = $(navObj).data('data-visible');
+	var navRect = navObj.getBoundingClientRect();
+	var overlap = false;
+	$(".entire-width").each(function(){
+		if($(this).hasClass('body-wrapper') == false || overlap == true)
+			return;
+		var ewRect = $(this)[0].getBoundingClientRect();
+		
+		overlap = !(navRect.right < ewRect.left || 
+				navRect.left > ewRect.right || 
+				navRect.bottom < ewRect.top || 
+				navRect.top > ewRect.bottom)
+	});	
+	
+	if($(window).width() < 1160)
+		overlap = true;
+	
+	if(overlap == true && visible == true){
+		$(navObj).data('data-visible', false);
+		$(navObj).css('visibility', 'hidden');
+	}
+	if(overlap == false && visible == false && $( window ).width() >= 1280){
+		$(navObj).css('visibility', 'visible');
+		$(navObj).data('data-visible', true);
+	}
+}
+</script>

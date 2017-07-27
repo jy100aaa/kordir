@@ -1,0 +1,43 @@
+{% load customtags %}
+<!-- TITLE -->
+<title>
+{% if misc.meta.siteTitle == "" %}{{service.name}}{% else %}{{misc.meta.siteTitle}}{% endif %}
+{% if title != "" %}{{title}}{% endif %}
+</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" >
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="all, index, follow" />
+<!-- FAVICON -->
+{% if misc.meta.favicon == "" %}
+<link rel="shortcut icon" href='{{"FAVICON"|get_filelocation}}favicon_generic.png'>
+{% else %}
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" sizes="192x192" href="{{"FAVICON"|get_filelocation}}{{service.id}}/{{misc.meta.favicon}}.png">
+<link rel="apple-touch-icon" href="{{"FAVICON"|get_filelocation}}{{service.id}}/{{misc.meta.favicon}}.png" />
+<link rel="shortcut icon" href='{{"FAVICON"|get_filelocation}}{{service.id}}/{{misc.meta.favicon}}.ico'>
+{% endif %}
+<!-- KEYWORD -->
+<meta content='{{misc.meta.keyword | joinby:", "}}' name='keyword'>
+<!-- DESCRIPTION -->
+<meta content='{{misc.meta.description}}' name='description'>
+<!-- OPEN GRAPH -->
+<meta property="og:type" content="website">
+<meta property="og:title" content='{{misc.meta.siteTitle}}'>
+<meta property="og:description" content='{{misc.meta.description}}'>
+{% if service.domain != "" %}
+<link rel="canonical" content='http://{{service.domain}}{{ service_page }}'>
+<meta property="og:url" content='http://{{service.domain}}'>
+<meta property="al:web:url" content='http://{{service.domain}}{{ service_page }}'>
+{% else %}
+<link rel="canonical" href="http://{{service.tag}}.kordir.com{{ service_page }}">
+<meta property="og:url" content='http://{{service.tag}}.kordir.com'>
+<meta property="al:web:url" content='http://{{service.domain}}{{ service_page }}'>
+{% endif %}
+{% if misc.header.logo != "" %}
+<meta property="og:image" content="{{"SERVICE_LOGO"|get_filelocation}}{{misc.header.logo}}">
+{% endif %}
+<!-- CODE -->
+{% autoescape off %}
+{{misc.meta.code}}
+{% endautoescape %}

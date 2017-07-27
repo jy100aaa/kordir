@@ -1,0 +1,19 @@
+.adsbygoogle{
+	position:relative;
+	width:960px;
+	margin-left:auto;
+	margin-right:auto;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+	height:auto;
+	padding:10px 0px;
+}
+@media all and (max-width:480px){
+	.adsbygoogle{
+		width:100%;
+	}
+	.adsbygoogle * {
+		max-width:100%;
+	}
+}

@@ -1,0 +1,266 @@
+{% load customtags %}
+<html>
+<head>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common.css?version=1.0' />
+<style>
+.area {
+	margin-top:30px;
+	margin-bottom:30px;
+	padding:10px;
+}
+</style>
+</head>
+<body>
+
+<div class="area" id="map_service_to_user">
+    <h2>MAP Service to User</h2>
+    <input type="text" class="email" placeholder="email" />
+    <input type="text" class="serviceId" placeholder="service id" />
+    <button>GO</button>
+</div>
+<hr />
+<div class='area' id='putpoint'>
+<h2>POINT</h2>
+<input type='number' placeholder='ENTER SERVICE ID' id='putpoint-service-id'><br><br>
+<input type='number' placeholder='POINT' id='putpoint-point'><br><br>
+<select id='putpoint-type'>
+	<option value='' class='select-initial'>SELECT</option>
+	<option value='{{"POINT_ADD_TRANSACTION"|get_constant_value}}'>POINT_ADD_TRANSACTION</option>
+	<option value='{{"POINT_ADD_SPECIAL"|get_constant_value}}'>POINT_ADD_SPECIAL</option>
+</select>
+<button>GO</button>
+</div>
+<hr />
+
+<div class='area' id='add_operator'>
+    <h2>ADD OPERATOR</h2>
+    <input type="text" id="operator" />
+<button>GO</button>
+</div>
+<div class='area' id='remove_operator'>
+    <h2>REMOVE OPERATOR</h2>
+    <input type="text" id="operator" />
+    <button>GO</button>
+</div>
+<div class="area" id="add_ticket_count">
+    <h2>ADD TICKET COUNT</h2>
+    <input type="text" class="email" placeholder="email" />
+    <input type="text" class="ticketCount" placeholder="count" />
+    <button>GO</button>
+</div>
+<div class="area">
+    <h2>Operator list</h2>
+    {% for o in operators %}
+    {{ o.email }} - {{ o.ticketCount }}
+    <br />
+    {% endfor %}
+</div>
+</body>
+<script src='/resources/js/common.js'></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="//code.jquery.com/jquery-1.11.1.min.js"><\/script>')</script>
+
+<script>
+
+var variable = {
+	userId: {{user_info.id}},
+	email: '{{user_info.email}}'
+};
+
+$(function(){
+    $("#map_service_to_user button").bind('click', function(){
+        var email = $("#map_service_to_user .email" ).val();
+        var serviceId = $("#map_service_to_user .serviceId" ).val();
+        if (email.length === 0 || serviceId.length === 0) {
+            return;
+        }
+        draw_progress();
+        $.ajax({
+            url : "/requestreceiver/",
+            type : "post",
+            data :{
+                req_type : "map_service_to_user",
+                email: email,
+                serviceId: parseInt(serviceId, 10)
+            },
+            success : function(response){
+                remove_progress();
+                if(response.result == 'ok'){
+                    alert(JSON.stringify(response));
+                } else {
+                    alert('failed');
+                }
+            },
+            error : function(){
+                remove_progress();
+                alert('failed');
+            }
+        });
+    });
+	$("#putpoint button").bind('click', function(){
+		var serviceId = $(this).parent().children('#putpoint-service-id').val();
+		var point = $(this).parent().children('#putpoint-point').val();
+		var type = $(this).parent().children('#putpoint-type').val();
+		if(type == '')
+			return;
+		try{
+			serviceId = parseInt(serviceId);
+			point = parseInt(point);
+		} catch (err){
+			return;
+		}
+		var data = {
+			userId: variable.userId,
+			email: variable.email,
+			serviceId: serviceId,
+			type: type,
+			point: point
+		};
+		draw_progress();
+		$.ajax({
+			url : "/requestreceiver/",
+			type : "post",
+			data :{
+				req_type : "put_point",
+				data: JSON.stringify(data)
+			},
+			success : function(response){
+				remove_progress();
+				if(response.result == 'ok'){
+					alert(JSON.stringify(response));
+				} else {
+					alert('failed');
+				}
+			},
+			error : function(){
+				remove_progress();
+				alert('failed');
+			}
+		});
+		$(this).parent().children('input').val('');
+		$(this).parent().children('select').val('');
+		$(this).parent().children('select').children('.select-initial').prop('selected', true);
+	});
+	$("#add_operator button").bind('click', function(){
+        var email = $("#add_operator input" ).val();
+        if (email.length === 0) {
+            return;
+        }
+        draw_progress();
+        $.ajax({
+            url : "/requestreceiver/",
+            type : "post",
+            data :{
+                req_type : "add_operator",
+                email: email
+            },
+            success : function(response){
+                remove_progress();
+                if(response.result == 'ok'){
+                    alert(JSON.stringify(response));
+                } else {
+                    alert('failed');
+                }
+            },
+            error : function(){
+                remove_progress();
+                alert('failed');
+            }
+        });
+	});
+    $("#remove_operator button").bind('click', function(){
+        var email = $("#remove_operator input" ).val();
+        if (email.length === 0) {
+            return;
+        }
+        draw_progress();
+        $.ajax({
+            url : "/requestreceiver/",
+            type : "post",
+            data :{
+                req_type : "remove_operator",
+                email: email
+            },
+            success : function(response){
+                remove_progress();
+                if(response.result == 'ok'){
+                    alert(JSON.stringify(response));
+                } else {
+                    alert('failed');
+                }
+            },
+            error : function(){
+                remove_progress();
+                alert('failed');
+            }
+        });
+    });
+
+    $("#add_ticket_count button" ).bind('click', function(){
+        var email = $("#add_ticket_count .email" ).val();
+        var ticketCount = $("#add_ticket_count .ticketCount" ).val();
+        if (!email || !ticketCount) {
+            return;
+        }
+        draw_progress();
+        $.ajax({
+            url : "/requestreceiver/",
+            type : "post",
+            data :{
+                req_type : "operator_add_ticket_count",
+                email: email,
+                ticketCount: parseInt(ticketCount, 10)
+            },
+            success : function(response){
+                remove_progress();
+                if(response.result == 'ok'){
+                    alert(JSON.stringify(response));
+                } else {
+                    alert('failed');
+                }
+            },
+            error : function(){
+                remove_progress();
+                alert('failed');
+            }
+        });
+    });
+
+
+
+	$("#test button").bind('click', function(){
+		draw_progress();
+		var value = {
+			key1: 'key1',
+			key2: 'key2',
+			key3: 'key3',
+			key4: 'key4'
+		};
+		$.ajax({
+			url : "/requestreceiver/",
+			type : "post",
+			data :{
+				req_type : "put_keyvalue",
+				key: 'test',
+				serviceId: '1',
+				notification: 'email',
+				value: JSON.stringify(value)
+			},
+			success : function(response){
+				remove_progress();
+				if(response.result == 'ok'){
+					alert(JSON.stringify(response));
+				} else {
+					alert('failed');
+				}
+			},
+			error : function(){
+				remove_progress();
+				alert('failed');
+			}
+		});
+	});
+});
+</script>
+
+</html>

@@ -1,0 +1,393 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url(http://fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
+@import url(http://fonts.googleapis.com/earlyaccess/nanumpenscript.css);
+@import url(http://fonts.googleapis.com/earlyaccess/nanumbrushscript.css);
+@import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+html{
+	margin:0;
+	padding:0;
+	min-width:100%;
+}
+body{
+	font-family: 'NanumGothicWeb', 'NanumGothic', '나눔고딕', 'Nanum Gothic', 'Malgun Gothic', Helvetica, Verdana, Arial, "MS Trebuchet", sans-serif;
+	position:relative;
+	width:100%;
+	height:100%;
+	min-height:100%;
+	min-width:960px;
+	margin:0;
+	padding:0;
+	background-color:#eaeaea;
+	overflow-y:scroll;
+}
+#masking-progress{
+	position:fixed;
+	width:100%;
+	height:100%;
+	background-color:#ccc;
+	z-index:998;
+	opacity:0.75;
+	filter:alpha(opacity: 75);
+}
+#masking{
+	position:fixed;
+	width:100%;
+	height:100%;
+	background-color:#ccc;
+	z-index:800;
+	opacity:0.75;
+	filter:alpha(opacity: 75);
+}
+#general-popup-panel{
+	position:fixed;
+	display: table;
+	left:50%;
+	top:50%;
+	width: 420px;
+	height: 240px;
+	margin-left: -210px;
+	margin-top: -120px;
+	border:1px solid #ccccbc;
+	background-color:#fdfdfd;
+	z-index:991;
+}
+#general-popup-panel .general-popup-wrapper{
+	position:relative;
+	width: 420px;
+	height: 240px;
+	display:table;
+	text-align:center;
+}
+.general-popup-wrapper .general-popup-head{
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:24px;
+    line-height: 24px;
+	background-color:#a6a6a6;
+    text-align: left;
+}
+.general-popup-wrapper .general-popup-head .title {
+    margin-left:16px;
+    color: #fff;
+    font-size: 12px;
+}
+.general-popup-wrapper .general-popup-msg{
+	font-size : 14px;
+	width: 100%;
+	height:165px;
+	padding-top:25px;
+	padding-bottom:50px;
+	text-align:center;
+	display:table-cell;
+	vertical-align:middle;
+	padding-right:5%;
+	padding-left:5%;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+}
+.general-popup-msg .progress-bar-wrapper{
+	bottom:0;
+	left:0;
+	width:100%;
+	height:30px;
+	margin-top:10px;
+	border:1px solid #ccccbc;
+	text-align:left;
+}
+.general-popup-msg .progress-number-wrapper{
+	margin-top:10px;
+}
+.progress-bar-wrapper span{
+	display:inline-block;
+	background-color:orange;
+	height:30px;
+}
+.general-popup-wrapper .general-popup-button-wrapper{
+	position:absolute;
+	bottom:10px;
+	left:0;
+	width:100%;
+	height:40px;
+	text-align:center;
+}
+.general-popup-button-wrapper .general-popup-button{
+	width:100px;
+	height:40px;
+	margin-left:10px;
+	margin-right:10px;
+}
+#functional-popup-panel{
+	position:fixed;
+	display: table;
+	left:50%;
+	top:50%;
+	width: 420px;
+	height: 240px;
+	margin-left: -210px;
+	margin-top: -120px;
+	border:1px solid #ccccbc;
+	z-index:991;
+}
+.functional-popup-wrapper{
+	position:relative;
+	width: 420px;
+	height: 240px;
+	background-color:#fdfdfd;
+	display:table;
+}
+.functional-popup-wrapper .functional-popup-title{
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:40px;
+	background-color:#a6a6a6;
+	text-align:left;
+	line-height:40px;
+}
+.functional-popup-title span{
+	display:inline-block;
+	margin-left:10px;
+	color:#fff;
+	font-size:24px;
+	color:#efefef;
+	margin-left:40px;
+	font-weight:bold;
+}
+.functional-popup-wrapper .functional-popup-message{
+	margin-left:40px;
+	margin-right:10px;
+	padding-top:60px;
+	height:40px;
+	font-size:12px;
+	margin-bottom:10px;
+	margin-top:10px;
+}
+.functional-popup-wrapper .functional-popup-input{
+	display:inline-block;
+	width:240px;
+	padding-left:5px;
+	padding-right:5px;
+	border:1px solid gray;
+	height:30px;
+	line-height:30px;
+	font-size:14px;
+	border-radius:5px;
+	margin-bottom:10px;
+	margin-left:40px;
+}
+.functional-popup-wrapper .functional-popup-error-message{
+	display:block;
+	color:red;
+	font-size:12px;
+	margin-left:40px;
+}
+.functional-popup-wrapper .functional-popup-button-wrapper{
+	position:absolute;
+	bottom:10px;
+	left:0;
+	width:100%;
+	height:40px;
+	text-align:center;
+}
+.functional-popup-wrapper .functional-popup-button-wrapper button{
+	width:100px;
+	height:40px;
+	margin-left:10px;
+	margin-right:10px;
+}
+
+/* PLACEHOLDER */
+input:-ms-input-placeholder {
+    color:#adadad;
+}
+::-webkit-input-placeholder {
+   color: #adadad;
+}
+::-moz-placeholder { /* Firefox 18- */
+   color: #adadad;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #adadad;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+    width: auto;
+}
+::-webkit-scrollbar-track {
+    background-color: #eaeaea;
+    border-left: 1px solid #ccc;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+}
+::-webkit-scrollbar-thumb:hover {
+	background-color: #aaa;
+}
+@media all and (max-width:480px){
+	html{
+		width:100%;
+	}
+	body{
+		overflow-x:hidden;
+	}
+	#general-popup-panel{
+		left:0;
+		width: 90%;
+		margin-left:5%;
+	}
+	#general-popup-panel .general-popup-wrapper{
+		width:100%;
+	}
+	#functional-popup-panel{
+		left:0;
+		width: 90%;
+		margin-left:5%;
+	}
+	#functional-popup-panel .functional-popup-wrapper{
+		width:100%;
+	}
+	.functional-popup-title span{
+		margin-left:10px;
+	}
+	.functional-popup-wrapper .functional-popup-message{
+		margin-left:10px;
+	}
+	.functional-popup-wrapper .functional-popup-input{
+		margin-left:10px;
+		width:220px;
+
+	}
+	.functional-popup-wrapper .functional-popup-error-message{
+		margin-left:10px;
+	}
+}
+
+/* common */
+.btn{
+	border:0;
+	border-radius:4px;
+	font-size:14px;
+	background-color:#a6a6a6;
+	color:#fff;
+	text-align:center;
+}
+.btn:hover{
+	background-color:#d6d6d6;
+	color:#333;
+	cursor:pointer;
+}
+.btn:disabled{
+	background-color:#dedede;
+	color:#aaa;
+}
+.lockdown{
+	border:0;
+	border-radius:4px;
+	font-size:14px;
+	background-color:#d6d6d6;
+	color:#aaa;
+	text-align:center;
+}
+:focus{
+	outline:none;
+}
+input[type=text]::-ms-clear {
+    display: none;
+}
+input[type=file] {
+    /*This makes the button huge. If you want a bigger button, increase the font size*/
+    font-size:0px;
+    /*Opacity settings for all browsers*/
+    opacity: 0;
+    -moz-opacity: 0;
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0)
+}
+.input-normal{
+	padding-left:5px;
+	padding-right:5px;
+	border:1px solid gray;
+	height:30px;
+	line-height:30px;
+	font-size:14px;
+	border-radius:5px;
+}
+.break-word {
+  word-wrap: break-word;
+}
+.no-border{
+  border:0 !important;
+}
+hr{
+	padding: 0px;
+	margin: 0px;
+}
+.nostyle-anchor a:link{text-decoration:none;color:inherit;}
+.nostyle-anchor a:active{text-decoration:none;color:inherit;}
+.nostyle-anchor a:visited{text-decoration:none;color:inherit;}
+.nostyle-anchor a:hover{text-decoration:none;color:inherit;}
+.underline-pointer{
+	text-decoration:underline;
+	cursor:pointer;
+}
+.align-left{
+	text-align:left !important;
+}
+.align-center{
+	text-align:center !important;
+}
+.align-right{
+	text-align:right !important;
+}
+/* color */
+.white-bg{
+	background-color:#fcfcfc;
+}
+.black-font{
+	color:#4d4d4d;
+}
+.red-font{
+	color:red;
+}
+.green-font{
+	color:green;
+}
+.border-shadow{
+	-moz-box-shadow:3px  5px  6px  #444;
+	-webkit-box-shadow:3px  5px  6px  #444;
+	box-shadow:3px  5px  6px  #444;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td,
+th {
+  padding: 0;
+}
+
+/* font */
+.font-hanna {
+    font-family: "Hanna";
+}
+.font-nanum-pen {
+    font-family: "Nanum Pen Script"
+}
+.bold {
+    font-weight: 900;
+}
+
+/* IE SPECIFIC */
+input::-ms-clear { display: none; }
+a > img {border:0;}
+@media screen and (min-width:1px) and (max-width:480px){
+	body{
+		min-width:0;
+		width:100%;
+	}
+}

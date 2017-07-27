@@ -1,0 +1,527 @@
+div#content{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	width:960px;
+	height:auto;
+}
+#navigation-area{
+	display:inline-block;
+	position:relative;
+	width:220px;
+	float:left;
+	margin-top:20px;
+	margin-right:86px;
+	margin-bottom:20px;
+}
+#navigation-area .navigation-item{
+	height:42px;
+	font-size:14px;
+	line-height:42px;
+	width:240px;
+	color:#4d4d4d;;
+	background-color:#dedede;
+	text-align:left;
+	border-bottom:1px solid #efefea;
+}
+#navigation-area .chosen{
+	color:#000;
+	background-color:#fff; 
+	font-weight:bold;
+}
+#navigation-area .navigation-item:hover{
+	cursor:pointer;
+	background-color:#fff;
+	color:#000;
+}
+#navigation-area .navigation-item span{
+	margin-left:10px;
+}
+#content #box-area{
+	position:relative;
+	display:inline-block;
+	margin-left:90px;
+	width:540px;
+	height:auto;
+}
+#box-area button{
+	height:40px;
+	width:120px;
+	margin-left:5px;
+	margin-right:5px;
+}
+#box-area .box-item {
+	position:relative;
+	clear:both;
+	width:100%;
+	margin-top:20px;
+	margin-bottom:20px;
+	padding:20px 0 20px 0;
+	display:none;
+}
+.box-item .photo-wrapper{
+	position:relative;
+	clear:both;
+	width:100%;
+	text-align:center;
+	margin-bottom:20px;
+}
+.box-item .photo-wrapper img{
+	display:inline-block;
+	width:120px;
+	height:120px;
+}
+.box-item .photo-wrapper .picture-image-select{
+	position:absolute;
+	left:360px;
+	bottom:0;
+	height:40px;
+	line-height:40px;
+	width:80px;
+	text-align:center;
+	font-size:12px;
+}
+#service-setting .photo-wrapper img{
+	position:relative;
+	magin-left:auto;
+	margin-right:auto;
+	width:220px;
+	height:220px;
+}
+#service-setting .photo-wrapper .picture-image-select{
+	position:relative;
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:10px;
+	left:0;
+}
+.box-item .input-line{
+	position:relative;
+	display:block;
+	margin-left:40px;
+	margin-bottom:16px;
+	text-align:left;
+}
+.box-item .input-line .tag{
+	display:inline-block;
+	width:160px;
+	font-size:16px;
+	font-weight:bold;
+}
+.box-item .input-line .tag .required{
+	display:inline-block;
+	color:red;
+	margin-left:6px;
+}
+.box-item .input-line #description-tag{
+	float:left;
+}
+.box-item .input-line input[type='text'], .box-item .input-line input[type='password']{
+	width:280px;
+	padding-left:5px;
+	padding-right:5px;
+	border:1px solid #ccccbc;
+	height:30px;
+	line-height:30px;
+	font-size:14px;
+	border-radius:5px;
+	overflow:hidden;
+}
+.box-item .input-line select{
+	height:30px;
+	width:130px;
+	border:1px solid #ccccbc;
+	border-radius:4px;
+	padding-top:4px;
+	margin-right:8px;
+}
+.box-item .input-line textarea{
+	width:280px;
+	margin-left:5px;
+	padding:5px;
+	border:1px solid #ccccbc;
+	font-size:14px;
+	border-radius:4px;
+	overflow:auto;
+}
+.box-item .input-line .intro-text{
+	text-align:left;
+    margin-top:8px;
+    padding-left:160px;
+    padding-right:50px;
+    width:100%;
+    -webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+    font-size:12px;
+    color:orange;
+}
+.box-item .bottom-button-area{
+	border-top:1px dashed #ccccbc;
+	width:100%;
+	padding-top:20px;
+	margin-top:20px;
+	text-align:center;
+}
+.box-item .input-line #service-tag-input{
+	width:140px;
+	text-align:right;
+	border:0;
+	border-bottom:1px solid #ccccbc;
+	border-radius:0;
+}
+.box-item .input-line .service-tag-rest{
+	position:relative;
+	display:inline-block;
+	font-size:18px;
+	width:140px;
+	text-align:left;
+	font-weight:bold;
+}
+#content #box-area .box-warning-area{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	padding-top:6px;
+	padding-bottom:6px;
+	width:100%;
+	margin-bottom:20px;
+	font-size:14px;
+	text-align:center;
+	display:none;
+}
+.box-item .input-line .service-category-input{
+	width:280px;
+}
+#my-setting .input-line .user-telephone-input{
+	width:180px !important;
+}
+#my-setting .input-line .auth-request-button{
+	vertical-align:middle;
+	height:32px;
+	width:110px;
+}
+#notification-setting .input-line .tag {
+	width:300px;
+	float:left;
+	height:30px;
+	line-height:30px;
+}
+#service-management-setting .input-line .tag {
+    width:200px;
+    float:left;
+}
+#point-setting{
+	height:auto;
+}
+#point-setting .input-line{
+	margin:0;
+	padding-left:20px;
+	padding-right:20px;
+	text-align:left;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	margin-bottom:4px;
+}
+#point-setting .input-line .value{
+	display:inline-block;
+	height:30px;
+	line-height:30px;
+	font-size:14px;
+}
+#point-setting .input-line .use-point-info{
+	height:24px;
+	line-height:24px;
+	font-size:12px;
+	display:inline-block;
+	margin-right:8px;
+}
+#point-setting .input-line .use-point-info .use-point-info-value{
+	color:#ff6600;
+	font-weight:bold;
+}
+#point-setting .use-point-slider{
+	margin-top:8px;
+	margin-bottom:8px;
+}
+.ui-slider-range{
+	background:none !important;
+	background-color:orange !important;
+}
+#point-setting .input-line .extend-use-button{
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+}
+#point-setting .point-setting-title{
+	height:40px;
+	line-height:40px;
+	margin-top:20px;
+	margin-bottom:10px;
+	font-weight:bold;
+	font-size:20px;
+	text-align:center;
+}
+#point-setting .point-setting-title:first-child{
+	margin-top:0;
+}
+#point-setting .table-header{
+	width:100%;
+	height:40px;
+	line-height:40px;
+	border-top:1px solid #ccccbc;
+	border-bottom:2px solid #ccccbc;
+	padding-left:6px;
+	padding-right:6px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+}
+.point-table .table-item{
+	display:inline-block;
+	float:left;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	font-size:12px;
+}
+#point-setting .table-body{
+	position:relative;
+	width:100%;
+}
+.table-body .table-item-row{
+	position:relative;
+	padding-left:6px;
+	padding-right:6px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+   	height:40px;
+   	border-bottom:1px solid #ccccbc;
+}
+.table-body .table-item-row:nth-child(odd){
+	background-color:#f0f0f0;
+}
+.point-table .table-type{
+	width:20%;
+}
+.point-table .table-diff{
+	width:25%
+}
+.point-table .table-balance{
+	width:25%
+}
+.point-table .table-date{
+	width:30%;
+}
+.point-info{
+	margin-bottom:10px;
+	font-size:13px;
+}
+
+#point-setting .bottom-button-area .intro-text{
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+    font-size:12px;
+    color:orange;
+    padding-left:10px;
+    padding-right:10px;
+    margin-bottom:20px;
+}
+#popup-masking{
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	z-index:500;
+	opacity:0.90;
+	filter:alpha(opacity: 90);
+	background-color:#efefef;
+}
+#request-confirmation-window{
+	position:fixed;
+	display:none;
+	top:50%;
+	left:50%;
+	margin-top:-86px;
+	margin-left:-150px;
+	width:300px;
+	padding:20px;
+	background-color:#f8f8f8;	
+	z-index:510;
+}
+#request-confirmation-window input{
+	display:block;
+	width:280px;
+	padding-left:5px;
+	padding-right:5px;
+	border:1px solid #ccccbc;
+	height:30px;
+	line-height:30px;
+	font-size:14px;
+	border-radius:5px;
+	overflow:hidden;
+	margin-bottom:10px;
+}
+#request-confirmation-window .button-wrapper{
+	width:100%;
+	text-align:center;
+	margin-top:20px;
+}
+#request-confirmation-window .button-wrapper button{
+	width:100px;
+	height:40px;
+	margin-left:5px;
+	margin-right:5px;
+}
+#service-management-setting .input-line{
+    min-height:40px;
+    margin-right:20px;
+}
+#service-management-setting .input-line .tag.line-through{
+    text-decoration: line-through;
+}
+ /* == FOLDED CORNERS */
+.note {
+    position:relative;
+    display:inline-block;
+    width:80%;
+    height:auto;
+    padding:1em 1.5em;
+    margin:10px auto;
+    color:#4d4d4d;
+    background:#efefef;
+    -webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.note:before {
+    content:"";
+    position:absolute;
+    top:0;
+    right:0;
+    border-width:0 16px 16px 0; /* This trick side-steps a webkit bug */
+    border-style:solid;
+    border-color:#fcfcfc #fcfcfc #dedede #dedede; /* A bit more verbose to work with .rounded too */
+    background:#efefef; /* For when also applying a border-radius */
+    display:block; width:0; /* Only for Firefox 3.0 damage limitation */
+    /* Optional: shadow */
+    /*
+    -webkit-box-shadow:0 1px 1px rgba(0,0,0,0.3), -1px 1px 1px rgba(0,0,0,0.2);
+    -moz-box-shadow:0 1px 1px rgba(0,0,0,0.3), -1px 1px 1px rgba(0,0,0,0.2);
+    box-shadow:0 1px 1px rgba(0,0,0,0.3), -1px 1px 1px rgba(0,0,0,0.2);
+    */
+}
+.note .period{
+	padding:5px 0px;
+	border-bottom:1px dashed #aaa;
+	font-size:14px;
+}
+.note .price strike{
+	color:#7a7a7a;
+}
+.note .price{
+	padding:5px 0px;
+	font-size:16px;
+	color:#000;
+}
+.note-orange-background{
+	
+}
+@media screen and (min-width:1px) and (max-width:480px){
+	div#content{
+		width:100%;
+		min-width:100%;
+		overflow-x:hidden;
+		text-align:center;
+	}
+	#navigation-area{
+		display:block;
+		width:100%;
+		clear:both;
+		margin-right:0;
+	}
+	#navigation-area .navigation-item{
+		width:100%;
+		text-align:center;
+	}
+	#content #box-area{
+		width:100%;
+		margin-left:0;
+	}
+	.box-item .photo-wrapper .picture-image-select{
+		display:block;
+		position:relative;
+		left:0;
+		margin-top:10px;
+		margin-left:auto;
+		margin-right:auto;	
+	}
+	.box-item .input-line{
+		margin-left:0;
+		text-align:center;
+		margin-bottom:10px;
+	}
+	.box-item .input-line .tag{
+		display:block;
+		float:none !important;
+		width:280px;
+		text-align:left;
+		margin-left:auto;
+		margin-right:auto;
+	}
+	.box-item .input-line #description-tag{
+		float:none;
+		width:280px;
+	}
+	.box-item .input-line input[type='text'], .box-item .input-line input[type='password']{
+		margin-top:6px;
+	}
+	.box-item .input-line .intro-text{
+		text-align:left;
+    	padding:0;
+    	width:280px;
+    	margin-left:auto;
+    	margin-right:auto;
+	}
+	#length-aid{
+		text-align:left !important;
+		display:inline-block;
+		margin-left:-48px;
+		margin-top:-26px;
+	}
+	.input-line .checkbox-wrapper{
+		display:inline-block;
+		width:280px;
+		text-align:left;
+		margin-left:auto;
+		margin-right:auto;
+		margin-bottom:10px;
+	}
+	#point-setting .input-line{
+		text-align:center;
+	}
+	#point-setting .input-line .tag{
+		width:100%;
+		text-align:center;
+	}
+	.point-table .table-type{
+		width:33%;
+	}
+	.point-table .table-diff{
+		width:33%
+	}
+	.point-table .table-balance{
+		width:33%
+	}
+	.point-table .table-date{
+		display:none;
+	}
+	#service-management-setting .input-line .tag {
+	   padding:10px 0px;
+	}
+}

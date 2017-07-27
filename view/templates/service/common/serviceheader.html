@@ -1,0 +1,90 @@
+{% load customtags %}
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/serviceheader.css' />
+<style>
+{% if misc %}
+#header-wrapper{
+	background-color:{{misc.header.backgroundColor}};
+	color:{{misc.header.fontColor}};
+	{% if misc.header.rgba %}
+	background:{{misc.header.rgba}};
+	{% endif %}
+}
+#header a:link{text-decoration: none; color:{{misc.header.fontColor}};}
+#header a:active{text-decoration: none; color:{{misc.header.fontColor}};}
+#header a:visited{text-decoration: none; color:{{misc.header.fontColor}};}
+#header a:hover{text-decoration: none; color:{{misc.header.fontColor}};}
+{% endif %}
+</style>
+<!--[if lte IE 7]>
+<style>
+#header-wrapper{
+	position:relative;
+}
+#content{
+	padding-top:0;
+}
+</style>
+<![endif]-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="//code.jquery.com/jquery-1.11.1.min.js"><\/script>')</script>
+<script src='/resources/js/common.js?version=1.0'></script>
+<script src='/resources/service/js/servicestringtable.js'></script>
+<div id='header-wrapper'>
+	<div id='header' class="{{misc.header.font}}">
+		<div id='header-company-name'>
+			{% if service %}
+			{% if service.tag != "support" %}
+			<a href='/'>
+			{% else %}
+			<a href='{% settings_value "MAIN_SERVER" %}/'>
+			{% endif %}
+				{% if misc.header.logo == "" %}
+				<span>{{service.name}}</span>
+				{% else %}
+				<img src='{{"SERVICE_LOGO"|get_filelocation}}{{misc.header.logo}}' class='service-logo'>
+				{% endif %}
+			</a>
+			{% else %}
+			<a href='{% settings_value "MAIN_SERVER" %}/'>KORDI<span style='color:orange;'>R</span></a>
+			{% endif %}
+		</div>
+		{% include "service/common/servicemenu.html" %}
+	</div>
+</div>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src='/resources/plugins/jquery-ui-1.11.0/jquery-ui.min.js'></script>
+<script src='/resources/plugins/jquery-ui-touch-punch-master/jquery.ui.touch-punch.min.js'></script>
+<!--[if lte IE 8]>
+<script src='/resources/plugins/placeholders/placeholders.min.js'></script>
+<![endif]-->
+<script>
+var serviceVariable = {
+	resizeFunc: {},
+	scrollFunc: {}
+};
+$(function(){
+	$(window).resize(function(e){
+		if(this.resizeTo)
+			clearTimeout(this.resizeTo);
+		this.resizeTo = setTimeout(function(){
+			$(this).trigger('resizeEnd');
+		}, 150);
+	});
+	$(window).bind('resizeEnd', function(){
+		for(func in serviceVariable.resizeFunc)
+			serviceVariable.resizeFunc[func]();
+	});
+	$(window).bind('scroll', function(){
+		for(func in serviceVariable.scrollFunc)
+			serviceVariable.scrollFunc[func]();
+	});
+	var sl = $(window).scrollLeft();
+	if($("#header-wrapper").css('position') == 'fixed')
+		$("#header-wrapper").css('left', (-1) * sl + 'px');
+	serviceVariable.scrollFunc['header-menu'] = function(){
+		var sl = $(window).scrollLeft();
+		if($("#header-wrapper").css('position') == 'fixed')
+			$("#header-wrapper").css('left', (-1) * sl + 'px');
+	};
+});
+</script>

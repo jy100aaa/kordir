@@ -1,0 +1,439 @@
+{% load customtags %}
+{% load tz %}
+<style>
+/* BOARD */
+.board-list-wrapper{
+	width:960px;
+	margin-left:auto;
+	margin-right:auto;
+	padding-top:20px;
+}
+.board-list{
+	position:relative;
+	margin-bottom:20px;
+	display:inline-block;
+	vertical-align:top;
+	border:1px solid #EEEEED;
+	background-color:#f5f5f5;
+	background:rgba(245,245,245, 0.7);
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+}
+.board-list .empty-item{
+	margin-top:60px;
+	margin-bottom:60px;
+	text-align:center;
+	font-size:12px;
+	color:#4d4d4d;
+}
+.board-list-product .empty-item{
+	margin-top:110px;
+	text-align:center;
+	font-size:12px;
+	color:#4d4d4d;
+}
+.board-list-normal{
+	text-align:left;
+	width:470px;
+	height:180px;
+	font-size:0;
+}
+.board-list-wrapper .margin-left{
+	margin-left:20px;
+}
+.board-list-top{
+	position:relative;
+	height:30px;
+	line-height:30px;
+	margin-bottom:6px;
+	border-bottom:1px solid #ddd;
+}
+.board-list-top .name{
+	font-size:16px;
+	font-weight:bold;
+	margin-left:10px;
+}
+.board-list-top .view-more{
+	position:absolute;
+	top:0px;
+	right:0px;
+	margin-right:10px;
+}
+.board-list-top a{
+	text-decoration:none;
+	color:#4d4d4d;
+	font-size:12px;
+}
+.board-list-top a:hover{
+	color:#000;
+}
+.board-list-normal .board-item-normal {
+	position:relative;
+	width:100%;
+	height:26px;
+	line-height:26px;
+	font-size:12px;
+	border-bottom:1px solid #eee;
+	padding-left:5px;
+	padding-right:68px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+}
+.board-item-normal:hover{
+	background-color:#efefef;
+	cursor:pointer;
+}
+.board-item-normal .subject{
+	display:inline-block;
+	width:100%;
+	margin-right:4px;
+	overflow:hidden;
+}
+.board-item-normal .item-answer{
+	position:absolute;
+	right:0;
+	top:0;
+}
+.item-answer span{
+	color:#f8f8f8;
+	padding:4px;
+	font-weight:bold;
+	font-size:10px;
+	border-radius:4px;
+    margin-right:6px;
+}
+.item-answer .answer-done{
+	background-color:green;
+}
+.item-answer .answer-not-done{
+	background-color:orange;
+}
+.board-item-normal .datetime{
+	position:absolute;
+	top:0;
+	right:4px;
+	color:#aaa;
+	float:right;
+}
+.board-list-wrapper .board-list-product{
+	position:relative;
+	width:100%;
+	min-height:264px;
+	text-align:center;
+	overflow-x:auto;
+	margin-left:auto;
+	margin-right:auto;
+	border: 1px solid #EEEEED;
+	background-color: #f5f5f5;
+	background: rgba(245,245,245, 0.7);
+}
+.board-list-product .board-list-product-top{
+	text-align:left;
+} 
+.board-list-product .board-item-inner-wrapper{
+	margin-left:auto;
+	margin-right:auto;
+}
+.board-item-outer-wrapper{
+	width:100%;
+	height:240px;
+	overflow-x:auto;
+	overflow-y:hidden;
+}
+.board-item-inner-wrapper{
+	width:2400px;
+	text-align:left;
+	margin-left:0;
+	margin-right:0;
+}
+.board-item-product{
+	position:relative;
+	display:inline-block;
+	width:200px;
+	height:200px;
+	margin-top:10px;
+	margin-bottom:10px;
+	margin-left:5px;
+	margin-right:5px;
+   	border:1px solid #dcdcdc;
+   	background-color:#f6f6f6;
+   	vertical-align:top;
+}
+.board-item-product:hover{
+	background-color:#efefef;
+	cursor:pointer;
+}
+.board-item-product .image-outer{
+	display:table;
+	width:100%;
+}
+.image-outer .image-inner{
+	display:table-cell;
+	width:100%;
+	height:160px;
+	text-align:center;
+	vertical-align:middle;
+}
+.image-inner img{
+	display:inline-block;
+	max-width:180px;
+	max-height:140px;
+	border-radius:4px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.board-item-product .subject{
+	position:absolute;
+	left:0;	
+	width:100%;
+	text-align:center;
+	bottom:10px;
+	font-size:12px;
+	font-weight:bold;
+}
+.board-list-mobile-only{
+	display:none;
+}
+.board-list-product .product-item-wrapper{
+	position:relative;
+	display:inline-block;;
+	border:1px solid #aaa;
+	width:224px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+	padding:6px;
+	border:1px solid #ccccbc;
+	border-radius:4px;
+	margin-bottom:10px;
+	font-size:12px;
+	background-color:#fafafa;
+	margin-right:20px;
+	vertical-align:top;
+}
+.board-list-product .product-item-wrapper:hover{
+	background-color:#f6f6f6;
+	cursor:pointer;
+}
+.product-item-wrapper .product-item-picture-outer-wrapper{
+	display:table;
+	width:100%;
+	height:auto;
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom:10px;
+	border-radius:4px;
+}
+.product-item-picture-outer-wrapper .product-item-picture-inner-wrapper{
+	width:100%;
+	height:160px;
+	background-color:#fff;
+	display:table-cell;
+	vertical-align:middle;
+	text-align:center;
+}
+.product-item-picture-inner-wrapper img{
+	display:inline-block;
+	max-width:212px;
+	max-height:100%;
+	border-radius:4px;
+}
+.product-item-picture-inner-wrapper img:hover{
+	cursor:pointer;
+	opacity:0.85;
+	filter:alpha(opacity: 85);
+}
+.product-item-wrapper .product-item-subject {
+	font-size:14px;
+}
+.product-item-wrapper .product-item-subject, .product-item-wrapper .product-item-name{
+	position:static;
+	margin-bottom:6px;
+}
+.product-item-wrapper .product-item-name span{
+	font-weight:bold;
+}
+.product-item-wrapper .product-item-label-value-wrapper{
+	width:100%;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+   	padding:10px;
+	background-color:#efefef;
+	border-top:1px solid #ccc;
+}
+.product-item-label-value-wrapper .product-item-label-value-line{
+	position:relative;
+	width:100%;
+	padding-left:100px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+	height:20px;
+	line-height:20px;
+	overflow:hidden;
+	text-overflow: ellipsis;
+}
+.product-item-label-value-line span{
+	display:inline-block;
+}
+.product-item-label-value-line .lvp-label{
+	position:absolute;
+	left:0;
+	width:100px;
+	height:20px;
+	color:#333;
+	font-weight:bold;
+}
+@media screen and (min-width:1px) and (max-width:480px){
+	.board-list-wrapper{
+		width:100%;
+		height:auto;
+		margin:0;
+	}
+	.board-list-desktop-only{
+		display:none;
+	}
+	.board-list-mobile-only{
+		display:inline-block;
+	}
+	.board-list-wrapper .board-list-normal{
+		width:100%;
+	}
+	.board-list-wrapper .margin-left{
+		margin-left:0;
+	}
+}
+</style>
+<!--[if lte IE 7]>
+<style>
+.board-list-wrapper .board-list-normal{
+	width:460px;
+}
+.board-list-wrapper .board-list-product{
+	width:940px;
+	padding-top:10px;
+}
+.board-list-mobile-only{
+	display:none !important;
+}
+.board-list-product .empty-item{
+	margin-top:80px;
+}
+.board-list-desktop-only .product-item-wrapper{
+	margin-right:10px;
+	width:227px;
+}
+.board-list-desktop-only .empty-item{
+	margin-top:120px;
+}
+</style>
+<![endif]-->
+{% if board_list %}
+<div class='board-list-wrapper'>
+	{% for bl in board_list %}<div id='board-item-{{bl.tag|remove_forward_slash}}' {% if bl.type == "PRODUCT_BOARD"|get_constant_value %} class='board-list-product board-list box-sizing-fallback inline-block-fallback {% if bl.displayType == 1 %}board-list-mobile-only{% endif %}' {% else %} class='board-list-normal board-list box-sizing-fallback inline-block-fallback {% if bl.margin %}margin-left{% endif %}' {% endif %} >
+		<div {% if bl.type == "PRODUCT_BOARD"|get_constant_value %} class='board-list-product-top board-list-top' {% else %} class='board-list-normal-top board-list-top' {% endif %} >
+			<span class='name'>{{bl.name}}</span>
+			<span class='view-more'><a href ='{{bl.tag}}'>+ 더보기</a></span>	
+		</div>
+		{% if bl.type == "PRODUCT_BOARD"|get_constant_value %}
+		<div class='board-item-outer-wrapper'>
+		<div class='board-item-inner-wrapper'>
+		{% endif %}
+			{% for i in bl.item %}	
+			<div {% if bl.type == "PRODUCT_BOARD"|get_constant_value %} class='board-item-product inline-block-fallback' {% else %} class='board-item-normal inline-block-fallback box-sizing-fallback' {% endif %} onclick="window.location.href='{{bl.tag}}?seq={{i.seq}}';">
+				{% if bl.type == "PRODUCT_BOARD"|get_constant_value %}
+				<span class='image-outer'>
+					<span class='image-inner'>
+						{% if i.list_image == "" %}
+						<img src='/resources/images/no_product_image.png'>
+						{% else %}					
+						<img src='{{"BOARD_PICTURE"|get_filelocation}}{{service.id}}{{bl.tag}}/{{i.list_image}}'>
+						{% endif %}
+					</span>
+				</span>
+				<div class='subject'>{{i.subject}}</div>
+				{% else %}
+				<span class='subject'>{% if i.sticky == True %}<span style='color:orange; margin-right:4px;'>[공지]</span>{% endif %}{{i.subject}}</span>
+				{% if bl.type == "ASK_BOARD"|get_constant_value and i.sticky == False %}
+				<div class='item-answer'>
+					{% if i.answered == True %}
+					<span class='answer-done'>답변완료</span>
+					{% else %}
+					<span class='answer-not-done'>답변 준비중</span>
+					{% endif %}
+				</div>
+				{% else %}
+				<span class='datetime'>{{i.created|localtime|date:'Y-m-d'}}</span>
+				{% endif %}
+				{% endif %}
+				{% if bl.type == "PRODUCT_BOARD"|get_constant_value %}
+				<div class='body' style='display:none;'>
+				{% autoescape off %}
+					{{i.body}}
+				{% endautoescape %}
+				</div>
+				{% endif %}
+				<span class='link-address' style='display:none;'>{{bl.tag}}?seq={{i.seq}}</span>
+			</div>
+			{% endfor %}
+		{% if bl.type == "PRODUCT_BOARD"|get_constant_value %}
+		</div>
+		</div>
+		{% endif %}
+		{% if not bl.item %}
+		<div class='empty-item' {% if bl.type == "PRODUCT_BOARD"|get_constant_value %}style='position:absolute; width:96%; top:40px; text-align:center;'{% endif %}>아직 등록된 게시물이 없습니다.</div>
+		{% endif %}
+	</div>{% if bl.displayType == 1 %}
+		<div class='board-list-product board-list-desktop-only' style='text-align:left; margin-bottom:20px;'>
+			<div {% if bl.type == "PRODUCT_BOARD"|get_constant_value %} class='board-list-product-top board-list-top' {% else %} class='board-list-normal-top board-list-top' {% endif %} >
+				<span class='name' style='margin-left:10px;'>{{bl.name}}</span>
+				<span class='view-more' style='margin-right:10px;'><a href ='{{bl.tag}}'>+더보기</a></span>	
+			</div>	
+			{% if bl.item  %}																				
+			{% for i in bl.item %}<div class='product-item-wrapper black-font inline-block-fallback box-sizing-fallback' onclick="window.location.href='{{bl.tag}}?seq={{i.seq}}';" {% if forloop.counter|divisibleby:4 %}style='margin-right:0; float:none;'{% endif %}>
+				<div class='product-item-picture-outer-wrapper'>
+					<div class='product-item-picture-inner-wrapper'>
+						{% if i.list_image == "" %}
+						<img src='/resources/images/no_product_image.png'>
+						{% else %}
+						<img src='{{"BOARD_PICTURE"|get_filelocation}}{{service.id}}{{bl.tag}}/{{i.list_image}}'>
+						{% endif %}
+					</div>
+				</div>
+				<div class='product-item-subject' style='height:38px;'>{{i.subject}}</div>
+				<div class='product-item-label-value-wrapper  box-sizing-fallback '>
+					{% for lvp in i.labelvaluepairs.all %}
+					<div class='product-item-label-value-line'>
+						<span class='lvp-label'>{{lvp.label}}</span>
+						<span class='lvp-value'>
+							{{lvp.value}}
+							{% if lvp.number %}
+							{{lvp.unit}}
+							{% endif %}
+						</span>
+					</div>
+					{% endfor %}
+				</div>
+			</div>{% endfor %}
+			{% else %}
+			<div class='empty-item'>아직 등록된 게시물이 없습니다.</div>
+			{% endif %}
+		</div>
+	{% endif %}{% endfor %}
+</div>
+<script>
+$(function(){
+	$(".board-list-product").each(function(){
+		var l = $(this).find('.board-item-product').length;
+		var w = 216;
+		var tw = w * l + 2;
+		$(this).find('.board-item-inner-wrapper').css({
+			'width': tw
+		});
+	});
+});
+</script>
+{% endif %}

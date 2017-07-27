@@ -1,0 +1,173 @@
+{% load customtags %}
+{% load tz %}
+<head>
+<style>.dashboard-body{display:none;}</style>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/dashboard_productboarditem.css?version=1.0' />
+</head>
+<div class='dashboard-body'>
+	<div class='product-box'>
+		<div class='box-control'>
+			<button class='box-control-button btn' id='edit-button'>수정</button>
+			<button class='box-control-button btn' id='delete-button'>삭제</button>
+			<button class='box-control-button btn' id='previous-button'>목록으로</button>
+		</div>
+		<div class='subject'>{{boarditem.subject}}</div>
+		<div class='box-info'>
+			<div class='name'>작성자: {{boarditem.name}}</div>
+			<div class='view-cnt'>조회수: {{boarditem.view_num}}</div>
+			{% timezone "Asia/Seoul" %}
+			<div class='date'>등록일: {{boarditem.created|localtime|date:'Y-m-d H:i:s'}}</div>
+			{% endtimezone %}
+		</div>
+		{% if slide_picture|length > 0 %}
+		<!-- Jssor Slider Begin -->
+    	<!-- You can move inline styles to css file or css block. -->
+    	<div id="slider1_container" style="position: relative; width: 960px; height: 540px; overflow: hidden; display:inline-block; background-color:#000;">
+	        <!-- Loading Screen -->
+	        <div u="loading" style="position: absolute; top: 0px; left: 0px;">
+	            <div style="filter: alpha(opacity=70); opacity:0.7; position: absolute; display: block; background-color: #000; top: 0px; left: 0px;width: 100%;height:100%;"></div>
+	            <div style="position: absolute; display: block; background: urlurl(/resources/images/progress_circle.gif) no-repeat center center; top: 0px; left: 0px;width: 100%;height:100%;"></div>
+	       	</div>
+	        <!-- Slides Container -->
+	        <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 960px; height: 540px; overflow: hidden;">
+	        	{% for g in slide_picture %}
+	        	<div>
+	        		<img u='image' src='{{"PRODUCT_GALLERY_PICTURE"|get_filelocation}}{{user_info.service.id}}{{tag}}/{{g.0}}'>
+	        		<img u='thumb' src='{{"PRODUCT_GALLERY_PICTURE"|get_filelocation}}{{user_info.service.id}}{{tag}}/{{g.1}}'>
+	        	</div>
+	        	{% endfor %}
+	        </div>
+	        <!-- Arrow Navigator Skin Begin -->
+        	<span u="arrowleft" class="jssora02l" style="width: 55px; height: 55px; top: 214px; left: 8px;"></span>
+        	<span u="arrowright" class="jssora02r" style="width: 55px; height: 55px; top: 214px; right: 8px"></span>
+	        <!-- Thumbnail Navigator Skin Begin -->
+	        <div u="thumbnavigator" class="jssort07" style="position: absolute; width: 960px; height: 100px; left: 0px; bottom: 0px; overflow: hidden; ">
+	            <div style=" background-color: #000; filter:alpha(opacity=30); opacity:.3; width: 100%; height:100%;"></div>
+	            <div u="slides" style="cursor: move;">
+	                <div u="prototype" class="p" style="POSITION: absolute; WIDTH: 99px; HEIGHT: 66px; TOP: 0; LEFT: 0;">
+	                    <thumbnailtemplate class="i" style="position:absolute;"></thumbnailtemplate>
+	                    <div class="o"></div>
+	                </div>
+	            </div>   
+	            <span u="arrowleft" class="jssora11l" style="width: 37px; height: 37px; top: 123px; left: 8px;"></span>
+	            <span u="arrowright" class="jssora11r" style="width: 37px; height: 37px; top: 123px; right: 8px"></span>
+	        </div>
+    	</div>
+    	{% endif %}
+    	
+    	{% if boarditem.labelvaluepairs.all %}
+    	<div class='label-value'>
+    	{% for i in boarditem.labelvaluepairs.all %}<div class='label-value-line'>
+				<span class='label'>{{i.label}}</span>
+				<span class='value'>{{i.value}} {% if i.number %}{{i.unit}}{% endif %}</span>
+			</div>{% endfor %}<!-- 
+		 -->{% if boarditem.labelvaluepairs.all|length|modulo:2 == 1 %}<div class='label-value-line inline-block-fallback label-value-line-filler'>
+				<span class='label'></span><span class='value'></span>
+			</div>{% endif %}
+		</div>
+    	{% endif %}
+    	<!-- 
+    	<p class='block-tag'>상세 설명</p>
+    	 -->
+    	<div class='box-content'>
+			{% autoescape off %}
+			{{boarditem.body}}
+			{% endautoescape %}
+		</div> 
+	</div>
+	<div id='comment' data-boardtype='{{board_type}}' data-tag='{{tag}}' data-seq='{{seq}}'>
+		{% include "common/comment.html" %}
+	</div>
+</div>
+<script>
+var boardVar = {
+	serviceId: '{{user_info.service.id}}',
+	userId: '{{user_info.id}}',
+	seq: '{{seq}}',
+	tag: '{{tag}}',
+	boardType: {{board_type}},
+	filePrefix: '{{"BOARD_PICTURE"|get_filelocation}}{{user_info.service.id}}{{tag}}/'
+};
+</script>
+<script type="text/javascript" src="/resources/plugins/Jssor.Slider.FullPack/js/jssor.core.js"></script>
+<script type="text/javascript" src="/resources/plugins/Jssor.Slider.FullPack/js/jssor.utils.js"></script>
+<script type="text/javascript" src="/resources/plugins/Jssor.Slider.FullPack/js/jssor.slider.js"></script>
+<script>
+$(function(){
+	var options = {
+	    $AutoPlay: false,                                    //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
+	    $AutoPlayInterval: 4000,                            //[Optional] Interval (in milliseconds) to go for next slide since the previous stopped if the slider is auto playing, default value is 3000
+	    $SlideDuration: 500,                                //[Optional] Specifies default duration (swipe) for slide in milliseconds, default value is 500
+	    $DragOrientation: 1,                                //[Optional] Orientation to drag slide, 0 no drag, 1 horizental, 2 vertical, 3 either, default value is 1 (Note that the $DragOrientation should be the same as $PlayOrientation when $DisplayPieces is greater than 1, or parking position is not 0)
+	    $UISearchMode: 0,                                   //[Optional] The way (0 parellel, 1 recursive, default value is 1) to search UI components (slides container, loading screen, navigator container, arrow navigator container, thumbnail navigator container etc).
+		$FillMode: 1,
+
+	    $ArrowNavigatorOptions: {
+	        $Class: $JssorArrowNavigator$,              //[Requried] Class to create arrow navigator instance
+	        $ChanceToShow: 1,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
+	        $Steps: 1                                       //[Optional] Steps to go for each navigation request, default value is 1
+	    },
+	    
+	    $ThumbnailNavigatorOptions: {
+	        $Class: $JssorThumbnailNavigator$,              //[Required] Class to create thumbnail navigator instance
+	        $ChanceToShow: 1,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
+	
+	        $Loop: 2,                                       //[Optional] Enable loop(circular) of carousel or not, 0: stop, 1: loop, 2 rewind, default value is 1
+	        $SpacingX: 3,                                   //[Optional] Horizontal space between each thumbnail in pixel, default value is 0
+	        $SpacingY: 3,                                   //[Optional] Vertical space between each thumbnail in pixel, default value is 0
+	        $DisplayPieces: 6,                              //[Optional] Number of pieces to display, default value is 1
+	        $ParkingPosition: 204,                          //[Optional] The offset position to park thumbnail,
+	
+	        $ArrowNavigatorOptions: {
+	            $Class: $JssorArrowNavigator$,              //[Requried] Class to create arrow navigator instance
+	            $ChanceToShow: 1,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
+	            $AutoCenter: 2,                                 //[Optional] Auto center arrows in parent container, 0 No, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
+	            $Steps: 6                                       //[Optional] Steps to go for each navigation request, default value is 1
+	        }
+	    }
+	};
+	{% if slide_picture %}
+    var jssor_slider1 = new $JssorSlider$("slider1_container", options);
+    function ScaleSlider() {
+        var parentWidth = jssor_slider1.$Elmt.parentNode.clientWidth;
+       	
+        if (parentWidth)
+            jssor_slider1.$SetScaleWidth(Math.min(parentWidth, 960));
+        else
+            window.setTimeout(ScaleSlider, 30);
+    }
+    ScaleSlider();
+    if (!navigator.userAgent.match(/(iPhone|iPod|iPad|BlackBerry|IEMobile)/)) {
+        $(window).bind('resize', ScaleSlider);
+    }
+	{% endif %}
+
+	$(".product-box .box-control #edit-button").bind('click', function(){
+		location.hash = 'productboardedit?url=' + boardVar.tag + '&seq=' + boardVar.seq;
+	});
+	$(".product-box .box-control #previous-button").bind('click', function(){		
+		//window.history.back();
+		location.hash = 'board?url=' + boardVar.tag; 
+	});
+	$(".product-box .box-control #delete-button").bind('click', function(){
+		var data = {
+			boardType: boardVar.boardType,
+			serviceId: boardVar.serviceId,
+			userId: boardVar.userId,
+			tag: boardVar.tag,
+			seq: boardVar.seq,
+			password: ''
+		};		
+		draw_general_popup(
+				function(){
+					delete_boarditem(data);
+				},
+				null, 
+				null,
+				stringTable.askDelete, 
+				stringTable.yes, 
+				stringTable.no
+		);
+	});
+});
+</script>

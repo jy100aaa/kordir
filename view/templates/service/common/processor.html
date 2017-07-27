@@ -1,0 +1,119 @@
+{% load customtags %}
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common.css?version=1.2' />
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/servicecommon.css?version=1.0' />
+<!--[if lte IE 7]>
+<script src='/resources/plugins/oldbrowser/json3.min.js'></script>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common_lowie.css'/>
+<![endif]-->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/googlead.css?version=1.0' />
+<style>
+#content{
+	background-color: {{backgroundColor}};
+	{% if backgroundImage != "" %}
+	background-image: url({{backgroundImage}}) !important;
+		{% if backgroundImageMode == 0 %}
+		background-repeat:no-repeat;
+		background-size:cover;
+		background-position:center;
+		{% else %}
+		background-repeat:repeat;
+		background-size:auto;
+		background-position:top left;
+		{% endif %}
+	{% endif %}
+}
+</style>
+<script>
+var oldIE = false;
+var _MSIE = false;
+var _USER_AGENT = window.navigator.userAgent;
+var _OLDIE = _USER_AGENT.indexOf('MSIE ');
+var _NEW_IE = _USER_AGENT.indexOf('Trident/');
+if ((_OLDIE > -1) || (_NEW_IE > -1)) {
+	_MSIE = true;
+}
+</script>
+<!--[if lte IE 8]>
+<script>
+oldIE = true;
+</script>
+<![endif]-->
+
+
+<script>
+var CONNECTION_STATUS = {
+	USER_CONNECTION_STATUS_ONLINE: 			'0',
+	USER_CONNECTION_STATUS_BUSY: 			'1',
+	USER_CONNECTION_STATUS_ABSENT: 			'2',
+	USER_CONNECTION_STATUS_PSEUDO_OFFLINE:  '3',
+	USER_CONNECTION_STATUS_OFFLINE: 		'4'
+};
+var connectionStatus = {};
+var page = '{{service_page}}';
+(function (d, s) {
+	{% for k in service.users.all %}
+		connectionStatus['{{k.id}}'] = '{{k.connection_status}}';
+	{% endfor %}
+})(document, 'script');
+function data_receiver(d){
+	if(d.type == 'visitor-connect'){}
+	if(d.type == 'connect'){
+		connectionStatus[d.data.userId] = d.data.connectionStatus;
+		connection_status_change(d.type);
+	}
+	if(d.type == 'disconnect'){
+		connectionStatus[d.data.userId] = CONNECTION_STATUS.USER_CONNECTION_STATUS_OFFLINE;
+		connection_status_change(d.type);
+	}
+	if(d.type == 'status-change'){
+		connectionStatus[d.data.userId] = d.data.connectionStatus;
+		connection_status_change(d.type);
+	}
+	if(d.type =='chat_request'){
+		var userId = d.data.userId;
+		var userName = d.data.userName;
+		var serviceId = d.data.serviceId;
+		var url = d.data.chatURL;
+		var str = userName + ' ' + stringTable.chatRequestReceived + '<br>'
+		str += stringTable.askChatRequest;
+
+		draw_general_popup(
+				function(){
+					window.location.href = url + '?userId=' + userId;
+				},
+				function(){
+					var msg = {
+						type: 'chat_request_reject',
+						data: {
+							serviceId: serviceId,
+							uniqueKey: '{{connectionInfo.uniqueKey}}',
+							userId: userId
+						}
+					};
+					send_client_message(msg);
+				},
+				null,
+				str,
+				stringTable.yes,
+				stringTable.no
+		);
+	}
+	if(d.type == 'cancel_chat_request'){
+		close_general_popup_in_force();
+	}
+	if(d.type == 'user_chat_message'){
+		if(typeof user_chat_message_receiver !== 'undefined'){
+			user_chat_message_receiver(d);
+			return;
+		} else {
+		}
+	}
+}
+</script>
+{% autoescape off %}
+{{code}}
+{% endautoescape %}
+{% autoescape off %}
+{{misc.settings.code}}
+{% endautoescape %}

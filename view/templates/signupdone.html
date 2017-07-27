@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% include "common/meta.html" %}
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common.css?version=1.0' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common_lowie.css'/>
+<![endif]-->
+<style>
+#content{
+	width:100%;
+	margin-left:auto;
+	margin-right:auto;
+}
+.large{
+	font-size:24px;
+	color:#4d4d4d;
+	font-weight:bold;
+}
+.small{
+	font-size:12px;
+	color:#4d4d4d;
+}
+#content button{
+	width:100px;
+	height:40px;
+	margin-top:10px;
+}
+.box{
+   	padding-top:10px;
+   	padding-bottom:20px;
+   	background: rgb(255,255,255);
+   	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7FFFFFFF,endColorstr=#7FFFFFFF);
+	background: rgba(255, 255, 255, 0.5);
+}
+#footer{
+	color:#4d4d4d !important;
+}
+@media screen and (min-width:1px) and (max-width:480px){
+	#content{
+		width:100%;
+		-webkit-box-sizing: border-box;
+   		-moz-box-sizing: border-box;
+   		box-sizing: border-box;
+   		padding-left:10px;
+   		padding-right:10px;
+	}
+}
+#header-wrapper{
+	background-color:transparent !important;
+	border:0 !important;
+} #header{
+	background-color:transparent !important;
+}
+#footer-wrapper{
+	background-color:transparent !important;
+	border:0 !important;
+} #footer{
+	background-color:transparent !important;
+}
+</style>
+<!--[if lte IE 7]>
+<style>
+#content {
+	height:100%;
+}
+#content div{
+	margin-top:200px;
+}
+</style>
+<![endif]-->
+</head>
+<body>
+{% include "common/header.html" %}
+<!--  backstretch plugin -->
+<script type='text/javascript' src='/resources/plugins/backstretch/jquery.backstretch.min.js'></script>
+<script>
+$.backstretch('https://kordir.s3.amazonaws.com/images/welcome2.jpg');
+</script>
+	<div id='content' style='display:table; height:100%; background-color:transparent;'>
+		<div style='display:table-cell; vertical-align:middle; height:100%; width:100%; text-align:center; background-color:transparent;'>
+			<div class='box box-sizing-fallback'>
+				{% if user_info.promotion|length != 0 %}
+				<p class='large'>프로모션 코드 정상 확인 되었습니다.<br><small style='color:#ffa500;'>혜택: 결재 시 이용기간 30일 추가</small></p>
+				{% endif %}
+				<h1>{{user_info.fullname}} 님 가입해 주셔서 감사합니다.</h1>
+				<p class='small'>코디알은 고객님에게 실질적인 가치를 제공할 수 있도록 항상 최선을 다하고 있습니다.</p>
+				<p class='small'>아래 버튼을 누르셔서 회원 가입 절차를 계속 진행해 주시기 바랍니다.</p>
+				<button class='btn' onclick="location.href='/fillinfo'">계속 진행 ></button>
+			</div>
+		</div>
+	</div>
+{% include "common/footer.html" %}
+</body>
+</html>

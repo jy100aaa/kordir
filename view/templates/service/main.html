@@ -1,0 +1,23 @@
+<!doctype html>
+{% load customtags %}
+<!--[if lt IE 7 ]> <html class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class=""> <!--<![endif]-->
+<head>
+{% include "service/common/servicemeta.html" %}
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/main.css?version=1.0' />
+</head>
+<body>
+{% include "service/common/processor.html" %}
+{% include "service/common/serviceheader.html" %}
+<div id='content'>
+</div>
+{% include "service/common/servicefeedbackplugin.html" %}
+{% include "service/common/servicefooter.html" %}
+</body>
+{% include "service/common/servicenodejs.html" %}
+<script src='/resources/service/js/main.js'></script>
+{% include "service/common/ga.html" %}
+</html>

@@ -1,0 +1,415 @@
+#area .dashboard-body{
+	display:block;
+}
+.setting-misc-control{
+	padding-bottom:10px;
+	border-bottom:1px solid #ddd;
+	margin-bottom:16px;
+}
+.setting-misc-control button{
+	width:80px;
+	height:30px;
+	line-height:30px;
+	margin-right:10px;
+	margin-top:10px;
+}
+.setting-misc-box{
+	display:inline-block;
+	border-top: #dcdcdc 1px solid;
+  	border-left: #dcdcdc 1px solid;
+  	border-right: #ccc 1px solid;
+  	border-bottom: #ccc 1px solid;
+  	border-radius:4px;
+  	width:48%;
+  	min-height:370px;
+  	min-width:360px;
+  	vertical-align:top;
+  	margin-bottom:20px;
+}
+.box-gap{
+	display:inline-block;
+	width:2%;
+}
+#box-meta{
+	min-height:0;
+}
+.setting-misc-box .setting-misc-title{
+	background-color:#f3f3f3;
+	height:30px;
+	line-height:30px;
+	border-bottom:1px solid #ccccbc;
+	text-align:left;
+}
+.setting-misc-title span{
+	display:inline-block;
+	margin-left:10px;
+	font-size:12px;
+	font-weight:bold;
+}
+.setting-misc-box .setting-misc-body{
+	padding:20px 10px;
+	min-height:120px;
+}
+.setting-misc-body .input-line{
+	position:relative;
+	margin-bottom:16px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+   	vertical-align:bottom;
+}
+.setting-misc-body .last-input-line{
+	margin-bottom:0;
+}
+.input-line .tag{
+	display:inline-block;
+	font-size:16px;
+	font-weight:bold;
+	color:#7a7a7a;
+	width:144px;
+	vertical-align:top;
+	margin-top:6px;
+}
+.input-line .input-text {
+	width:320px;
+	padding-left:5px;
+	padding-right:5px;
+	border:1px solid #ccccbc;
+	height:30px;
+	line-height:30px;
+	font-size:14px;
+	border-radius:5px;
+	overflow:hidden;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+}
+.input-line .slider{
+	margin-top:8px;
+	width:280px;
+	display:inline-block;
+}
+.input-line .slider-value{
+	display:inline-block;
+	margin-left:10px;
+	margin-right:10px;
+}
+.ui-slider-range{
+	background:none !important;
+	background-color:orange !important;
+}
+.input-line .input-color, .input-line .input-short{
+	width:136px;
+}
+.input-line textarea{
+	width:100%;
+	padding:5px;
+	border:1px solid #ccccbc;
+	font-size:14px;
+	border-radius:4px;
+	overflow:auto;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+}
+.input-line .button-wrapper{
+	display:inline-block;
+	vertical-align:top;
+	margin-left:10px;
+}
+.input-line .button-wrapper .btn{
+	display:inline-block;
+	height:32px;
+	line-height:32px;
+	padding-left:10px;
+	padding-right:10px;
+}
+.input-line .logo-image-wrapper #logo-button-wrapper{
+	position:absolute;
+	width:160px;
+	height:32px;
+	bottom:-40px;
+	left:0;
+	margin-left:0;
+}
+.input-line .image-wrapper{
+	position:relative;
+	display:inline-block;
+	border:1px solid #ccccbc;
+}
+.input-line .favicon-image-wrapper{
+	width:32px;
+	height:32px;
+}
+.input-line .logo-image-wrapper{
+	height:80px;
+	width:auto;
+	min-width:80px;
+}
+.input-line .image-wrapper img{
+	height:100%;
+	width:auto;
+    max-width: 100%;
+}
+.input-line-textarea{
+	padding-left:144px;
+}
+.input-line-textarea .tag{
+	position:absolute;
+	top:4px;
+	left:0;
+}
+
+#box-header-footer .header-sample{
+	background-color:#fafafa;
+	color:#6a6a6a;
+	width:100%;
+	border:1px solid #eee;
+}
+.header-sample .header-company-name{
+	height:60px;
+	line-height:60px;
+	font-size:24px;
+	font-weight:bold;
+	display:inline-block;
+	padding:0px 8px;
+}
+.header-company-name img{
+	height:48px;
+	width:auto;
+    max-width: 100%;
+	margin-top:6px;
+}
+.header-sample .header-sample-right{
+	height:60px;
+	line-height:60px;
+	font-size:14px;
+	display:inline-block;
+	float:right;
+	padding-left:8px;
+	padding-right:8px;
+}
+.header-sample-right .menu{
+	display:inline-block;
+	height:56px;
+	padding-left:8px;
+	padding-right:8px;
+	border-bottom:4px solid #ff6600;
+}
+.header-sample-right .hamburger-icon{
+	float:right;
+	display:inline-block;
+	margin-left:10px;
+	margin-top:14px;
+	width:30px;
+	height:30px;
+	overflow:hidden;
+	background-size:auto 30px;
+	background-image:url('/resources/images/lowie/header_menu_negative_lowie.png');
+	background-repeat:no-repeat;
+	background-color:#4d4d4d;
+	border:0;
+}
+.header-sample-box .toggle-menu-wrapper{
+	height:100px;
+}
+.toggle-menu-wrapper .toggle-menu{
+	width:200px;
+	float:right;
+	background-color:#fafafa;
+	color:#4d4d4d;
+}
+.toggle-menu .toggle-menu-item{
+	display:block;
+	height:40px;
+	line-height:40px;
+	padding-left:10px;
+	font-size:14px;
+	border-bottom:1px solid #ccccbc;
+}
+#box-header-footer .color-sample-box{
+	border:1px solid #ddd;
+	width:100%;
+	margin-left:auto;
+	margin-right:auto;
+	padding:30px 10px;
+	text-align:center;
+	font-size:14px;
+	margin-bottom:10px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+}
+#box-header-footer .saperator{
+	font-weight:bold;
+	color:#4d4d4d;
+	height:40px;
+	line-height:40px;
+	margin-bottom:10px;
+	text-align:center;
+	font-size:16px;
+	border-bottom:3px solid orange;
+}
+#box-header-footer #input-line-logo{
+	margin-bottom:60px;
+}
+.setting-misc-box .keyword-box {
+	border:1px solid #ddd;
+	width:100%;
+	margin-left:auto;
+	margin-right:auto;
+	padding:10px;
+	 -webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+   	margin-top:10px;
+   	margin-bottom:20px;
+   	border-radius:6px;
+}
+.keyword-box p{
+	color:#aaa;
+	font-size:12px;
+	text-align:center;
+}
+.keyword-box span{
+	display:inline-block;
+	margin-right:10px;
+	margin-bottom:10px;
+	padding:10px;
+	background-color:orange;
+	cursor:pointer;
+}
+.keyword-box span:hover{
+	background-color:#F8F7B6;
+}
+.colorpicker_submit{
+	display:none !important;
+}
+.colorpicker{
+	background-color:#555 !important;
+}
+.vertical-selection {
+    display: none;
+    margin-left: 150px;
+    margin-top: 10px;
+    width: 220px;
+    z-index: 801;
+    background-color: #fff;
+    border: 1px solid black;
+}
+.vertical-selection-item {
+    display: block;
+    padding: 10px 10px 10px;
+    border-bottom: 1px solid #ccccbc;
+}
+.vertical-selection-item:last-child {
+    border-bottom: 0;
+}
+.vertical-selection-item:hover {
+    cursor: pointer;
+    background-color: #fcf5a3;
+}
+@media screen and (min-width:481px) and (max-width:1013px){
+    .setting-misc-box{
+        width:100%;
+        margin:0;
+        min-height:0;
+        min-width:0;
+    }
+    #box-meta{
+        margin-top:16px;
+    }
+    .setting-misc-box .input-line{
+        margin-bottom:20px;
+    }
+    .setting-misc-box .input-line .tag{
+        width:100%;
+        margin-bottom:10px;
+    }
+    .input-line .input-text{
+        width:100%;
+    }
+    .input-line .slider{
+        display:block;
+        margin-left:auto;
+        margin-right:auto;
+        width:90%;
+    }
+    .input-line .slider-value{
+        width:100%;
+    }
+    .input-line .button-wrapper{
+        position:absolute;
+        top:0;
+        right:0;
+    }
+    .input-line .logo-image-wrapper #logo-button-wrapper{
+        bottom:-38px;
+        left:auto;
+        top:auto;
+        right:auto;
+    }
+    .input-line-textarea{
+        padding:0;
+    }
+    .input-line-textarea .tag{
+        position:static;
+        top:0;
+        left:0;
+    }
+    .vertical-selection {
+        margin-left: 0;
+    }
+}
+@media screen and (min-width:1px) and (max-width:480px){
+	.setting-misc-box{
+		width:100%;
+		margin:0;
+		min-height:0;
+		min-width:0;
+	}
+	#box-meta{
+		margin-top:16px;
+	}
+	.setting-misc-box .input-line{
+		margin-bottom:20px;
+	}
+	.setting-misc-box .input-line .tag{
+		width:100%;
+		margin-bottom:10px;
+	}
+	.input-line .input-text{
+		width:100%;
+	}
+	.input-line .slider{
+		display:block;
+		margin-left:auto;
+		margin-right:auto;
+		width:90%;
+	}
+	.input-line .slider-value{
+		width:100%;
+	}
+	.input-line .button-wrapper{
+		position:absolute;
+		top:0;
+		right:0;
+	}
+	.input-line .logo-image-wrapper #logo-button-wrapper{
+		bottom:-38px;
+		left:auto;
+		top:auto;
+		right:auto;
+	}
+	.input-line-textarea{
+		padding:0;
+	}
+	.input-line-textarea .tag{
+		position:static;
+		top:0;
+		left:0;
+	}
+    .vertical-selection {
+        margin-left: 0;
+    }
+}

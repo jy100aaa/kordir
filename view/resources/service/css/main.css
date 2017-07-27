@@ -1,0 +1,14 @@
+div#content{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	width:960px;
+}
+@media all and (max-width:480px){
+	div#content{
+		width:100%;
+		min-width:100%;
+		overflow-x:hidden;
+		text-align:center;
+	}
+}

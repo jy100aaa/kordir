@@ -1,0 +1,527 @@
+div#content{
+	position:reltaive;
+	width:100%;
+	height:auto;
+}
+#content-inner{
+	position:reltaive;
+	width:960px;
+	height:auto;
+	margin-left:auto;
+	margin-right:auto;
+}
+#content-inner .board-top{
+	position:relative;
+	height:60px;
+	width:100%;
+	text-align:left;
+	background-color:#fafafa;
+	background:rgba(250,250,250, 0.7);
+}
+.board-top .board-title{
+	height:60px;
+	line-height:60px;
+	color:#6d6d6d;
+	font-size:18px;
+	font-weight:bold;
+	margin-left:20px;	
+}
+.board-top #show-register-form-button{
+	display:inline-block;
+	position:absolute;
+	right:10px;
+	top:12px;
+	width:100px;
+	height:36px;
+}
+#content .board-center{
+	width:100%;
+	min-height:413px;
+	background-color:#fafafa;
+	background:rgba(250,250,250, 0.7);
+}
+.board-center .table-header{
+	position:relative;
+	border-top:2px solid #ccccbc;
+	border-bottom:1px solid #ccccbc;
+	text-align:left;
+	height:40px;
+	line-height:40px;
+	background-color:#efefef;
+	width:100%;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;	
+   	padding-left:80px;
+   	padding-right:300px;
+}
+.table-header div{
+	display:inline-block;
+	text-align:center;
+	float:left;
+}
+.table-header .table-seq{
+	position:absolute;
+	top:0;
+	left:0;
+	width:80px;
+}
+.table-header .table-subject{
+	width:100%;
+}
+.table-header .table-name{
+	position:absolute;
+	top:0;
+	right:200px;
+	width:100px;
+}	
+.table-header .table-date{
+	position:absolute;
+	top:0;
+	right:100px;
+	width:100px;
+}
+.table-header .table-answer{
+	position:absolute;
+	top:0;
+	right:0;
+	width:100px;
+}
+.board-center .table-body {
+	width:100%;
+}
+.table-body .item-empty{
+	width:100%;
+	height: 380px;
+	line-height: 380px;
+	text-align: center;
+	font-size: 14px;
+}
+.board-center .table-body .item-wrapper{
+	position:relative;
+	clear:both;
+	text-align:left;
+	height:36px;
+	line-height:36px;
+	border-bottom:1px solid #ddd;
+	font-size:12px;
+	width:100%;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;	
+   	padding-left:80px;
+   	padding-right:300px;
+   	overflow:hidden;
+}
+.board-center .table-body .item-wrapper:nth-child(odd){
+	background-color:#f7f7f7;
+}
+.board-center .table-body .item-wrapper:hover{
+	cursor:pointer;
+	background-color:#d2d2d2;
+}
+.item-wrapper div{
+	display:inline-block;
+	float:left;
+}
+.item-wrapper .item-tag{
+	display:none;	
+}
+.item-wrapper .item-seq{
+	position:absolute;
+	left:0;
+	width:80px;
+	text-align:center;
+} 
+.item-wrapper .item-subject{
+	position:relative;
+	width:100%;
+	font-size:14px;
+}
+.item-wrapper .item-subject img{
+	display:inline-block;
+	float:left;
+	width:20px;
+	height:20px;
+	margin-top:8px;
+	margin-right:4px;
+}
+.item-wrapper .item-name{
+	position:absolute;
+	right:200px;
+	top:0;
+	width:100px;
+	text-align:center;
+}
+.item-wrapper .item-date{
+	position:absolute;
+	right:100px;
+	top:0;
+	width:100px;
+	text-align:center;
+}
+.item-wrapper .item-answer{
+	position:absolute;
+	right:0;
+	top:0;
+	width:100px;
+	text-align:center;
+}
+.item-answer span{
+	padding:4px;
+	color:#fff;
+	font-weight:bold;
+	font-size:10px;
+	border-radius:4px;
+}
+.item-answer .answer-done{
+	background-color:green;
+}
+.item-answer .answer-not-done{
+	background-color:orange;
+}
+.item-wrapper .item-view-cnt{
+	width:60px;
+	text-align:center;
+}
+.board-bottom{
+	display:block;
+	height:74px;
+	line-height:74px;
+	border-top:1px solid #ccc;
+	margin-top:20px;
+	text-align:center;
+	background-color:#fafafa;
+	background:rgba(250,250,250, 0.7);
+}
+.board-bottom .paging-nav{
+	display:inline-block;
+	font-size:14px;
+	padding-left:4px;
+	padding-right:4px;
+	height:30px;
+	width:30px;
+	line-height:30px;
+	text-align:center;
+	margin-left:4px;
+	margin-right:4px;
+}
+.board-bottom .paging-nav.current-page{	
+	background-color:#789;
+	color:#fff;
+}
+.board-bottom .paging-nav.disabled{
+	background-color:#dedede;
+	color:#aaa;
+}
+.board-register{
+	width:100%;
+	display:none;
+	margin-top:20px;
+	padding-bottom:30px;
+}
+.board-register .board-register-comment{
+	width:760px;
+	margin-left:auto;
+	margin-right:auto;
+	padding:14px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;	
+	font-size:14px;
+	text-align:left;
+	color:#4d4d4d;
+	background-color:#f8f8f8;
+}
+.board-register .board-register-form{
+	margin-left:auto;
+	margin-right:auto;
+	padding-top:20px;
+	padding-left:20px;
+	padding-right:20px;
+	width:720px;
+	background-color:#f8f8f8;
+	border-radius:4px;
+}
+.board-register-form .not-passed{
+	height:auto;
+	padding-top:10px;
+	padding-bottom:10px;
+	text-align:center;
+	color:red;
+	font-size:12px;
+	display:none;
+}
+.board-register-form .input-line{
+	position:relative;
+	clear:both;
+	padding-bottom:20px;
+	width:100%;
+	text-align:left;
+}
+.input-line .tag{
+	display:inline-block;
+	width:160px;
+	font-size:16px;
+	font-weight:bold;
+	float:left;
+}
+.input-line .tag .required{
+	display:inline-block;
+	color:red;
+	margin-left:6px;
+}
+.input-line input[type='text'], .input-line input[type='password']{
+	padding-left:5px;
+	padding-right:5px;
+	border:1px solid #ccccbc;
+	height:30px;
+	line-height:30px;
+	font-size:14px;
+	border-radius:5px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.input-line textarea{
+	width:540px;
+	padding:5px;
+	border:1px solid #ccccbc;
+	font-size:14px;
+	border-radius:5px;
+	overflow:auto;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.input-line .file-select-button{
+	display:inline-block;
+	height:30px;
+	line-height:30px;
+	padding-left:6px;
+	padding-right:6px;
+}
+.input-line .subject-input{
+	width:540px;
+}
+.input-line .name-input, .input-line .password-input, .input-line .short-input{
+	width:240px;
+}
+.input-line .telephone-input{
+	width:60px;
+}
+.input-line #captcha-image{
+	float:left;
+}
+.input-line .captcha-input{
+	width:100px;
+	margin-left:10px;
+}
+.input-line .intro-text{
+    padding-left:160px;
+    margin-top:4px;
+    font-size:12px;
+    color:#ffa500;
+}
+.input-line label{
+	display:inline-block;
+}
+.input-line .progress-bar{
+	position:relative;
+	display:none;
+	height:30px;
+	width:550px;
+	border:1px solid #ccccbc;	
+}
+.progress-bar .progress{
+	display:inline-block;
+	height:100%;
+	width:0;
+	background-color:#789;
+}
+.progress-bar .number{
+	position:absolute;
+	right:0;	
+	font-size:12px;
+	color:#ff6600;
+	top:34px;
+}
+.input-line .after-upload{
+	display:none;
+	width:auto;
+}
+.after-upload .filename{
+	display:inline-block;
+	height:30px;
+	line-height:30px;
+	font-size:14px;
+}
+.after-upload .remove-file{
+	display:inline-block;
+	margin-left:6px;
+	height:30px;
+	width:60px;
+}
+.board-register-form .board-register-form-button-wrapper{
+ 	height:70px;
+	line-height:70px;
+}
+.board-register-form-button-wrapper button{
+ 	display:inline-block;
+ 	float:right;
+ 	height:48px;
+ 	line-height:48px;
+ 	width:80px;
+ 	margin-right:20px;
+ }
+ .border-register-form-shadow{
+ 	width:760px;
+ 	height:40px;
+ 	margin-left:auto;
+ 	margin-right:auto;
+ 	background:url('/resources/images/shadow_bottom.png') no-repeat;
+ 	background-size:100% auto;
+}
+.board-register .board-register-form .input-line .after-upload a:link {color:inherit;}
+.board-register .board-register-form .input-line .after-upload a:visited {color:inherit;}
+.board-register .board-register-form .input-line .after-upload a:hover {color:inherit;}
+.board-register .board-register-form .input-line .after-upload a:active {color:inherit;}
+ 
+
+.board-register .board-register-form .input-line .long-input{
+	width:540px;
+}
+ 
+ 
+@media screen and (min-width:1px) and (max-width:480px){
+	#content-inner{
+		width:100%;
+		min-width:100%;
+		overflow-x:hidden;
+	}
+	.board-center .table-header{
+		display:none;
+	}
+	.board-register .board-register-form{
+    	width:100%;
+    	padding:10px;
+    	-webkit-box-sizing: border-box;
+    	-moz-box-sizing: border-box;
+    	box-sizing: border-box;	
+	}
+	.board-register .board-register-form .input-line .tag{
+		display:block;
+		width:100%;
+	}
+	.board-register .board-register-form .input-line .intro-text{
+		padding:0;
+	}
+	.board-register .board-register-form .input-line .subject-input{
+		width:100%;
+	}
+	.board-register .board-register-form .input-line .body-input{
+		width:100%;
+	}
+	.board-register .board-register-form .input-line .progress-bar{
+		width:100%;
+	}
+	.board-register .board-register-form .input-line .long-input{
+		width:100%;
+	}
+	.board-center .table-body .item-wrapper{
+		-webkit-box-sizing: content-box;
+	   	-moz-box-sizing: content-box;
+	   	box-sizing: content-box;	
+	   	display:block;
+		height:72px;
+		line-height:0;
+		padding:10px;
+		width:auto;
+		background-color:#efefea;
+		min-width:0;
+	}
+	.board-register .board-register-comment{
+		width:100%;
+	}
+	.border-register-form-shadow{
+	 	width:100%;
+	}
+	.board-center .table-body .item-wrapper:first-child{
+		border-top:1px solid #ddd;
+	}
+	.board-center .table-body .item-wrapper:hover{
+		cursor:pointer;
+		background-color:#fdfdfa;
+	}
+	.item-wrapper .item-tag{
+		color:#789;
+		display:inline-block;
+		margin-right:4px;
+	}
+	.item-wrapper .item-seq{
+		display:none;
+	}
+	.item-wrapper .item-subject{
+		position:relative;
+    	height:48px;
+    	line-height:18px;
+    	margin-top:20px;
+		width:100%;
+		font-size:14px;	
+	}
+	.item-wrapper .item-subject img{
+		float:left;
+		margin-top:-2px;
+	}
+	.item-wrapper .item-answer{
+		position:absolute;
+		right:10px;
+		text-align:right;
+		top:10px;
+		height:24px;
+		line-height:24px;
+		width:auto;
+	}
+	.item-wrapper .item-answer span{
+		height:16px;
+		line-height:16px;
+		width:auto;
+	}
+	.item-wrapper .item-name{
+		position:absolute;
+		top:auto;
+		bottom:6px;
+		left:10px;
+		width:auto;
+		height:16px;
+		line-height:16px;
+		margin:0;		
+	}
+	.item-name span{
+		height:100%;
+		width:auto;
+		float:left;
+	}
+	.item-wrapper .item-date{
+		position:absolute;
+		top:auto;
+		bottom:6px;
+		right:10px;
+		height:16px;
+		width:auto;
+		line-height:16px;
+		text-align:right;
+		margin:0;
+	}
+	.item-date span{
+		height:100%;
+		width:auto;
+	}
+	.board-bottom .paging-nav{
+		font-size:12px;
+		padding:0;
+		width:30px;
+		margin-left:2px;
+		margin-right:2px;
+	}
+}

@@ -1,0 +1,205 @@
+<!doctype html>
+{% load customtags %}
+{% load tz %}
+<!--[if lt IE 7 ]> <html class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="ie"> <!--<![endif]-->
+<head>
+{% include "service/common/servicemeta.html" %}
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/askboard.css?version=1.2' />
+<!--[if lte IE 7]>
+<style>
+.board-center .table-header{
+	width:580px;
+}
+.board-center .table-body .item-wrapper{
+	width:580px;
+}
+</style>
+<![endif]-->
+</head>
+<body>
+{% include "service/common/processor.html" %}
+{% include "service/common/serviceheader.html" %}
+{% include "service/common/servicenavigationbox.html" %}
+<div id='content'>
+<div id='content-inner'>
+	<div class='board-content board-top'>
+		<span class='board-title'>{{node.nodeName}}</span>
+		<button class='btn' id='show-register-form-button'>등록하기 ></button>
+	</div>
+	<div class='board-content board-center'>
+		<div class='table-header black-font box-sizing-fallback'>
+			<div class='table-seq'>번호</div>
+			<div class='table-subject'>제목</div>
+			<div class='table-name'>작성자</div>
+			<div class='table-date'>날짜</div>
+			<div class='table-answer'>답변</div>
+		</div>
+		<div class='table-body'> 
+			{% if item  %}
+			{% for i in item %}
+			<div class='item-wrapper {% if i.open == True %}disclose{% endif %}{% if i.sticky == True %} item-wrapper-sticky{% endif %} box-sizing-fallback' id='item-wrapper-{{i.seq}}'>
+				<div class='item-seq'>{{i.seq}}</div>
+				<div class='item-subject'>
+					{% if i.open == False %}
+					<img src='/resources/images/lock.png'>
+					{% endif %}
+					{% if i.sticky == True %}
+					<span style='color:#ffa500;'>[공지]</span>
+					{% endif %}
+					<span>{{i.subject}} <span style='font-size:14px; font-weight:normal; color:#798;'>{% if i.replies.count > 0 %}[{{i.replies.count}}]{% endif %}</span></span>
+				</div>
+				<div class='item-name'><span class='item-tag'>작성자: </span><span>{{i.name}}</span></div>
+				{% timezone "Asia/Seoul" %}
+				<div class='item-date'><span>{{i.created|localtime|date:'Y-m-d'}}</span></div>
+				{% endtimezone %}
+				<div class='item-answer'>
+					{% if i.sticky == False %}
+					{% if i.answered == True %}
+					<span class='answer-done'>답변완료</span>
+					{% else %}
+					<span class='answer-not-done'>답변 준비중</span>
+					{% endif %}
+					{% endif %}
+				</div>
+			</div>
+			{% endfor %}
+			{% else %}
+			<div class='item-empty'>
+				<p style='text-align:center;'>게시물이 없습니다</p>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+	<div class='board-content board-bottom'>
+		<button class='paging-nav btn left-end {% if left_paging_nav < 1 %}disabled{% endif %}' id='paging-nav-{{left_paging_nav}}'><<</button>
+		{% for pt in paging_tuple %}
+		{% if pt.1 == True %}
+			<button class='paging-nav current-page btn' id='paging-nav-{{pt.0}}'>{{pt.0}}</button>
+		{% else %}
+			<button class='paging-nav btn' id='paging-nav-{{pt.0}}'>{{pt.0}}</button>
+		{% endif %}
+		{% endfor %}
+		<button class='paging-nav btn right-end {% if right_paging_nav > total_pages %}disabled{% endif %}' id='paging-nav-{{right_paging_nav}}'>>></button>
+	</div>
+	<span>&nbsp;</span>
+	<div class='board-register' style='display:none;'>
+		{% if node.kv.comment %}
+		<div class='board-register-comment'>
+			<span>
+				{% autoescape off %}
+				{{node.kv.comment|linebreaksbr}}
+				{% endautoescape %}
+			</span>
+		</div>
+		{% endif %}
+		<div class='board-register-form'>
+			<div class='input-line'>
+				<span class='tag black-font'>작성자<span class='required'>*</span></span>
+				<input type='text' class='name-input'>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>비밀번호<span class='required'>*</span></span>
+				<input type='password' class='password-input'>
+				<div class='intro-text'>
+					비밀번호는 비공개 글 접근 혹은 삭제시 본인 확인을 위해 사용이 됩니다.<br> 
+					비밀번호 분실 시에는 비밀번호 확인이 불가능 합니다.<br>
+					비밀번호 길이는 4글자 이상 16글자 이하 입니다.
+				</div>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>전화번호</span>
+				<input type='text' class='telephone-input'> - <input type='text' class='telephone-input'> - <input type='text' class='telephone-input'>
+				<div class='intro-text'>
+					핸드폰 번호를 입력해 주시면 문의하신 글에 답변이 등록 될 때 문자로 통보 받으실 수 있습니다.
+				</div>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>공개여부</span>
+				<input type='checkbox' class='disclose-input' checked>
+				<div class='intro-text'>비공개를 선택하시면 설정하신 비밀번호로 보호가 됩니다.<br>공개를 선택하시면 다른 사용자도 남기신 글을 볼 수가 있습니다.</div>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>제목 <span class='required'>*</span></span>
+				<input type='text' class='subject-input'>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>내용<span class='required'>*</span></span>
+				<textarea class='body-input' rows=16></textarea>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>첨부파일</span>
+				<div class='after-upload'>
+					<span class='filename'><a href=''>파일</a></span>
+					<button class='remove-file btn'>삭제</button>
+					<label for='file-input'><span class='file-select-button btn'>파일 올리기</span></label>
+				</div>
+				<label for='file-input'><span class='file-select-button btn'>파일 올리기</span></label>
+				<span class='progress-bar'>
+					<span class='progress'></span>
+					<span class='number'>5%</span>
+				</span>
+				<div class='intro-text'>파일크기 50MB 까지 업로드 가능합니다.</div>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>자동등록방지<span class='required'>*</span></span>
+				<img src='' id='captcha-image'><input type='text' class='captcha-input'>
+				<div class='intro-text'>자동등록방지 숫자를 입력해 주세요.</div>
+			</div>
+			<div class='not-passed'></div>
+			<div class='board-register-form-button-wrapper'>
+				<button class='register-ok btn'>등록</button>
+				<button class='register-cancel btn'>취소</button>
+			</div>
+		</div>
+		<div class='border-register-form-shadow'></div>
+	</div>
+</div>
+</div>
+<form action="/requestreceiver/" method="post" enctype="multipart/form-data" class='board-attachment-upload-form' id='board-attachment-upload-form' style='position:absolute; width:1px; height:1px; overflow:hidden;'>
+<input type='text' name='id' value='{{service.id}}' style='display:none;'>`
+<input type='text' name='req_type' value='file_upload' style='display:none;'>
+<input type='text' name='tag' class='tag' value='{{tag}}' style='display:none'>
+<input type='text' name='file_type' value='BOARD_ATTACHMENT' style='display:none;'>
+<input type='text' name='filename' class='filename' value='' style='display:none;'>
+<input type='text' name='uuid' class='uuid' value='' style='display:none;'/>
+<input type="file" name="file" class='file-input' id='file-input'>
+<input type="submit" id='attachment-submit' value='submit' style='display:none;'>
+</form>
+<iframe id='board-attachment-upload-target' name='board-attachment-upload-target' style='position:absolute;top:0;left:0;width:0px;height:0px;border:0px solid #fff;'></iframe>
+{% include "service/common/servicefeedbackplugin.html" %}
+{% include "service/common/servicefooter.html" %}
+</body>
+<script>
+var serverData = {
+	uniqueKey: '{{connectionInfo.uniqueKey}}',
+	captchaLocation: '{{"CAPTCHA"|get_filelocation}}{{connectionInfo.uniqueKey}}.jpg',
+	boardAttachmentLocation: '{{"BOARD_ATTACHMENT"|get_filelocation}}{{service.id}}{{tag}}/',
+	serviceId: '{{service.id}}',
+	userServiceId: '{{user_info.service.id}}',
+	tag: '{{tag}}',
+	currentPage: '{{current_page}}'
+};
+</script>
+<!-- plugins -->
+<link rel="stylesheet" href="/resources/plugins/jQuery-switchButton-master/jquery.switchButton.css">
+<style>
+/* customization */
+span.switch-button-label{
+	margin-top:8px !important;
+}
+span.switch-button-label.on{
+	color:#333 !important;
+}
+div.switch-button-button{
+	background-color:#789;
+}
+</style>
+{% include "service/common/servicenodejs.html" %}
+<script src='/resources/plugins/jQuery-switchButton-master/jquery.switchButton.js'></script>
+<script src='/resources/service/js/askboard.js?version=1.4'></script>
+{% include "service/common/ga.html" %}
+</html>

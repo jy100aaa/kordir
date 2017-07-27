@@ -1,0 +1,373 @@
+{% load customtags %}
+{% load tz %}
+<style>
+#feedback-icon{
+	position:fixed;
+	width:64px;
+	height:64px;
+	bottom:-64px;
+	right:6px;
+	z-index:100;
+	background-image:url('https://kordir.s3.amazonaws.com/images/msgicondefault.png');
+	background-repeat:no-repeat;
+	background-position:0px 0px;
+}
+#feedback-icon:hover{
+	cursor:pointer;
+}
+#feedback-body{
+	position:fixed;
+	display:none;
+	bottom:0px;
+	right:0;
+	z-index:50;
+	background-color:#FAFAEA;
+	color:#4d4d4d;
+	width:300px;
+	height:auto;
+}
+#feedback-body .feedback-body-title{
+	position:relative;
+	height:50px;
+	line-height:50px;
+	background-color:#7a7a7a;
+	color:#fafafa;
+}
+.feedback-body-title .title-text{
+	padding-left:10px;
+}
+.feedback-body-title .close-button{
+	position:absolute;
+	width:50px;
+	height:50px;
+	top:0px;
+	right:0px;
+	font-size:20px;
+	text-align:center;
+}
+.feedback-body-title .close-button:hover{
+	background-color:#4d4d4d;
+	cursor:pointer;
+}
+#feedback-body .feedback-area-title{
+	height:20px;
+	line-height:20px;
+	margin-bottom:4px;
+	font-weight:bold;
+	font-size:14px;
+}
+#feedback-body .feedback-area{
+	width:280px;
+	height:auto;
+   	padding:10px;
+}
+/*
+#live-chat-loading{
+	text-align:center;
+}
+#live-chat-loading img{
+	width:40px;
+	height:40px;
+}
+#live-chat-area{
+	display:none;
+}
+*/
+#feedback-body textarea{
+	display:block;
+	padding:4px;
+	width:280px;
+	margin-left:auto;
+	margin-right:auto;
+	border:1px solid #ccccbc;
+	font-size:12px;
+	border-radius:4px;
+	overflow:hidden;
+	margin-top:10px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+   	color:#4d4d4d;
+}
+#feedback-body input[type='text']{
+	display:block;
+	width:280px;
+	padding:4px;
+	height:32px;
+	line-height:32px;
+	border:1px solid #ccccbc;
+	font-size:12px;
+	border-radius:4px;
+	margin-top:10px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+   	color:#4d4d4d;
+}
+.feedback-area .feedback-line{
+	margin-top:6px;
+	margin-bottom:6px;
+	font-size:12px;
+}
+.feedback-area .feedback-terms{
+	font-size:12px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.feedback-terms input[type='checkbox']{
+	margin:0px;
+	margin-right:3px;
+}
+.feedback-terms a:link{text-decoration: none; color:#555;}
+.feedback-terms a:active{text-decoration: none; color:#555;}
+.feedback-terms a:visited{text-decoration: none; color:#555;}
+.feedback-terms a:hover{text-decoration: none; color:#555;}
+
+#feedback-body .feedback-button-wrapper{
+	position:relative;
+	text-align:center;
+	height:auto;
+	margin-top:10px;
+}
+.feedback-button-wrapper button{
+	display:inline-block;
+	border:0px;
+	font-size:14px;
+	height:36px;
+	line-height:36px;
+	width:120px;
+	text-align:center;
+	background-color:#7a7a7a;
+	color:#f8f8f8;
+}
+.feedback-button-wrapper button:hover{
+	cursor:pointer;
+	background-color:#4d4d4d;
+}
+.feedback-button-wrapper button:disabled{
+	background-color:#dedede;
+}
+/*
+#feedback-body hr{
+	border: 0;
+    height: 1px;
+    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+}
+*/
+#feedback-footer{
+	line-height:24px;
+	height:24px;
+	text-align:center;
+	font-size:12px;
+}
+#feedback-footer a:link{text-decoration: none; color:#555555; font-weight:bold;}
+#feedback-footer a:active{text-decoration: none; color:#555555; font-weight:bold;}
+#feedback-footer a:visited{text-decoration: none; color:#555555; font-weight:bold;}
+#feedback-footer a:hover{text-decoration: none; color:#555555; font-weight:bold;}
+{% if contactWidget == False %}
+#feedback-icon{
+	display:none;
+	width:0px;
+	hegiht:0px;
+}
+{% endif %}
+</style>
+<!--[if lte IE 8]>
+<style>
+#feedback-body input{
+	line-height:24px;
+}
+</style>
+<![endif]-->
+<div id='feedback-icon'></div>
+<div id='feedback-body'>
+	<div class='feedback-body-title'><span class='title-text'>문자 상담 문의</span><span class='close-button'>X</span></div>
+    <!--
+	<div class='feedback-area box-sizing-fallback' id='live-chat-loading'>
+		<img src='/resources/images/loader.gif'>
+	</div>
+	<div class='feedback-area box-sizing-fallback' id='live-chat-area'>
+		<div class='feedback-line' style='color:green;'>현재 담당자와 실시간 대화가 가능합니다.</div>
+		<div class='feedback-line' style='color:red;'>현재 당담자가 부재중이거나 상담이 가능하지 않습니다.</div>
+		<div class='feedback-button-wrapper'>
+			<button id='feedback-live-chat-button' disabled>실시간 대화하기</button>
+		</div>
+	</div>
+	<hr>
+    -->
+	<div class='feedback-area'>
+		<div class='feedback-area-title'>담당자에게 문자 전송</div>
+		<textarea id='feedback-sms-text' rows='4' placeholder='문의하실 내용을 입력해주세요.'></textarea>
+		<input id='feedback-sms-number' type='text' placeholder='연락 받으실 전화번호를 입력해주세요'>
+		<div class='feedback-terms'>
+			<input id="feedback-terms-check" checked="checked" type="checkbox"><span style="vertical-align: top;">개인정보 수집/이용 동의 <a style='vertical-align:top;' href='https://kordir.s3.amazonaws.com/static/smsterms.html' onclick="return open_popup('https://kordir.s3.amazonaws.com/static/smsterms.html');">[보기]</a></span>
+		</div>
+		<div class='feedback-button-wrapper'>
+			<button id='feedback-sms-send-button' onclick='send_sms_request();'>전송</button>
+		</div>
+	</div>
+	<hr>
+	<div id='feedback-footer'>Powered by <a href='http://kordir.com?ref={% if service %}{{service.tag}}{% else %}support{% endif %}' target='_blank'>KORDI<span style='color:#ffa500;'>R</span></a></div>
+</div>
+<script>
+var kordirFeedback = {
+	serviceId: {% if service %}{{service.id}}{% else %}1{% endif %},
+	chatAvailable: null,
+	chatUrl: ''
+};
+$(function(){
+	setTimeout(function(){
+		$("#feedback-icon").animate({
+			'bottom':'10px'
+		}, 750);
+	}, 500);
+	$("#feedback-icon").bind('click', function(){
+		feedback_icon_clicked();
+	});
+	$("#feedback-body .feedback-body-title .close-button").bind('click', function(){
+		$("#feedback-body").fadeOut(150, function(){
+			$("#feedback-icon").animate({
+				'bottom': '10px'
+			}, 750);
+		});
+	});
+	$("#feedback-sms-text").inputLengthSet({
+		maxLength:62,
+		posX:240,
+		posY:-10
+	});
+	$("#feedback-sms-number").ForceNumericOnly();
+	$("#feedback-sms-number").inputLengthSet({
+		maxLength:11,
+		posX:230,
+		posY:18
+	});
+});
+function feedback_icon_clicked(){
+	$("#feedback-icon").animate({
+		'bottom': '-64px'
+	}, 100);
+	$("#feedback-body textarea, #feedback-body input").val('');
+	$("#feedback-body textarea, #feedback-body input").css('border', '1px solid #ccccbc');
+	/*
+	if(kordirFeedback.chatAvailable == null){
+		$.ajax({
+			url : "/requestreceiver/",
+			type : "post",
+			data :{
+				req_type : "live_chat_available",
+				serviceId: kordirFeedback.serviceId
+			},
+			success : function(response){
+				if(response.result == 'ok'){
+					kordirFeedback.chatAvailable = response.available;
+					kordirFeedback.chatUrl = response.url;
+					if(kordirFeedback.serviceId == 1)
+						kordirFeedback.chatUrl = 'http://support.kordir.com' + kordirFeedback.chatUrl;
+					$("#live-chat-loading").hide();
+					$("#live-chat-area").show();
+					$("#live-chat-area .feedback-line").hide();
+					if(response.available == true){
+						$("#live-chat-area .feedback-line").eq(0).show();
+						$("#live-chat-area #feedback-live-chat-button").removeAttr('disabled');
+						$("#live-chat-area #feedback-live-chat-button").bind('click', function(){
+							location.href = kordirFeedback.chatUrl;
+						});
+					} else {
+						$("#live-chat-area .feedback-line").eq(1).show();
+					}
+					$("#feedback-body").fadeIn(150);
+				}
+			},
+			error : function(){}
+		});
+	} else
+    */
+	$("#feedback-body").fadeIn(150);
+}
+function send_sms_request(){
+	$("#feedback-sms-text").css('border', '1px solid #ccccbc');
+	$("#feedback-sms-number").css('border', '1px solid #ccccbc');
+	var text = $("#feedback-sms-text").val();
+	var number = $("#feedback-sms-number").val();
+	var pass = true;
+	var checked = $("#feedback-terms-check").prop('checked');
+	if(!checked){
+		draw_general_popup(
+			null,
+			null,
+			null,
+			stringTable.termsNotAgreed,
+			stringTable.ok,
+			null
+		);
+		return;
+	}
+	if(text.length == 0){
+		$("#feedback-sms-text").css('border', '1px solid red');
+		pass = false;
+	}
+	if(number.length < 7){
+		$("#feedback-sms-number").css('border', '1px solid red');
+		pass = false;
+	}
+	if(pass){
+		draw_general_popup(
+			function(){
+				$.ajax({
+					url : "/requestreceiver/",
+					type : "post",
+					data :{
+						req_type : "send_sms_request",
+						serviceId: kordirFeedback.serviceId,
+						sender: number,
+						message: text
+					},
+					success : function(response){
+						if(response.result == 'ok'){
+							draw_general_popup(
+									function(){
+										$("#feedback-sms-text").val('');
+										$("#feedback-sms-number").val('');
+									},
+									null,
+									null,
+									'전송에 성공하였습니다. 확인 후 바로 답변 드리겠습니다.',
+									stringTable.ok,
+									null
+							);
+						} else {
+							draw_general_popup(
+									null,
+									null,
+									null,
+									'전송에 실패했습니다. 다시 이용해주세요.',
+									stringTable.ok,
+									null
+							);
+						}
+					},
+					error : function(){
+						draw_general_popup(
+								null,
+								null,
+								null,
+								'전송에 실패했습니다. 다시 이용해주세요.',
+								stringTable.ok,
+								null
+						);
+					}
+				});
+			},
+			null,
+			null,
+			"'" + text + "' 를 전송합니다.<br><br>보낼 수 있는 메세지의 수는 하루 3건으로 제한되며 답변받으실 본인의 연락처를 남기셔야 합니다.<br><br>전송하시겠습니까?",
+			stringTable.yes,
+			stringTable.no
+		);
+	}
+}
+</script>

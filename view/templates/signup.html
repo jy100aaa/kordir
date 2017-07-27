@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% include "common/meta.html" %}
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common.css?version=1.0' />
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/signup.css?version=1.1' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common_lowie.css'/>
+<![endif]-->
+<script>
+var serverData = {
+	id: '',
+	page:'{{page}}'
+};
+</script>
+</head>
+<body>
+{% include "common/header.html" %}
+<div id='content'>
+	<div class='signup-wrapper black-font white-bg' id='signup-wrapper'>
+		<div class='signup-wrapper-title'><span>회원가입</span></div>
+		<div class='input-wrapper'>
+			<span class='input-tag'>이름 <span style='color:#ffa500;'>*</span></span>
+			<input type='text' class='signup-input input-normal' id='signup-fullname-input' placeholder='홍길동'>
+		</div>
+		<div class='input-wrapper'>
+			<span class='input-tag'>이메일 <span style='color:#ffa500;'>*</span></span>
+			<input type='text' class='signup-input input-normal' id='signup-email-input' placeholder='abc@abc.com'>
+		</div>
+		<div class='input-wrapper'>
+			<span class='input-tag'>이메일 확인 <span style='color:#ffa500;'>*</span></span>
+			<input type='text' class='signup-input input-normal' id='signup-email-confirm-input' placeholder='abc@abc.com'>
+		</div>
+		<div class='input-wrapper'>
+			<span class='input-tag'>비밀번호 <span style='color:#ffa500;'>*</span></span>
+			<input type='password' class='signup-input input-normal' id='signup-password-input'>
+		</div>
+		<div class='input-wrapper'>
+			<span class='input-tag'>비밀번호 확인 <span style='color:#ffa500;'>*</span></span>
+			<input type='password' class='signup-input input-normal' id='signup-password-confirm-input'>
+		</div>
+		<div class='input-wrapper'>
+			<span class='input-tag'>프로모션 코드</span>
+			<input type='text' class='signup-input input-normal' id='signup-promotion-code-input'>
+			<div class='input-desc'>프로모션 코드를 보유하고 계신 경우 입력해 주시기 바랍니다.</div>
+		</div>
+		<div class='checkbox-wrapper'>
+			<input type='checkbox' class='signup-agree-checkbox' checked/><span><a href='/terms' target='_blank'>이용약관</a>, <a href='/privacy' target='_blank'>개인정보 취급 방침</a>에 동의</span>
+		</div>
+		<div class='signup-warning-area'><span></span></div>
+		<div class='bottom-wrapper'>
+			<button class='signup-button btn'>가입하기</button>
+		</div>
+	</div>
+</div>
+{% include "common/footer.html" %}
+</body>
+<script>
+$(function(){
+	positionAdjustment();
+	$(window).resize(function(e){
+		if(this.resizeTO)
+			clearTimeout(this.resizeTO);
+	    this.resizeTO = setTimeout(function() {
+	        $(this).trigger('resizeEnd');
+	    }, 200);
+	});
+	$(window).bind('resizeEnd', function() {
+		 positionAdjustment();
+	});
+});
+function positionAdjustment(){
+	var h = document.getElementById('header-wrapper');
+	var f = document.getElementById('footer-wrapper');
+	var elem = document.getElementById('signup-wrapper');
+	var elemHeight = document.getElementById('signup-wrapper').clientHeight + 1;
+	var distance = $(f).position().top - ($(h).position().top + $(h).outerHeight());
+	if(distance > elemHeight + 100){
+		var newMargin = (distance - elemHeight) / 2;
+		$(elem).css('margin-top', newMargin + 'px');
+		$(elem).css('margin-bottom', newMargin + 'px');
+	}
+	$(elem).css('visibility','visible');
+}
+</script>
+<script src='/resources/js/signup.js?version=1.1'></script>
+<script>
+$(function(){
+	$("#signup-fullname-input").inputLengthSet({
+		maxLength:32,
+		posX:280,
+		posY:10
+	});
+	$("#signup-email-input").inputLengthSet({
+		maxLength:128,
+		posX:280,
+		posY:10
+	});
+	$("#signup-email-confirm-input").inputLengthSet({
+		maxLength:128,
+		posX:280,
+		posY:10
+	});
+	$("#signup-password-input").inputLengthSet({
+		maxLength:16,
+		posX:280,
+		posY:10
+	});
+	$("#signup-password-confirm-input").inputLengthSet({
+		maxLength:16,
+		posX:280,
+		posY:10
+	});
+});
+</script>
+</html>

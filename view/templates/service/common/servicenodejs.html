@@ -1,0 +1,57 @@
+{% load customtags %}
+<script src='{% settings_value "NODE_SERVER" %}/socket.io/socket.io.js' async defer></script>
+<script>
+var _qadSocket = _qadSocket || {};
+_qadSocket['server'] = '{% settings_value "NODE_SERVER" %}';
+_qadSocket['page'] = '{{service_page}}';
+_qadSocket['serviceId'] = '{{service.id}}';
+_qadSocket['uniqueKey'] = '{{connectionInfo.uniqueKey}}';
+_qadSocket['ref'] = '{{connectionInfo.ref}}';
+_qadSocket['deviceType'] = '{{connectionInfo.deviceType}}';
+_qadSocket['city'] = '{{connectionInfo.ipInfo.city}}';
+_qadSocket['countryCode'] = '{{connectionInfo.ipInfo.countryCode}}';
+_qadSocket['newVisitor'] = '{{connectionInfo.newVisitor}}';
+_qadSocket['human'] = ('{{connectionInfo.human}}' == 'True') ? true : false;
+_qadSocket['initTimer'] = null;
+(function (d, s) {
+	_qadSocket.initTimer = setInterval(function(){
+		try{
+			if(typeof io !== 'undefined')
+				socket_init();
+		} catch(err){}
+	}, 50);
+})(document, 'script');
+function socket_init(){
+	/* socket */
+	if(typeof _qadSocket['server'] !== 'undefined' && _qadSocket['human'] == true)
+	{
+		_qadSocket.socket = io.connect(_qadSocket.server + '/visitor', {
+			'reconnection': false
+		});
+		var data = {};
+		data['serviceId'] = _qadSocket['serviceId'];
+		data['uniqueKey'] = _qadSocket['uniqueKey'];
+		data['ref'] = _qadSocket['ref'];
+		data['page'] = _qadSocket['page'];
+		data['deviceType'] = _qadSocket['deviceType'];
+		data['city'] = _qadSocket['city'];
+		data['countryCode'] = _qadSocket['countryCode'];
+		data['newVisitor'] = _qadSocket['newVisitor'];
+		_qadSocket.socket.on('connect', function(){
+			_qadSocket.socket.emit('initial-connection', data);
+		});
+		_qadSocket.socket.on('server-message', function(d){
+			if(typeof data_receiver !== 'undefined')
+				data_receiver(d);
+		});
+		clearInterval(_qadSocket.initTimer);
+	}
+}
+function send_client_message(msg){
+	try{
+		_qadSocket.socket.emit('client-message', msg);
+	} catch(err){
+		
+	}
+}
+</script>

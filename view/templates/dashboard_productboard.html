@@ -1,0 +1,137 @@
+{% load humanize %}
+{% load tz %}
+{% load customtags %}
+<head>
+<style>
+.dashboard-body{display:none;}
+.ui-slider-range{
+	background:none !important;
+	background-color:orange !important;
+}
+</style>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/dashboard_productboard.css?version=1.1' />
+</head>
+<div class='dashboard-body'>
+	<div class='product-board-wrapper'>
+		<div class='board-content board-top'>
+			<button class='compose-button btn'>작성하기</button>
+			<button class='board-sort-expand-collapse btn'>▼</button>
+		</div>
+		<div class='board-content board-sort'>
+			<select class='main-sort-category'>
+				<option selected disabled value=''>항목 선택</option>
+				{% for k, v in lvp.items %}
+				{% if not v.number %}
+				<option class='{{k}}' value='{{k}}'>{{k}}</option>
+				{% endif %}
+				{% endfor %}
+			</select>
+			<select class='sub-sort-category' disabled>
+				<option selected disabled value=''>데이터 선택</option>
+				{% for k, v in lvp.items %}
+				{% if not v.number %}
+				{% for value in v.value %}
+				<option class='{{k}}' value='{{value}}'>{{value}}</option>
+				{% endfor %}
+				{% endif %}
+				{% endfor %}
+			</select>
+			<button class='sort-button btn' {% if not item %}disabled{% endif %}>불러오기</button>
+			<div class='range-select-wrapper'>
+				{% for l, v in lvp.items %}
+				{% if v.number %}
+				<div class='range-select-item {{l}}'>
+					<label>{{l}}: </label>
+					<input type='text' readonly style='border:0; color:#4d4d4d; font-weight:bold;'>
+					<div class='range-slider'></div>
+				</div>
+				{% endif %}
+				{% endfor %}
+			</div>
+			<div class='sort-basket'></div>
+		</div>
+		<div class='board-content board-center'>
+			{% if item  %}
+			{% for i in item %}<div class='product-item-wrapper black-font' onclick="location.hash='board?url={{tag}}&seq={{i.seq}}';">
+				<div class='product-item-picture-outer-wrapper'>
+					<div class='product-item-picture-inner-wrapper'>
+						{% if i.list_image == "" %}
+						<img src='/resources/images/no_product_image.png'>
+						{% else %}
+						<img src='{{"BOARD_PICTURE"|get_filelocation}}{{user_info.service.id}}{{tag}}/{{i.list_image}}'>
+						{% endif %}
+					</div>
+				</div>
+				<div class='product-item-subject'>{{i.subject}}</div>
+				<div class='product-item-name'><span>작성자: </span>{{i.name}}</div>
+				<div class='product-item-label-value-wrapper'>
+					{% for lvp in i.labelvaluepairs.all %}
+					<div class='product-item-label-value-line'>
+						<span class='lvp-label'>{{lvp.label}}</span>
+						<span class='lvp-value'>
+							{{lvp.value}}
+							{% if lvp.number %}
+							{{lvp.unit}}
+							{% endif %}
+						</span>
+					</div>
+					{% endfor %}
+				</div>
+				<div class='product-item-bottom'>
+					<span class='product-item-view'>{{i.view_num}}</span>
+					<span class='product-item-comment'>{{i.replies.count}}</span>
+					{% timezone "Asia/Seoul" %}
+					<div class='product-item-date'><span>{{i.created|localtime|date:'Y-m-d'}}</span></div>
+					{% endtimezone %}
+				</div>
+			</div>{% endfor %}
+			{% else %}
+			<div class='product-item-empty'>게시물이 없습니다</div>
+			{% endif %}
+		</div>
+		<div class='board-content board-bottom'>
+			<div class='paging-nav btn left-end {% if left_paging_nav < 1 %}disabled{% endif %}' id='paging-nav-{{left_paging_nav}}'><<</div>
+			{% for pt in paging_tuple %}
+			{% if pt.1 == True %}
+				<div class='paging-nav current-page btn' id='paging-nav-{{pt.0}}'>{{pt.0}}</div>
+			{% else %}
+				<div class='paging-nav btn' id='paging-nav-{{pt.0}}'>{{pt.0}}</div>
+			{% endif %}
+			{% endfor %}
+			<div class='paging-nav btn right-end {% if right_paging_nav > total_pages %}disabled{% endif %}' id='paging-nav-{{right_paging_nav}}'>>></div>
+		</div>
+	</div>
+</div>
+<script>
+var productVariable = {
+	number: {},
+	filter: {},
+	tag: '{{tag}}',
+	currentPage: '{{current_page}}'
+};
+(function (d, s) {
+	{% for k, v in lvp.items %}
+	{% if v.number %}
+		productVariable.number['{{k}}'] = {
+			value: [],
+			unit: '',
+			min: -1,
+			max: -1
+		};
+		productVariable.number['{{k}}'].unit = '{{v.unit}}';
+		{% for value in v.value %}
+		try{
+		    if (/^[0-9]+$/.test('{{value}}')) {
+                productVariable.number['{{k}}'].value.push(parseInt('{{value}}', 10));
+            } else {
+                productVariable.number['{{k}}'].value.push('{{value}}');
+            }
+		} catch(err){
+			productVariable.number['{{k}}'].value.push(0);
+		}
+		{% endfor %}
+	{% endif %}
+	{% endfor %}
+})(document, 'script');
+</script>
+<script src='/resources/js/dashboard_productboard.js'></script>

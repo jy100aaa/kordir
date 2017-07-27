@@ -1,0 +1,162 @@
+<!doctype html>
+{% load customtags %}
+<!--[if lt IE 7 ]> <html class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class=""> <!--<![endif]-->
+<head>
+{% include "service/common/servicemeta.html" %}
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0">
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/chat.css?version=1.1' />
+<!--[if lte IE 7]>
+<style>
+.connection-status .connection-status-item{
+	width:940px;
+}
+.chat-content-wrapper{
+	overflow-x:hidden;
+}
+.message-wrapper{
+	width:950px;
+	overflow-x:hidden;
+}
+.message .msg-right{
+	width:880px;
+}
+</style>
+<![endif]-->
+</head>
+<body>
+{% include "service/common/processor.html" %}
+{% include "service/common/serviceheader.html" %}
+<div id='content'>
+<div id='content-inner'>
+	<div class='chat-content-wrapper'>
+		<div class='connection-status'>
+			<div class='connection-status-title'><span style='margin-left:10px;'>담당자 안내</span></div>
+			<button class='connection-status-button'>X</button>
+			{% for user in service.users.all %}
+			<div class='connection-status-item black-font'>
+				<img src='{{"USER_PICTURE"|get_filelocation}}{{user.picture}}' class='inline-block-fallback'>
+				<div class='connection-status-item-right inline-block-fallback'>
+					<div>
+						<span class='connection-status-item-right-tag'>접속상태</span>
+						<span class='connection-status-item-right-value' id='connection-status-{{user.id}}'>
+							{% if user.connection_status == "0" %}
+							온라인
+							{% elif user.connection_status == "1" %}
+							다른용무중
+							{% elif user.connection_status == "2" %}
+							부재중
+							{% else %}
+							오프라인
+							{% endif %}
+						</span>
+					</div>
+					<div>
+						<span class='connection-status-item-right-tag'>이름</span>
+						<span class='connection-status-item-right-value'>{{user.fullname}}</span>
+					</div>
+					{% if showTelephone %}
+					<div>
+						<span class='connection-status-item-right-tag'>전화번호</span>
+						<span class='connection-status-item-right-value'>{{user.telephone}}</span>
+					</div>
+					{% endif %}
+					{% if text != "" %}
+					<div class='intro-text'>
+						{{text|linebreaksbr}}
+					</div>
+					{% endif %}
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		<div class='message-wrapper'></div>
+	</div>
+	<div class='chat-control-wrapper'>
+		<img src='/resources/images/default_user.jpg'>
+		<span class='textarea-wrapper'>
+			<textarea class='chat-message'></textarea>
+			<button class='send-button btn'>보내기</button>
+		</span>
+		<div class='tool-wrapper inline-block-fallback'>
+			<button class='send-button btn'>보내기</button>
+			<input type='checkbox' class='send-upon-enterkey'><span>엔터키 보내기</span>
+		</div>
+	</div>
+</div>
+</div>
+</body>
+{% include "service/common/servicenodejs.html" %}
+<script>
+var serverData = {
+	counterpartId: {{counterpart.id}},
+	serviceId: {{service.id}},
+	myPicture: '/resources/images/default_user.jpg',
+	uniqueKey: '{{connectionInfo.uniqueKey}}',
+	userInfo: {}
+};
+var chatInitTimer = null;
+(function (d, s) {
+	heightAdjustment();
+	$(".chat-control-wrapper").css('visibility', 'visible');
+	
+	{% if user_id %}
+	serverData.userId = {{user_id}};
+	var msg = {
+		type: 'chat_request_accept',
+		data: {
+			serviceId: {{service.id}},
+			uniqueKey: '{{connectionInfo.uniqueKey}}',
+			userId: {{user_id}},
+			counterpartId: {{counterpart.id}},
+			deviceType: '{{connectionInfo.deviceType}}',
+			city: '{{connectionInfo.ipInfo.city}}',
+			returning: ('{{connectionInfo.newVisitor}}' == "True") ? false: true,
+			pageViewNum: {{connectionInfo.pageViewNum}}
+		}
+	};
+	if(typeof send_client_message !== 'undefiend'){
+		chatInitTimer = setInterval(function(){
+			if(typeof io !== 'undefined'){
+				send_client_message(msg);
+				clearInterval(chatInitTimer);
+			} else {
+				// round round
+			}
+		}, 50);
+	}
+	{% else %}
+	serverData.userId = 0;
+	{% endif %}
+	
+	{% for user in service.users.all %}
+	serverData.userInfo['{{user.id}}'] = {};
+	serverData.userInfo['{{user.id}}']['fullname'] = '{{user.fullname}}';
+	serverData.userInfo['{{user.id}}']['picture'] = '{{"USER_PICTURE"|get_filelocation}}{{user.picture}}';	
+	{% endfor %}
+	
+	serviceVariable.resizeFunc['chat'] = function(){
+		heightAdjustment();
+	};
+	
+})(document, 'script');
+function heightAdjustment(){
+	var hh = document.getElementById('header-wrapper').clientHeight;
+	var wh = document.documentElement.clientHeight;
+	var ww = document.documentElement.clientWidth;
+	var gap = wh - hh - 1;
+	document.getElementById('content').style.height = gap + 'px';
+	var compensation = 1;
+	if(ww > 480)
+		compensation = 8;
+	var chatContentHeight = gap - $(".chat-control-wrapper")[0].clientHeight - compensation;
+
+	$(".chat-content-wrapper").css('height', chatContentHeight + 'px');
+}
+</script>
+<script src='/resources/service/js/chat.js?version=1.0'></script>
+{% include "service/common/ga.html" %}
+</html>

@@ -1,0 +1,262 @@
+{% load customtags %}
+<head>
+<style>
+.dashboard-body{display:none;}
+</style>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/dashboard_settingmisc.css?version=1.04' />
+</head>
+<iframe id='file-upload-target' name='file-upload-target' style='position:absolute;top:0;left:0;width:0px;height:0px;border:0px solid #fff;'></iframe>
+<div class='dashboard-body'>
+	<form action="/requestreceiver/" method="post" enctype="multipart/form-data" class='upload-form' id='file-upload-form' style='position:absolute; width:1px; height:1px; overflow:hidden;'>
+		<input type='text' name='id' value='{{user_info.service.id}}' style='display:none;'>
+		<input type='text' name='req_type' value='file_upload' style='display:none;'>
+		<input type='text' name='file_type' class='file-type' id='file-type' value='SERVICE_LOGO' style='display:none;'>
+		<input type='text' name='uuid' class='uuid' value='' style='display:none;'>
+		<input type="file" name="file" class='file-input' id='file-input'  accept='image/bmp, image/png, image/jpeg, image/gif, image/ico'>
+		<input type="submit" id='file-submit' value='submit' style='display:none;'>
+	</form>
+	<div class='setting-misc-control'>
+		<button class='setting-misc-save btn'>저장</button>
+		<button class='setting-misc-preview btn'>미리보기</button>
+	</div>
+	<div class='setting-misc-box' id='box-header-footer'>
+		<div class='setting-misc-title'>
+			<span>상단, 하단 설정</span>
+		</div>
+		<div class='setting-misc-body'>
+			<div class='saperator'>상단</div>
+			<div class='header-sample-box {{misc.header.font}}'>
+				<div class='header-sample' style='background-color:{{misc.header.backgroundColor}}; color:{{misc.header.fontColor}};'>
+					<div class='header-company-name'>
+						<span class='header-service-name' {% if misc.header.logo != "" %}style='display:none;'{% endif %}>
+							{{service.name}}
+						</span>
+						 {% if misc.header.logo == "" %}
+						 <img src='' style="display:none;">
+						 {% else %}
+						 <img src='{{"SERVICE_LOGO"|get_filelocation}}{{misc.header.logo}}'>
+						 {% endif %}
+					</div>
+					<div class='header-sample-right'>
+						<span class='menu' style='border-bottom:4px solid {{misc.header.highlight}};'>하이라이트</span>
+						<span class='hamburger-icon' style='background-color:{{misc.header.fontColor}};'></span>
+					</div>
+				</div>
+				<div class='toggle-menu-wrapper'>
+					<div class='toggle-menu' style='background-color:{{misc.header.toggleMenuBackgroundColor}}; color:{{misc.header.toggleMenuFontColor}};'>
+						<span class='toggle-menu-item'>토글 메뉴</span>
+						<span class='toggle-menu-item'>토글 메뉴</span>
+					</div>
+				</div>
+			</div>
+			<div class='input-line'>
+				<div class='tag'>배경색</div>
+				<input type='text' class='input-text input-color' id='header-backgroundcolor-input' readonly value='{{misc.header.backgroundColor}}'>
+			</div>
+			<div class='input-line'>
+				<div class='tag'>불투명도</div>
+				<span class='slider' id='opacity-slider'></span>
+				<span class='slider-value' id='opacity-value'>{{misc.header.opacity}}</span>
+			</div>
+			<div class='input-line'>
+				<div class='tag'>폰트색</div>
+				<input type='text' class='input-text input-color' id='header-fontcolor-input' readonly value='{{misc.header.fontColor}}'>
+			</div>
+			<div class='input-line'>
+				<div class='tag'>하이라이트</div>
+				<input type='text' class='input-text input-color' id='header-highlight-input' readonly value='{{misc.header.highlight}}'>
+			</div>
+			<div class='input-line'>
+				<div class='tag'>토글메뉴 배경색</div>
+				<input type='text' class='input-text input-color' id='header-togglemenu-backgroundcolor-input' readonly value='{{misc.header.toggleMenuBackgroundColor}}'>
+			</div>
+			<div class='input-line'>
+				<div class='tag'>토글메뉴 폰트색</div>
+				<input type='text' class='input-text input-color' id='header-togglemenu-fontcolor-input' readonly value='{{misc.header.toggleMenuFontColor}}'>
+			</div>
+			<div class='input-line' id='input-line-logo'>
+				<div class='tag'>로고</div>
+				<div class='image-wrapper logo-image-wrapper'>
+					{% if misc.header.logo == "" or misc.header.logo == None %}
+					<img src='{{"SERVICE_LOGO"|get_filelocation}}logo_generic.png' id='logo-image'>
+					{% else %}
+					<img src='{{"SERVICE_LOGO"|get_filelocation}}{{misc.header.logo}}' id='logo-image'>
+					{% endif %}
+					<div class='button-wrapper' id='logo-button-wrapper'>
+						<label for='file-input'>
+                            <span class='btn' id='logo-upload-button'>변경</span>
+                        </label>
+						<span class='btn' id='logo-delete-button'>삭제</span>
+					</div>
+				</div>
+			</div>
+            <div class="input-line" id="input-line-header-font">
+                <div class="tag">헤더 폰트</div>
+                <input
+                        type='text'
+                        class='input-text input-font input-short'
+                        id='header-togglemenu-font-input'
+                        {% if misc.header.font == "" or misc.header.font == None %}
+                            value="기본"
+                        {% elif misc.header.font == "bold" %}
+                            value="기본 (볼드)"
+                        {% elif misc.header.font == "font-hanna" %}
+                            value="한나체"
+                        {% elif misc.header.font == "font-hanna bold" %}
+                            value="한나체 (볼드)"
+                        {% elif misc.header.font == "font-nanum-pen" %}
+                            value="나눔펜"
+                        {% elif misc.header.font == "font-nanum-pen bold" %}
+                            value="나눔펜 (볼드)"
+                        {% endif %}
+                        readonly
+                >
+                <div class="vertical-selection">
+                    <div class="vertical-selection-item" data-value="">기본</div>
+                    <div class="vertical-selection-item bold" data-value="bold">기본 (볼드)</div>
+                    <div class="vertical-selection-item font-hanna" data-value="font-hanna">한나체</div>
+                    <div class="vertical-selection-item font-hanna bold" data-value="font-hanna bold">한나체 (볼드)</div>
+                    <div class="vertical-selection-item font-nanum-pen" data-value="font-nanum-pen">나눔 펜</div>
+                    <div class="vertical-selection-item font-nanum-pen bold" data-value="font-nanum-pen bold">나눔 펜 (볼드)</div>
+                </div>
+            </div>
+			<div class='saperator'>하단</div>
+
+			<div class='color-sample-box' id='footer-color-sample-box' style='background-color:{{misc.footer.backgroundColor}}; color:{{misc.footer.fontColor}}; text-align:{{misc.footer.align}};'>
+				샘플 텍스트
+			</div>
+			<div class='input-line'>
+				<div class='tag'>배경색</div>
+				<input type='text' class='input-text input-color' id='footer-backgroundcolor-input' readonly value='{{misc.footer.backgroundColor}}'>
+			</div>
+			<div class='input-line'>
+				<div class='tag'>폰트색</div>
+				<input type='text' class='input-text input-color' id='footer-fontcolor-input' readonly value='{{misc.footer.fontColor}}'>
+			</div>
+			<div class='input-line'>
+				<div class='tag'>정렬</div>
+				<input type='radio' value='left' class='footer-align-input' {% if misc.footer.align == "left" %}checked{% endif %}><span class='button-tag'>왼쪽</span>
+				<input type='radio' value='center' class='footer-align-input' {% if misc.footer.align == "center" %}checked{% endif %}><span class='button-tag'>중앙</span>
+				<input type='radio' value='right' class='footer-align-input' {% if misc.footer.align == "right" %}checked{% endif %}><span class='button-tag'>오른쪽</span>
+			</div>
+			<div class='input-line input-line-textarea last-input-line'>
+				<div class='tag'>하단 텍스트</div>
+				<textarea class='input-textarea' id='footer-text-input' rows='6'>{% if misc.footer.text == "" %}Copyrights © {{2015}}, {{service.name}}. All rights reserved.{% else %}{{misc.footer.text}}{% endif %}</textarea>
+			</div>
+		</div>
+	</div><div class='box-gap'></div><!--
+	--><div class='setting-misc-box' id='box-meta'>
+		<div class='setting-misc-title'>
+			<span>메타, 검색엔진최적화</span>
+		</div>
+		<div class='setting-misc-body'>
+			<div class='input-line'>
+				<div class='tag'>사이트 타이틀</div>
+				{% if misc.meta.siteTitle == "" %}
+				<input type='text' class='input-text' id='meta-sitetitle-input' value='{{service.name}}'>
+				{% else %}
+				<input type='text' class='input-text' id='meta-sitetitle-input' value='{{misc.meta.siteTitle}}'>
+				{% endif %}
+			</div>
+			<div class='input-line' id='input-line-favicon'>
+				<div class='tag'>패비콘, 앱 아이콘<div style='font-size:11px;'>(최소 192 X 192)</div></div>
+				<div class='image-wrapper favicon-image-wrapper'>
+					{% if misc.meta.favicon == None or misc.meta.favicon == "" %}
+					<img src='{{"FAVICON"|get_filelocation}}favicon_generic.ico' id='favicon-image'>
+					{% else %}
+					<img src='{{"FAVICON"|get_filelocation}}{{user_info.service.id}}/{{misc.meta.favicon}}.png' id='favicon-image'>
+					{% endif %}
+				</div>
+				<div class='button-wrapper'>
+					<label for='file-input'><span class='btn' id='favicon-upload-button'>변경</span></label>
+					<span class='btn' id='favicon-delete-button'>삭제</span>
+				</div>
+			</div>
+			<div class='input-line'>
+				<div class='tag'>키워드</div>
+				<input type='text' class='input-text' id='meta-keyword-input'>
+			</div>
+			<div class='keyword-box'>
+				<p>키워드를 입력후 엔터키를 눌러주세요.</p>
+			</div>
+			<div class='input-line input-line-textarea'>
+				<div class='tag'>사이트 설명</div>
+				<textarea class='input-textarea' id='meta-description-input' rows='6'>{{misc.meta.description}}</textarea>
+			</div>
+			<div class='input-line input-line-textarea'>
+				<div class='tag'>robots.txt</div>
+				<textarea class='input-textarea' id='meta-robots-input' rows='6'>{{misc.meta.robots}}</textarea>
+			</div>
+			<div class='input-line input-line-textarea'>
+				<div class='tag'>sitemap.xml</div>
+				<textarea class='input-textarea' id='meta-sitemap-input' rows='6'>{{misc.meta.sitemap}}</textarea>
+			</div>
+            <div class='input-line input-line-textarea last-input-line'>
+                <div class='tag'>meta code</div>
+                <textarea class='input-textarea' id='meta-code-input' rows='6'>{{misc.meta.code}}</textarea>
+            </div>
+		</div>
+		<div class='setting-misc-title'>
+			<span>기타 설정</span>
+		</div>
+		<div class='setting-misc-body'>
+			<div class='input-line input-line-textarea'>
+				<div class='tag'>삽입 코드</div>
+				<textarea class='input-textarea' id='settings-code-input' rows='6'>{{misc.settings.code}}</textarea>
+			</div>
+		</div>
+	</div>
+</div>
+<link rel="stylesheet" media="screen" type="text/css" href="/resources/plugins/colorpicker/css/colorpicker.css" />
+<script type="text/javascript" src="/resources/plugins/colorpicker/js/colorpicker.js"></script>
+<script>
+var variableSettingMisc = {
+	faviconFilePrefix: '{{"FAVICON"|get_filelocation}}{{user_info.service.id}}/',
+	faviconEmpty: '{{"FAVICON"|get_filelocation}}favicon_generic.ico',
+	serviceLogoFilePrefix: '{{"SERVICE_LOGO"|get_filelocation}}',
+	serviceLogoEmpty: '{{"SERVICE_LOGO"|get_filelocation}}logo_generic.png',
+	misc: {
+		meta: {
+			siteTitle: '{{misc.meta.siteTitle}}',
+			favicon: '{{misc.meta.favicon}}',
+			keyword: [],
+			description: '',
+			robots: '',
+			sitemap: '',
+            code: ''
+		},
+		header:{
+			backgroundColor: '{{misc.header.backgroundColor}}',
+			opacity: '{{misc.header.opacity}}',
+			rgba: '{{misc.header.rgba}}',
+			fontColor: '{{misc.header.fontColor}}',
+			logo: '{{misc.header.logo}}',
+			highlight: '{{misc.header.highlight}}',
+			toggleMenuBackgroundColor: '{{misc.header.toggleMenuBackgroundColor}}',
+			toggleMenuFontColor: '{{misc.header.toggleMenuFontColor}}',
+            type: '{{misc.header.type}}',
+            font: '{{misc.header.font}}'
+		},
+		footer: {
+			backgroundColor: '{{misc.footer.backgroundColor}}',
+			fontColor: '{{misc.footer.fontColor}}',
+			align: '{{misc.footer.align}}',
+			text: ''
+		},
+		settings: {
+			code: ''
+		}
+	}
+};
+{% for keyword in misc.meta.keyword %}
+	variableSettingMisc.misc.meta.keyword.push('{{keyword}}');
+{% endfor %}
+variableSettingMisc.misc.meta.robots = document.getElementById('meta-robots-input').value;
+variableSettingMisc.misc.meta.sitemap = document.getElementById('meta-sitemap-input').value;
+variableSettingMisc.misc.meta.description = document.getElementById('meta-description-input').value;
+variableSettingMisc.misc.settings.code = document.getElementById('settings-code-input').value;
+{% if misc.footer.text != "" %}
+variableSettingMisc.misc.footer.text = document.getElementById('footer-text-input').value;
+{% endif %}
+</script>
+<script src='/resources/js/dashboard_settingmisc.js?version=1.41'></script>

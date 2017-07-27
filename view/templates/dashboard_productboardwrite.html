@@ -1,0 +1,153 @@
+{% load humanize %}
+{% load tz %}
+{% load customtags %}
+<head>
+<style>
+.dashboard-body{display:none;}
+.mce-window-head{
+	background-color:#E0E0D0;
+}
+.mce-btn{
+	color:#4d4d4d;
+	background-color:#efefef;
+}
+.mce-btn:hover{
+	background-color:orange;
+}
+.mce-primary button, .mce-primary button i{
+	color:#4d4d4d;
+	text-shadow:none !important;
+}
+</style>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/dashboard_productboardwrite.css' />
+</head>
+<div class='dashboard-body'>
+	<div class='product-compose-wrapper'>
+		<form action="/requestreceiver/" method="post" enctype="multipart/form-data" class='upload-form' id='body-file-upload-form' style='position:absolute; width:1px; height:1px; overflow:hidden;'>
+			<input type='text' name='id' value='{{user_info.service.id}}' style='display:none;'>
+			<input type='text' name='req_type' value='file_upload' style='display:none;'>
+			<input type='text' name='file_type' value='BOARD_PICTURE' style='display:none;'>
+			<input type='text' name='uuid' class='uuid' value='' style='display:none;'>
+			<input type='text' name='tag' class='tag' value='{{tag}}' style='display:none'>
+			<input type="file" name="file" class='product-file-input' id='product-file-input' accept='image/bmp, image/png, image/jpeg'>
+			<input type="submit" id='product-body-file-submit' value='submit' style='display:none;'>
+		</form>
+		<form action="/requestreceiver/" method="post" enctype="multipart/form-data" class='upload-form' id='gallery-file-upload-form' style='position:absolute; width:1px; height:1px; overflow:hidden;'>
+			<input type='text' name='id' value='{{user_info.service.id}}' style='display:none;'>
+			<input type='text' name='req_type' value='file_upload' style='display:none;'>
+			<input type='text' name='file_type' value='PRODUCT_GALLERY_PICTURE' style='display:none;'>
+			<input type='text' name='uuid' class='uuid' value='' style='display:none;'>
+			<input type='text' name='tag' class='tag' value='{{tag}}' style='display:none'>
+			<input type="file" name="file" class='gallery-file-input' id='gallery-file-input' accept='image/bmp, image/png, image/jpeg' multiple>
+			<input type="submit" id='gallery-file-submit' value='submit' style='display:none;'>
+		</form>
+		<label for=product-file-input><span id='file-input-proxy' style='width:1px; height:1px;'></span></label>
+		<div class='basic-wrapper'>
+			<div class='large-tag basic-tag'>기본 내역</div>
+			<div class='add-input-line-button-wrapper'>
+				<!--[if lte IE 8]>
+				<label for='product-file-input'><span class='upload-represent-picture-button btn'>리스트 표시 사진 올리기</span></label>
+				<![endif]-->
+				<button class='add-input-line add-input-line-number btn'>숫자 항목추가</button>
+				<button class='add-input-line add-input-line-string btn'>문자 항목추가</button>
+			</div>
+			<div class='input-line'>
+				<div class='tag'>제목</div><input class='subject-input long-input' type='text'>
+			</div>
+			<div class='input-line'>
+				<div class='tag'>작성자</div><input class='name-input short-input' value='{{user_info.fullname}}' type='text'>
+			</div>
+			<div class='input-line'>
+				<div class='tag'>리스트 표시 사진</div>
+				<label for='product-file-input'><span class='image-wrapper'>
+					<img src='/resources/images/no_product_image.png'>
+				</span></label>
+			</div>
+			{% for k, v in lvp.items %}
+			<div class='input-line added-input-line {% if v.number == True %}added-input-line-number{% else %}added-input-line-string{% endif %}'>
+				<input class='added-input-tag' placeholder='레이블을 입력해주세요' style='border:0; border-bottom:1px solid #ccccbc; border-radius:0;' value='{{k}}' disabled>
+				<input class='added-input-value short-input' placeholder='값을 입력해주세요'>
+				<input class='added-input-unit short-input' placeholder='단위를 입력해주세요' value='{{v.unit}}' disabled {% if not v.number %}style='display:none;'{% endif %}>
+				<button class='remove-added-input btn' onclick='remove_inputline(this);'>항목삭제</button>
+			</div>
+			{% endfor %}
+		</div>
+		<div class='gallery-wrapper'>
+			<div class='gallery-top'>
+				<div class='large-tag'>사진 슬라이드</div>
+				<label for='gallery-file-input'><span class='picture-image-select btn'>사진 올리기</span></label>
+			</div>
+			<div class='gallery'>
+				<div class='trashcan'>
+					<span class='trashcan-icon'></span><span class='trashcan-text'>삭제</span>
+				</div>
+				<p class='aid-text'>사진의 순서를 변경하시려면 사진을 끌어다가 변경할 위치에 놓으세요. <br>사진을 삭제하시려면 상단 삭제 바에 넣어주세요.</p>
+				<div class='progress-area'>
+					<span class='progress-bar-outer'>
+						<span class='progress-bar-inner'>
+						</span>
+					</span>
+					<span class='progress-percentage'>
+						<span class='progress-percentage-number'>
+						</span>%
+					</span>
+				</div>
+				<p class='gallery-item-empty'>사진을 올려주세요.</p>
+			</div>
+		</div>
+		<div class='large-tag body-tag'>상세 설명</div>
+		<div id='body-input-wrapper'>
+			<textarea id='body-input'></textarea>
+		</div>
+		<div class='compose-error-message'></div>
+		<div class='button-wrapper'>
+			<button class='btn' id='submit'>올리기</button>
+			<button class='btn' id='cancel'>취소</button>
+		</div>
+	</div>
+</div>
+<div id='added-input-line-template' style='display:none;'>
+	<div class='input-line added-input-line'>
+		<input class='added-input-tag' placeholder='레이블을 입력해주세요' style='border:0; border-bottom:1px solid #ccccbc; border-radius:0;'>
+		<input class='added-input-value short-input' placeholder='값을 입력해주세요'>
+		<input class='added-input-unit short-input' placeholder='단위를 입력해주세요' style='display:none;'>
+		<button class='remove-added-input btn' onclick='remove_inputline(this);'>항목삭제</button>
+	</div>
+</div>
+<iframe id='file-upload-target' name='file-upload-target' style='position:absolute;top:0;left:0;width:0px;height:0px;border:0px solid #fff;'></iframe>
+<!-- plugins -->
+<script>
+var productVariable = {
+	bodyPictureFilePrefix: '{{"BOARD_PICTURE"|get_filelocation}}{{user_info.service.id}}{{tag}}/',
+	galleryPictureFilePrefix: '{{"PRODUCT_GALLERY_PICTURE"|get_filelocation}}{{user_info.service.id}}{{tag}}/',
+	body: null,
+	tag: '{{tag}}',
+	progressTimer: null,
+	listImageFlag: false,
+	listImage: '',
+	label: [],
+	stringValue: [],
+	sequence: {}
+};
+(function (d, s) {
+	var valueArray = [];
+	{% for label in lvp %}
+	productVariable.label.push('{{label}}');
+	{% endfor %}
+	productVariable.label.sort();
+	{% for k, v in lvp.items %}
+		valueArray = [];
+		{% if not v.number %}
+		{% for value in v.value %}
+		valueArray.push('{{value}}');
+		{% endfor %}
+		valueArray.sort();
+		productVariable.stringValue.push(valueArray);
+		{% endif %}
+	{% endfor %}
+})(document, 'script');
+</script>
+<!-- TINYMCE -->
+<script src="/resources/plugins/tinymce_4.6.1/tinymce.min.js"></script>
+<script src='/resources/plugins/autocompletion/autocompletion.js'></script>
+<script src='/resources/js/dashboard_productboardwrite.js'></script>

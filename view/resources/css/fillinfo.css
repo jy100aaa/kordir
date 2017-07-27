@@ -1,0 +1,285 @@
+div#content{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	width:960px;
+	height:auto;
+}
+#content .progress-status-area{
+	position:relative;
+	width:400px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:20px;
+	margin-bottom:20px;
+	height:50px;
+}
+.progress-status-area .status-block{
+	position:relative;
+	display:inline-block;
+	height:50px;
+	float:left;
+	width:200px;
+	text-align:center;
+}
+.progress-status-area #my-status-block{
+	border-bottom:1px solid #4d4d4d;
+}
+.progress-status-area #service-status-block{
+	border-bottom:0px solid #4d4d4d;
+}
+.status-block span{
+	display:inline-block;
+	margin-top:5px;
+	font-size:18px;
+	font-weight:bold;
+	height:45px;
+	line-height:45px;
+	cursor:pointer;
+}
+.status-block span:hover{
+	color:#999;
+}
+/* commons */
+#content .write-form-box{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	width:600px;
+	display:none;
+	padding-top:20px;
+	padding-bottom:20px;
+	margin-bottom:20px;
+}
+#content .fillinfo-warning-area{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	padding-top:6px;
+	padding-bottom:6px;
+	width:600px;
+	margin-bottom:20px;
+	font-size:14px;
+	text-align:center;
+	display:none;
+}
+#content #my-info{
+	display:block;
+}
+#content button{
+	height:40px;
+	font-size:14px;
+}
+#content .write-form-box .required-notice{
+	position:relative;
+	margin-left:80px;
+	margin-bottom:10px;
+	font-size:12px;
+	color:#aaa;
+}
+#content .write-form-box .input-line{
+	position:relative;
+	clear:both;
+	margin-left:80px;
+	margin-bottom:10px;
+}
+#content .write-form-box .input-line .tag{
+	display:inline-block;
+	width:160px;
+	font-size:16px;
+	font-weight:bold;
+}
+#content .write-form-box .input-line .tag .required{
+	display:inline-block;
+	color:red;
+	margin-left:6px;
+}
+#content .write-form-box .input-line .intro-text{
+   	text-align:left;
+    margin-top:8px;
+    padding-left:162px;
+    padding-right:40px;
+    width:100%;
+    -webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+    font-size:12px;
+    color:orange;
+}
+.write-form-box .input-line .image-wrapper{
+	display:inline-block;
+	width:120px;
+	height:120px;
+	border:1px solid #ccccbc;
+	overflow:hidden;
+}
+.image-wrapper .picture-image{
+	width:120px;
+	height:120px;
+}
+#my-info #my-picture-line{
+	height:135px;
+}
+#service-info .input-line .image-wrapper{
+	width:240px;
+	height:240px;
+}
+#service-info .input-line .picture-image{
+	width:240px;
+	height:240px;
+}
+#service-info #service-picture-line{
+	height:260px;
+}
+.input-line .picture-select-button{
+	position:relative;
+	display:inline-block;
+	margin-left:8px;
+	bottom:16px;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	width:80px;
+	font-size:12px;
+}
+#content .write-form-box .input-line #description-tag{
+	float:left;
+}
+#content .write-form-box .input-line input[type='text'], #content .write-form-box .input-line input[type='password']{
+	padding-left:5px;
+	padding-right:5px;
+	border:1px solid gray;
+	height:30px;
+	line-height:30px;
+	font-size:14px;
+	border-radius:5px;	
+	width:280px;
+}
+#content .upload-form input[tyle='file']{
+	display:block;	
+}
+#content .write-form-box .input-line select{
+	height:30px;
+	width:130px;
+	border:1px solid gray;
+	border-radius:4px;
+	padding-top:4px;
+	margin-right:8px;
+}
+#my-info .input-line .user-telephone-input{
+	width:180px !important;
+}
+#my-info .input-line .auth-request-button{
+	vertical-align:middle;
+	height:32px;
+	width:100px;
+}
+#content #service-info .input-line #service-tag-input{
+	width:140px;
+	text-align:right;
+	border:0px;
+	border-bottom:1px solid gray;
+	border-radius:0;
+}
+#content #service-info .input-line .service-tag-rest{
+	position:relative;
+	display:inline-block;
+	font-size:18px;
+	width:140px;
+	text-align:left;
+	font-weight:bold;
+}
+#content .write-form-box .input-line .service-category-input{
+	width:280px;
+}
+#content .write-form-box .input-line textarea{
+	width:280px;
+	margin-left:5px;
+	padding:5px;
+	border:1px solid gray;
+	font-size:14px;
+	border-radius:4px;
+	overflow:auto;
+}
+#content .write-form-box .bottom-button-area{
+	width:100%;
+	padding-top:20px;
+	text-align:center;
+}
+#content .write-form-box .bottom-button-area button{
+	width:120px;
+	height:40px;
+	margin-left:10px;
+	margin-right:10px;
+}
+@media screen and (min-width:1px) and (max-width:480px){
+	div#content{
+		width:100%;
+		min-width:100%;
+		overflow-x:hidden;
+		text-align:center;
+		padding:0;
+	}
+	#content .progress-status-area{
+		width:100%;
+	}
+	.progress-status-area .status-block{
+		width:50%;
+	}
+	#content .fillinfo-warning-area{
+		width:100%;
+		margin-left:0;
+	}
+	#content .write-form-box{
+		width:100%;
+		margin-left:0;
+	}
+	#content .write-form-box .required-notice{
+		margin-left:0px;
+	}
+	#content .write-form-box .input-line{
+		position:relative;
+		margin-left:10px;
+		margin-bottom:10px;
+		text-align:center;
+	}
+	#content .write-form-box .input-line .tag{
+		display:block;
+		width:280px;
+		margin-bottom:6px;
+		text-align:left;
+		margin-left:auto;
+		margin-right:auto;
+	}
+	#content .write-form-box .input-line #description-tag{
+		float:none;
+		width:280px;
+	}
+	#service-info .input-line .picture-select-button{
+		display:block;
+		bottom:0;
+		margin-top:10px;
+		margin-bottom:10px;
+		margin-left:auto;
+		margin-right:auto;
+	}
+	#length-aid{
+		text-align:left !important;
+		display:inline-block;
+		margin-left:-48px;
+		margin-top:-26px;
+	}
+	#my-info #my-picture-line{
+		height:145px;
+	}
+	#service-info #service-picture-line{
+		height:320px;
+	}
+	#content .write-form-box .input-line .intro-text{
+		text-align:left;
+    	padding:0;
+    	width:280px;
+    	margin-left:auto;
+    	margin-right:auto;
+	}
+}

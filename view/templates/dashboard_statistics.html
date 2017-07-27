@@ -1,0 +1,139 @@
+<head>
+<style>.dashboard-body{display:none;}</style>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/dashboard_statistics.css' />
+</head>
+<div class='dashboard-body'>
+	<div class='analytics-wrapper' id='analytics-statistics'>
+		<div class='statistics-control-wrapper'>
+			<div id='statistics-data-type-manual'>
+				<div id="jrange" class="dates"><input /><div></div></div>
+			</div>
+			<div id='statistics-data-type' class='statistics-data-type'>
+				<span class='statistics-data-type-value'></span><span class='statistics-data-type-arrow'>▼</span>
+			</div>
+			<ul id='statistics-data-dropdown' class='border-shadow'>
+				<li class='statistics-data-dropdown-item' id='type-0'>최근 30일</li>
+				<li class='statistics-data-dropdown-item' id='type-1'>오늘</li>
+				<li class='statistics-data-dropdown-item' id='type-2'>어제</li>
+				<li class='statistics-data-dropdown-item' id='type-3'>지난 주</li>
+				<li class='statistics-data-dropdown-item' id='type-4'>지난 달</li>
+				<li class='statistics-data-dropdown-item' id='type-9'>직접 선택</li>
+			</ul>
+		</div>
+		<div class='analytics-box'>
+			<div class='analytics-title black-font'>
+				<span class='black-font'>지표 요약</span>
+			</div>
+			<div class='analytics-body'>
+				<div class='statistics-summary' id='statistics-summary'>
+					<div class='chart-number' id='visitor-number'>
+						<div class='chart-number-title'>방문 횟수</div>
+						<div class='chart-number-value'><span></span>건</div>
+					</div>
+					<div class='chart-number' id='unique-visitor-number'>
+						<div class='chart-number-title'>순 방문자</div>
+						<div class='chart-number-value'><span></span>명</div>
+					</div>
+					<div class='chart-number' id='pageview-number'>
+						<div class='chart-number-title'>페이지 뷰</div>
+						<div class='chart-number-value'><span></span>건</div>
+					</div>
+					<div class='chart-number' id='pageview-avg-number'>
+						<div class='chart-number-title'>평균 페이지 뷰</div>
+						<div class='chart-number-value'><span></span>건</div>
+					</div>
+					<div class='chart-number' id='duration-number'>
+						<div class='chart-number-title'>평균 체류 시간</div>
+						<div class='chart-number-value'><span></span>&nbsp;</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class='analytics-box'>
+			<div class='analytics-title black-font'>
+				<span class='black-font'>방문 횟수</span>
+			</div>
+			<div class='analytics-body'>
+				<div class='statistics-chart' id='statistics-daily-visitor-chart'></div>
+				<div class='analytics-no-data'>데이터가 없습니다.</div>
+			</div>
+		</div>
+		<div class='analytics-box'>
+			<div class='analytics-title black-font'>
+				<span class='black-font'>순 방문자</span>
+			</div>
+			<div class='analytics-body'>
+				<div class='statistics-chart' id='statistics-unique-chart'></div>
+				<div class='analytics-no-data'>데이터가 없습니다.</div>
+			</div>
+		</div>
+		<div class='analytics-box'>
+			<div class='analytics-title black-font'>
+				<span class='black-font'>페이지 뷰</span>
+			</div>
+			<div class='analytics-body'>
+				<div class='statistics-chart' id='statistics-pageview-chart'></div>
+				<div class='analytics-no-data'>데이터가 없습니다.</div>
+			</div>
+		</div>
+		<div class='analytics-box-wrapper analytics-box-wrapper-left' >
+			<div class='analytics-box'>
+				<div class='analytics-title black-font'>
+					<span class='black-font'>페이지 뷰 상세</span>
+				</div>
+				<div class='analytics-body'>
+					<div class='statistics-chart' id='statistics-pageview-detail-chart'></div>
+					<div class='analytics-no-data'>데이터가 없습니다.</div>
+				</div>
+			</div>
+			<div class='analytics-box'>
+				<div class='analytics-title black-font'>
+					<span class='black-font'>지역</span>
+				</div>
+				<div class='analytics-body'>
+					<div class='statistics-chart' id='statistics-region-chart'></div>
+					<div class='analytics-no-data'>데이터가 없습니다.</div>
+				</div>
+			</div>
+			<div class='analytics-box'>
+				<div class='analytics-title black-font'>
+					<span class='black-font'>방문 경로</span>
+				</div>
+				<div class='analytics-body'>
+					<div class='statistics-chart' id='statistics-referral-chart'></div>
+					<div class='analytics-no-data'>데이터가 없습니다.</div>
+				</div>
+			</div>
+		</div>
+		<div class='analytics-box-wrapper'>
+			<div class='analytics-box'>
+				<div class='analytics-title black-font'>
+					<span class='black-font'>신규/재방문</span>
+				</div>
+				<div class='analytics-body'>
+					<div class='statistics-chart' id='statistics-new-return-chart'></div>
+					<div class='analytics-no-data'>데이터가 없습니다.</div>
+				</div>
+			</div>
+			<div class='analytics-box'>
+				<div class='analytics-title black-font block'>
+					<span class='black-font'>디바이스 </span>
+				</div>
+				<div class='analytics-body'>
+					<div class='statistics-chart' id='statistics-device-chart'></div>
+					<div class='analytics-no-data'>데이터가 없습니다.</div>
+				</div>
+			</div>
+			<div class='analytics-box'>
+				<div class='analytics-title black-font block'>
+					<span class='black-font'>키워드 </span>
+				</div>
+				<div class='analytics-body'>
+					<div class='statistics-chart' id='statistics-keyword-chart'></div>
+					<div class='analytics-no-data'>데이터가 없습니다.</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src='/resources/js/dashboard_statistics.js?version=1.0'></script>

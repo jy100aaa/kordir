@@ -1,0 +1,171 @@
+{% load customtags %}
+<html>
+<head>
+    {% include "common/meta.html" %}
+    <link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common.css?version=1.0' />
+    <style>
+        .area {
+            margin-top:30px;
+            margin-bottom:30px;
+            padding:10px;
+        }
+        input, select{
+            width: 100%;
+        }
+        button {
+            width: 120px;
+            height: 36px;
+            line-height: 36px;
+            display: block;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+<body>
+{% include "common/header.html" %}
+<div class='area'>
+    <h2 style="text-align:center;">남은 연장 횟수: {{ operator.ticket_count }}</h2>
+</div>
+<hr />
+<div class='area' id='add_user'>
+    <h2>사용자 추가 (이메일)</h2>
+    <input class="input-normal" type="text" placeholder="이메일을 입력하세요." />
+    <button class="btn">추가하기</button>
+</div>
+<hr />
+<div class='area' id='remove_user'>
+    <h2>사용자 삭제</h2>
+    <select class="input-normal">
+        <option selected disabled value="">삭제할 계정을 선택 해 주세요.</option>
+        {% for user in operator.users.all %}
+        <option value="{{user.email}}">{{ user.email }}</option>
+        {% endfor %}
+    </select>
+    <button class="btn">삭제하기</button>
+</div>
+<div class='area' id='extend_use'>
+    <h2>사용자 연장</h2>
+    <select class="input-normal">
+        <option selected disabled value="">사용을 연장할 페이지를 선택해 주세요.</option>
+        {% for user in operator.users.all %}
+            {% for service in user.services.all %}
+                <option value="{{ service.id }}">번호: {{ service.id }}, 주소: {{ service.tag }}.kordir.com, 이름: {{ service.name }}</option>
+            {% endfor %}
+        {% endfor %}
+    </select>
+    <button class="btn">연장하기</button>
+</div>
+
+</body>
+<script src='/resources/js/common.js'></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="//code.jquery.com/jquery-1.11.1.min.js"><\/script>')</script>
+<script>
+    var ticketCount = {{ operator.ticket_count }};
+    $(function(){
+        $("#add_user button" ).bind('click', function(){
+            var email = $("#add_user input" ).val();
+            if (email.length === 0) {
+                return;
+            }
+            draw_progress();
+            $.ajax({
+                url : "/requestreceiver/",
+                type : "post",
+                data :{
+                    req_type : "operator_add_user",
+                    email: email
+                },
+                success : function(response){
+                    remove_progress();
+                    if(response.result == 'ok'){
+                        var r = confirm('관리할 사용자가 추가되었습니다.');
+                        if (r) {
+                            location.reload();
+                        } else {
+                            location.reload();
+                        }
+
+                    } else {
+                        alert('실패');
+                    }
+                },
+                error : function(){
+                    remove_progress();
+                    alert('실패');
+                }
+            });
+        });
+
+        $("#remove_user button").bind('click', function(){
+            var email = $("#remove_user select").val();
+            if (email.length === 0) {
+                return;
+            }
+            draw_progress();
+            $.ajax({
+                url : "/requestreceiver/",
+                type : "post",
+                data :{
+                    req_type : "operator_remove_user",
+                    email: email
+                },
+                success : function(response){
+                    remove_progress();
+                    if(response.result == 'ok'){
+                        var r = confirm('사용자가 삭제되었습니다.');
+                        if (r) {
+                            location.reload();
+                        } else {
+                            location.reload();
+                        }
+                    } else {
+                        alert('실패');
+                    }
+                },
+                error : function(){
+                    remove_progress();
+                    alert('실패');
+                }
+            });
+        });
+
+        $("#extend_use button" ).bind('click', function(){
+            if (ticketCount <= 0) {
+                alert('남은 연장 횟수가 부족합니다.');
+                return;
+            }
+            var serviceId = $("#extend_use select").val();
+            if (!serviceId) {
+                return;
+            }
+            draw_progress();
+            $.ajax({
+                url : "/requestreceiver/",
+                type : "post",
+                data :{
+                    req_type : "put_point_v1",
+                    serviceId: serviceId
+                },
+                success : function(response){
+                    remove_progress();
+                    if(response.result == 'ok'){
+                        var r = confirm('연장 처리 완료되었습니다.');
+                        if (r) {
+                            location.reload();
+                        } else {
+                            location.reload();
+                        }
+                    } else {
+                        alert('실패');
+                    }
+                },
+                error : function(){
+                    remove_progress();
+                    alert('실패');
+                }
+            });
+        });
+    });
+</script>
+</html>

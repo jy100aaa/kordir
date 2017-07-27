@@ -1,0 +1,119 @@
+{% load customtags %}
+{% load tz %}
+<head>
+<style>
+.dashboard-body{display:none;}
+.mce-window-head{
+	background-color:#E0E0D0;
+}
+.mce-btn{
+	color:#4d4d4d;
+	background-color:#efefef;
+}
+.mce-btn:hover{
+	background-color:orange;
+}
+.mce-primary button, .mce-primary button i{
+	color:#4d4d4d;
+	text-shadow:none !important;
+}
+</style>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/dashboard_normalboarditem.css?version=1.1' />
+</head>
+<div class='dashboard-body'>
+	<div class='box'>
+		<div class='box-control'>
+			<button class='box-control-button btn' id='edit-button'>수정</button>
+			<button class='box-control-button btn' id='delete-button'>삭제</button>
+			<button class='box-control-button btn' id='previous-button'>목록으로</button>
+		</div>
+		<div class='subject'>{{boarditem.subject}}</div>
+		<div class='box-info'>
+			<div class='name'>작성자: {{boarditem.name}}</div>
+			<div class='view-cnt'>조회수: {{boarditem.view_num}}</div>
+			{% timezone "Asia/Seoul" %}
+			<div class='date'>등록일: {{boarditem.created|localtime|date:'Y-m-d H:i:s'}}</div>
+			{% endtimezone %}
+			{% if boarditem.file|length != 0 %}
+			<div class='attachment'>첨부파일: <a href='{{"BOARD_ATTACHMENT"|get_filelocation}}{{service.id}}{{tag}}/{{boarditem.file}}' target='_blank'>다운로드</a></div>
+			{% endif %}
+		</div>
+		<div class='box-content'>
+			{% autoescape off %}
+			{{boarditem.body}}
+			{% endautoescape %}
+		</div>
+		<div id='comment' data-boardtype='{{board_type}}' data-tag='{{tag}}' data-seq='{{seq}}'>
+		{% include "common/comment.html" %}
+		</div>
+	</div>
+	<div class='board-compose-wrapper'>
+		<form action="/requestreceiver/" method="post" enctype="multipart/form-data" class='upload-form' id='user-file-upload-form' style='position:absolute; width:1px; height:1px; overflow:hidden;'>
+			<input type='text' name='id' value='{{user_info.service.id}}' style='display:none;'>
+			<input type='text' name='req_type' value='file_upload' style='display:none;'>
+			<input type='text' name='file_type' value='BOARD_PICTURE' style='display:none;'>
+			<input type='text' name='uuid' class='uuid' value='' style='display:none;'>
+			<input type='text' name='tag' class='tag' value='{{tag}}' style='display:none'>
+			<input type="file" name="file" class='file-input' id='file-input' accept='image/bmp, image/png, image/jpeg'>
+			<input type="submit" id='user-file-submit' value='submit' style='display:none;'>
+		</form>
+		<label for=file-input><span id='file-input-proxy' style='width:1px; height:1px;'></span></label>
+		<div class='input-line'>
+			<div class='tag'>이름</div><input class='name-input' value='{{boarditem.name}}' type='text'>
+		</div>
+		<div class='input-line'>
+			<div class='tag'>제목</div><input class='subject-input' value='{{boarditem.subject}}' type='text'>
+		</div>
+		<div class='input-line input-line-file'>
+			<span class='tag black-font'>첨부파일</span>
+			<div class='after-upload' {% if boarditem.file|length != 0 %}style='display:inline-block;'{% endif %}>
+				<span class='filename'><a href='{{"BOARD_ATTACHMENT"|get_filelocation}}{{service.id}}{{tag}}/{{boarditem.file}}' target='_blank'>파일</a></span>
+				<button class='remove-file btn'>삭제</button>
+				<label for='attachment-input'><span class='file-select-button btn' {% if boarditem.file|length != 0 %}style='display:none;'{% endif %}>파일 올리기</span></label>
+			</div>
+			<label for='attachment-input'><span class='file-select-button btn' {% if boarditem.file|length != 0 %}style='display:none;'{% endif %}>파일 올리기</span></label>
+			<span class='progress-bar'>
+				<span class='progress'></span>
+				<span class='number'>5%</span>
+			</span>
+		</div>
+		<textarea id='body-input'>
+			{% autoescape off %}
+			{{boarditem.body}}
+			{% endautoescape %}
+		</textarea>
+		<div class='compose-error-message'></div>
+		<div class='button-wrapper'>
+			<button class='btn' id='submit'>올리기</button>
+			<button class='btn' id='cancel'>취소</button>
+		</div>
+	</div>
+</div>
+<iframe id='user-file-upload-target' name='user-file-upload-target' style='position:absolute;top:0;left:0;width:0px;height:0px;border:0px solid #fff;'></iframe>
+<iframe id='board-attachment-upload-target' name='board-attachment-upload-target' style='position:absolute;top:0;left:0;width:0px;height:0px;border:0px solid #fff;'></iframe>
+<form action="/requestreceiver/" method="post" enctype="multipart/form-data" class='board-attachment-upload-form' id='board-attachment-upload-form' style='position:absolute; width:1px; height:1px; overflow:hidden;'>
+<input type='text' name='id' value='{{service.id}}' style='display:none;'>`
+<input type='text' name='req_type' value='file_upload' style='display:none;'>
+<input type='text' name='tag' class='tag' value='{{tag}}' style='display:none'>
+<input type='text' name='file_type' value='BOARD_ATTACHMENT' style='display:none;'>
+<input type='text' name='filename' class='filename' value='' style='display:none;'>
+<input type='text' name='uuid' class='uuid' value='' style='display:none;'/>
+<input type="file" name="file" class='attachment-input' id='attachment-input'>
+<input type="submit" id='attachment-submit' value='submit' style='display:none;'>
+</form>
+<script>
+var boardVar = {
+	serviceId: '{{user_info.service.id}}',
+	userId: '{{user_info.id}}',
+	seq: '{{seq}}',
+	tag: '{{tag}}',
+	boardType: {{board_type}},
+	filePrefix: '{{"BOARD_PICTURE"|get_filelocation}}{{user_info.service.id}}{{tag}}/',
+	boardAttachmentLocation: '{{"BOARD_ATTACHMENT"|get_filelocation}}{{service.id}}{{tag}}/',
+	uploading: false,
+	attachment: '{{boarditem.file}}',
+	uploadTimer: null
+};
+</script>
+<script src="/resources/plugins/tinymce_4.6.1/tinymce.min.js"></script>
+<script src='/resources/js/dashboard_normalboarditem.js?version=1.0'></script>

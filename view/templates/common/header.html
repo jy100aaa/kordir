@@ -1,0 +1,172 @@
+{% load i18n %}
+{% load customtags %}
+{% get_current_language as LANGUAGE_CODE %}
+<script>
+var oldIE = false;
+var _MSIE = false;
+var _USER_AGENT = window.navigator.userAgent;
+var _OLDIE = _USER_AGENT.indexOf('MSIE ');
+var _NEW_IE = _USER_AGENT.indexOf('Trident/');
+if ((_OLDIE > -1) || (_NEW_IE > -1)) {
+	_MSIE = true;
+}
+</script>
+<!--[if lte IE 8]>
+<script>
+oldIE = true;
+</script>
+<![endif]-->
+<!--[if lte IE 7]>
+<script src='/resources/plugins/oldbrowser/json3.min.js'></script>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common_lowie.css'/>
+<![endif]-->
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/header.css?version=1.3' />
+{% if user_info != None %}
+{% if session|length == 0 %}
+<style>
+#header-user-menu-button{
+	display:none;
+}
+#header-dashboard-menu-button{
+	right:10px;
+}
+</style>
+{% endif %}
+{% endif %}
+<div id='header-wrapper' class='white-bg'>
+	<div id='header' class='black-font white-bg'>
+		<div id='header-company-name' class='header-company-name {% if user_info != None %}header-company-name-dashboard{% else %}header-company-name-normal{% endif %}'>
+			<a href='{% settings_value "MAIN_SERVER" %}/'><i class='wide-logo'></i></a>
+		</div>
+		<div id='header-nav' class='header-nav {% if user_info != None %}header-nav-dashboard{% else %}header-nav-before-login{% endif %}'>
+			{% if user_info == None %}
+			<span class='menu-nav'><a href='http://support.kordir.com'>고객센터</a></span>
+			<!--
+			<span class='menu-nav {% if page == 'pricing' %}active{% endif %}'><a href='{% settings_value "MAIN_SERVER" %}/pricing'>요금</a></span>
+			 -->
+			<span class='menu-nav {% if page == 'signup' %}active{% endif %}'><a href='{% settings_value "MAIN_SERVER" %}/signup'>가입하기</a></span>
+			<span class='menu-nav {% if page == 'login' %}active{% endif %}'><a href='{% settings_value "MAIN_SERVER" %}/login'>로그인</a></span>
+			{% else %}
+			{% if page == "dashboard" %}
+			<span id='header-dashboard-menu-button' class='header-menu-button'>
+				{% if chat_message_marker|length != 0 %}
+				<span id='header-notification'>N</span>
+				{% endif %}
+			</span>
+			{% endif %}
+			<span id='header-user-menu-button' class='header-menu-button'></span>
+			{% endif %}
+		</div>
+		{% if user_info != None %}
+		<ul class='list-menu border-shadow' id='user-menu'>
+			<li class='header-dropdown-item'><a href='{% settings_value "MAIN_SERVER" %}'>대쉬보드</a></li>
+			{% if 16|bitwise_and:user_info.status %}
+			<li class='header-dropdown-item'><a href='{% settings_value "MAIN_SERVER" %}/settings'>설정</a></li>
+			<li class='header-dropdown-item'><a href='http://{{user_info.service.tag}}.{% settings_value "SIMPLE_MAIN_SERVER" %}' target='_blank'>내 홈페이지</a></li>
+			{% else %}
+			<li class='header-dropdown-item'><a href='{% settings_value "MAIN_SERVER" %}/fillinfo'>가입 정보 입력</a></li>
+			{% endif %}
+			<li class='header-dropdown-item'><a href='http://support.{% settings_value "SIMPLE_MAIN_SERVER" %}' target='_blank'>고객센터</a></li>
+			<li class='header-dropdown-item' onclick="logout();">로그아웃</li>
+		</ul>
+		{% endif %}
+	</div>
+</div>
+{% if page == "dashboard" %}
+{% if 16|bitwise_and:user_info.status == False %}
+<div class='warning'>
+	<div>가입 신청이 완료되지 않았습니다.</div>
+	<button class='btn' onclick="location.href='/fillinfo'">가입 정보 입력으로 이동</button>
+	<span class='warning-close'></span>
+</div>
+{% endif %}
+{% if expired == True %}
+<div class='warning'>
+	<div>사용 기간이 만료되었습니다.</div>
+	<button class='btn' onclick="location.href='/settings?nav=point'">이용기간 연장</button>
+	<span class='warning-close'></span>
+</div>
+{% endif %}
+{% endif %}
+<script src='/resources/js/stringtable.js?version=1.0'></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src='/resources/js/common.js'></script>
+<!--[if lte IE 8]>
+<script src='/resources/plugins/placeholders/placeholders.min.js'></script>
+<![endif]-->
+<script>
+$(function(){
+	$(document).bind('click', function(e){
+		document_click_event_listener(e);
+	});
+	$("#header-wrapper #header .list-menu").prop('toggle', false);
+
+	$("#header-user-menu-button").bind('click', function(){
+		header_user_menu_button_clicked();
+	});
+	$("#header-language-menu-button").bind('click', function(){
+		header_language_menu_button_clicked();
+	});
+	$(".warning .warning-close").bind('click', function(){
+		$(this).parent().hide();
+		$(this).parent().css({
+			'height': '0',
+			'margin': '0',
+			'padding': '0'
+		});
+		dashboard_adjustment();
+	});
+	$("#user-menu .header-dropdown-item-homepage").bind('mousedown', function(){
+		header_user_menu_button_clicked();
+	});
+});
+function header_user_menu_button_clicked(){
+	var obj = $("#header-wrapper #header #user-menu");
+	var toggle = $(obj).prop('toggle');
+	if(toggle == true){
+		$(obj).fadeOut(100, function(){
+			$(obj).prop('toggle', false);
+		});
+	} else {
+		if( $(".viewport-check").css('display') != 'none' ) {
+			var sideBarObj = $("#sidebar");
+			var display = $(sideBarObj).css('display');
+			if(display != 'none')
+				$(sideBarObj).hide();
+		}
+		$(obj).fadeIn(100, function(){
+			$(obj).prop('toggle', true);
+		})
+	}
+}
+function header_language_menu_button_clicked(){
+	var obj = $("#header-wrapper #header #language-menu");
+	var toggle = $(obj).prop('toggle');
+
+	if(toggle == true){
+		$(obj).fadeOut(100, function(){
+			$(obj).prop('toggle', false);
+		});
+	} else {
+		$(obj).fadeIn(100, function(){
+			$(obj).prop('toggle', true);
+		})
+	}
+}
+function document_click_event_listener(e){
+	var className = get_clicked_property(e, 'class');
+	if(typeof className == 'undefined' || typeof className == 'object'){
+		className = '';
+	}
+	/* clicked outside */
+	if(className.indexOf('list-menu') == -1 &&
+		className.indexOf('header-dropdown-item') == -1 &&
+		className.indexOf('header-menu') == -1 || className.length == 0) {
+
+		if($("#header-wrapper #header #user-menu").prop('toggle') == true)
+			header_user_menu_button_clicked();
+		if($("#header-wrapper #header #language-menu").prop('toggle') == true)
+			header_language_menu_button_clicked();
+	}
+}
+</script>

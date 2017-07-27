@@ -1,0 +1,155 @@
+<!doctype html>
+{% load customtags %}
+{% load tz %}
+<!--[if lt IE 7 ]> <html class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class=""> <!--<![endif]-->
+<head>
+{% include "service/common/servicemeta.html" %}
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/normalboard.css?version=1.3' />
+<style>
+.mce-window-head{
+	background-color:#efefef !important;
+}
+.mce-btn{
+	color:#4d4d4d !important;
+	background-color:#efefef !important;
+}
+.mce-btn:hover{
+	background-color:#fafafa !important;
+}
+.mce-primary button, .mce-primary button i{
+	color:#4d4d4d !important;
+	text-shadow:none !important;
+}
+</style>
+<!--[if lte IE 7]>
+<style>
+.board-center .table-header{
+	width:600px;
+}
+.board-center .table-body .item-wrapper{
+	width:560px;
+}
+</style>
+<![endif]-->
+</head>
+<body>
+{% include "service/common/processor.html" %}
+{% include "service/common/serviceheader.html" %}
+{% include "service/common/servicenavigationbox.html" %}
+<div id='content'>
+<div id='content-inner'>
+	<div class='board-content board-top'>
+		<span class='board-title'>{{node.nodeName}}</span>
+		{% if user_info.service.id == service.id or node.kv.writable == True %}
+		<button class='compose-button btn'>작성하기</button>
+		{% endif %}
+	</div>
+	<div class='board-content board-center'>
+		<div class='table-header black-font box-sizing-fallback'>
+			<div class='table-seq'>번호</div>
+			<div class='table-subject'>제목</div>
+			<div class='table-name'>작성자</div>
+			<div class='table-date'>날짜</div>
+			<div class='table-view-cnt'>조회수</div>
+		</div>
+		<div class='table-body'>
+			{% if item  %}
+			{% for i in item %}
+			<div class='item-wrapper {% if i.sticky == True %}item-wrapper-sticky{% endif %} box-sizing-fallback' id='item-wrapper-{{i.seq}}' onclick="window.location.href='{{tag}}?seq={{i.seq}}';">
+				<div class='item-seq'>
+					{{i.seq}}
+				</div>
+				<div class='item-subject'>
+					{% if i.sticky == True %}
+					<span style='color:#ff6600;'>[공지]</span>
+					{% endif %}
+					<span>{{i.subject}} <span style='font-size:14px; font-weight:normal; color:#798;'>{% if i.replies.count > 0 %}[{{i.replies.count}}]{% endif %}</span></span>
+				</div>
+				{% timezone "Asia/Seoul" %}
+				<div class='item-date'><span>{{i.created|localtime|date:'Y-m-d'}}</span></div>
+				{% endtimezone %}
+				<div class='item-name'>
+					<span class='tag'>작성자: </span>
+					<span>{{i.name}}</span>
+				</div>
+				<div class='item-view-cnt'>{{i.view_num}}</div>
+			</div>
+			{% endfor %}
+			{% else %}
+			<div class='item-empty'>
+				<p style='text-align:center;'>게시물이 없습니다</p>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+	<div class='board-content board-bottom'>
+		<button class='paging-nav btn left-end {% if left_paging_nav < 1 %}disabled{% endif %}' id='paging-nav-{{left_paging_nav}}'><<</button>
+		{% for pt in paging_tuple %}
+		{% if pt.1 == True %}
+			<button class='paging-nav current-page btn' id='paging-nav-{{pt.0}}'>{{pt.0}}</button>
+		{% else %}
+			<button class='paging-nav btn' id='paging-nav-{{pt.0}}'>{{pt.0}}</button>
+		{% endif %}
+		{% endfor %}
+		<button class='paging-nav btn right-end {% if right_paging_nav > total_pages %}disabled{% endif %}' id='paging-nav-{{right_paging_nav}}'>>></button>
+	</div>
+	<span>&nbsp;</span>
+	<div class='board-compose-wrapper'>
+		<form action="/requestreceiver/" method="post" enctype="multipart/form-data" class='upload-form' id='user-file-upload-form' style='position:absolute; width:1px; height:1px; overflow:hidden;'>
+			<input type='text' name='id' value='{{service.id}}' style='display:none;'>
+			<input type='text' name='req_type' value='file_upload' style='display:none;'>
+			<input type='text' name='file_type' value='BOARD_PICTURE' style='display:none;'>
+			<input type='text' name='tag' class='tag' value='{{tag}}' style='display:none'>
+			<input type='text' name='uuid' class='uuid' value='' style='display:none;'>
+			<input type="file" name="file" class='file-input' id='file-input' accept='image/bmp, image/png, image/jpeg'>
+			<input type="submit" id='user-file-submit' value='submit' style='display:none;'>
+		</form>
+		<label for=file-input><span id='file-input-proxy' style='width:1px; height:1px;'>&nbsp;</span></label>
+		<div class='input-line'>
+			<div class='tag'>이름</div><input class='name-input' value='{{user_info.fullname}}' type='text'>
+		</div>
+		<div class='input-line'>
+			<div class='tag'>제목</div><input class='subject-input' type='text'>
+		</div>
+		<div class='input-line' {% if user_info %} style='display:none;' {% endif %}>
+			<div class='tag'>자동입력방지</div>
+			<div style='inline-block;'><img src='' id='captcha-image'><input type='text' class='captcha-input' placeholder='자동입력방지 숫자입력'></div>
+		</div>
+		<div class='input-line' {% if user_info.service.id == service.id %} style='display:none;' {% endif %}>
+			<div class='tag'>비밀번호<span class='small'>삭제 시 필요</span></div>
+			<input class='password-input' type='text'>
+		</div>
+		<br>
+		<textarea id='body-input'></textarea>
+		<div class='compose-error-message'></div>
+		<div class='button-wrapper'>
+			<button class='btn' id='submit'>올리기</button>
+			<button class='btn' id='cancel'>취소</button>
+		</div>
+	</div>
+</div>
+</div>
+<iframe id='user-file-upload-target' name='user-file-upload-target' style='position:absolute;top:0;left:0;width:0px;height:0px;border:0px solid #fff;'></iframe>
+{% include "service/common/servicefeedbackplugin.html" %}
+{% include "service/common/servicefooter.html" %}
+</body>
+<script src="/resources/plugins/tinymce_4.6.1/tinymce.min.js"></script>
+<script>
+var serverData = {
+	uniqueKey: '{{connectionInfo.uniqueKey}}',
+	serviceId: '{{service.id}}',
+	userServiceId: '{{user_info.service.id}}',
+	tag: '{{tag}}',
+	filePrefix: '{{"BOARD_PICTURE"|get_filelocation}}{{service.id}}{{tag}}/',
+	captchaLocation: '{{"CAPTCHA"|get_filelocation}}{{connectionInfo.uniqueKey}}.jpg',
+	currentPage: '{{current_page}}'
+};
+</script>
+{% include "service/common/servicenodejs.html" %}
+<script src='/resources/service/js/normalboard.js'></script>
+{% include "service/common/ga.html" %}
+</html>

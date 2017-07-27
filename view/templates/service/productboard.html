@@ -1,0 +1,727 @@
+<!doctype html>
+{% load humanize %}
+{% load customtags %}
+{% load tz %}
+<!--[if lt IE 7 ]> <html class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class=""> <!--<![endif]-->
+<head>
+{% include "service/common/servicemeta.html" %}
+<style>
+div#content{
+	position:reltaive;
+	width:100%;
+	height:auto;
+}
+#content-inner{
+	position:reltaive;
+	width:960px;
+	height:auto;
+	margin-left:auto;
+	margin-right:auto;
+}
+#content-inner .product-board-wrapper{
+	width:100%;
+	text-align:left;
+	overflow:auto;
+	background-color:#fafafa;
+	background:rgba(250,250,250, 0.7);
+}
+.product-board-wrapper .board-top{
+	position:relative;
+	height:60px;
+	width:100%;
+}
+.board-top .board-title{
+	height:60px;
+	line-height:60px;
+	color:#6d6d6d;
+	font-size:18px;
+	font-weight:bold;
+	margin-left:20px;
+}
+.board-top .compose-button{
+	position:absolute;
+	width:100px;
+	height:36px;
+	top:12px;
+	right:60px;
+}
+.board-top .board-sort-expand-collapse{
+	position:absolute;
+	top:12px;
+	right:10px;
+	width:40px;
+	height:36px;
+}
+.product-board-wrapper .board-sort{
+	position:relative;
+	display:none;
+	border-top:1px solid #ccc;
+	border-bottom:1px solid #ccc;
+	padding-top:10px;
+	min-height:50px;
+	background-color:#fafafa;
+	background:rgba(250,250,250, 0.7);
+}
+.board-sort select{
+	padding-left:6px;
+	padding-right:6px;
+	height:30px;
+	line-height:30px;
+	border-radius:4px;
+	border-radius:4px;
+	border:1px solid #ddd;
+	font-size:14px;
+	margin-top:10px;
+	margin-right:10px;
+	margin-bottom:10px;
+	float:left;
+}
+.board-sort select:disabled{
+	background-color:#ddd;
+}
+.board-sort .range-select-wrapper{
+	display:inline-block;
+	width:260px;
+	margin-left:20px;
+	margin-bottom:10px;
+}
+.range-select-wrapper .range-select-item{
+	margin-top:6px;
+}
+.range-select-wrapper .range-select-item .range-slider{
+	margin-top:4px;
+}
+.board-sort .sort-button{
+	position:absolute;
+	top:10px;
+	right:10px;
+	height:36px;
+	padding-left:10px;
+	padding-right:10px;
+}
+.board-sort .sort-basket{
+	padding:10px;
+	border:1px solid #ccccbc;
+	margin-top:28px;
+	margin-bottom:10px;
+	display:none;
+}
+.sort-basket span{
+	background-color:#789;
+	display:inline-block;
+	padding:6px;
+	color:#fdfdfd;
+	font-size:14px;
+	font-weight:bold;
+	margin-right:10px;
+	margin-bottom:6px;
+}
+.sort-basket span:hover{
+	background-color:#aaa;
+	cursor:pointer;
+}
+.product-board-wrapper .board-center{
+	width:100%;
+	height:auto;
+	border-top:2px solid #ccccbc;
+}
+.board-center .product-item-empty{
+	height:400px;
+	line-height:400px;
+	text-align:center;
+	font-size:14px;
+}
+.board-center .product-item-wrapper{
+	position:relative;
+	display:inline-block;;
+	border:1px solid #aaa;
+	width:225px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+	padding:6px;
+	border:1px solid #ccccbc;
+	border-radius:4px;
+	margin-top:10px;
+	font-size:12px;
+	background-color:#fafafa;
+	margin-right:20px;
+}
+.board-center .product-item-wrapper:hover{
+	background-color:#f6f6f6;
+	cursor:pointer;
+}
+.product-item-wrapper .product-item-picture-outer-wrapper{
+	display:table;
+	width:100%;
+	height:auto;
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom:10px;
+	border-radius:4px;
+}
+.product-item-picture-outer-wrapper .product-item-picture-inner-wrapper{
+	width:100%;
+	height:160px;
+	background-color:#fff;
+	display:table-cell;
+	vertical-align:middle;
+	text-align:center;
+}
+.product-item-picture-inner-wrapper img{
+	display:inline-block;
+	max-width:212px;
+	max-height:100%;
+	border-radius:4px;
+}
+.product-item-picture-inner-wrapper img:hover{
+	cursor:pointer;
+	opacity:0.85;
+	filter:alpha(opacity: 85);
+}
+.product-item-wrapper .product-item-subject {
+	font-size:14px;
+}
+.product-item-wrapper .product-item-subject, .product-item-wrapper .product-item-name{
+	position:static;
+	margin-bottom:6px;
+}
+.product-item-wrapper .product-item-name span{
+	font-weight:bold;
+}
+.product-item-wrapper .product-item-label-value-wrapper{
+	width:100%;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+   	padding:10px;
+	background-color:#efefef;
+	border-top:1px solid #ccc;
+}
+.product-item-label-value-wrapper .product-item-label-value-line{
+	position:relative;
+	padding-left:100px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+	height:20px;
+	line-height:20px;
+	overflow-y:hidden;
+}
+.product-item-label-value-line .lvp-value{
+	display:inline-block;
+	width:100%;
+	overflow-x:hidden;
+}
+.product-item-label-value-line .lvp-label{
+	position:absolute;
+	left:0;
+	width:100px;
+	height:20px;
+	color:#333;
+	font-weight:bold;
+	overflow:hidden;
+}
+.product-item-wrapper .product-item-bottom{
+	position:relative;
+	width:100%;
+	height:26px;
+	line-height:26px;
+	font-size:12px;
+	color:#fff;
+	background-color:#ababab;
+}
+.product-item-bottom .product-item-view{
+	display:inline-block;
+	padding-left:24px;
+	background-image:url('https://kordir.s3.amazonaws.com/resources/images/view_white_small.png');
+	background-size:18px auto;
+	background-repeat:no-repeat;
+	background-position:0px 6px;
+	margin-left:10px;
+}
+.product-item-bottom .product-item-comment{
+	display:inline-block;
+	padding-left:24px;
+	background-image:url('https://kordir.s3.amazonaws.com/resources/images/comment_white_small.png');
+	background-size:18px auto;
+	background-repeat:no-repeat;
+	background-position:0px 6px;
+	margin-left:10px;
+}
+.product-item-bottom .product-item-date{
+	position:absolute;
+	right:10px;
+	display:inline-block;
+	padding-left:24px;
+	background-image:url('https://kordir.s3.amazonaws.com/resources/images/clock_white_small.png');
+	background-size:18px 18px;
+	background-repeat:no-repeat;
+	background-position:0px 4px;
+}
+.product-board-wrapper .board-bottom{
+	width:100%;
+	display:block;
+	height:50px;
+	line-height:50px;
+	border-top:1px solid #ccc;
+	margin-top:20px;
+	text-align:center;
+}
+.board-bottom .paging-nav.current-page{
+	background-color:#789;
+	color:#fff;
+}
+.board-bottom .paging-nav{
+	display:inline-block;
+	font-size:14px;
+	padding-left:4px;
+	padding-right:4px;
+	height:30px;
+	width:30px;
+	line-height:30px;
+	text-align:center;
+	margin-left:4px;
+	margin-right:4px;
+}
+.ui-slider-range{
+	background:none !important;
+	background-color:orange !important;
+}
+@media all and (max-width:480px){
+	#content-inner{
+		width:100%;
+		min-width:100%;
+	}
+	.indent{
+		padding:0;
+	}
+	.product-board-wrapper{
+		height:auto;
+		width:100%;
+		padding:0;
+	}
+	.product-board-wrapper .board-sort{
+		-webkit-box-sizing: border-box;
+   		-moz-box-sizing: border-box;
+   		box-sizing: border-box;
+   		padding:10px;
+	}
+	.product-board-wrapper .board-center{
+		width:100%;
+		height:auto;
+		-webkit-box-sizing: border-box;
+   		-moz-box-sizing: border-box;
+   		box-sizing: border-box;
+   		padding-left:6px;
+   		padding-right:6px;
+	}
+	.board-center .product-item-wrapper{
+		display:block;
+		margin-left:auto !important;
+		margin-right:auto !important;
+		width:95%;
+		max-width:380px;
+		float:none !important;
+	}
+	.product-item-picture-inner-wrapper img{
+		width:72%;
+		max-height:none;
+	}
+    .board-bottom .paging-nav{
+		font-size:12px;
+		padding:0;
+		width:30px;
+		margin-left:2px;
+		margin-right:2px;
+	}
+	.board-sort .sort-button{
+		position:relative;
+		display:inline-block;
+		margin-top:5px;
+		top:0;
+		right:0;
+	}
+}
+</style>
+<!--[if lt IE 9]>
+<style>
+.product-item-bottom .product-item-view{
+	background-image:url('https://kordir.s3.amazonaws.com/resources/images/lowie/view_white_small_lowie.png');
+}
+.product-item-bottom .product-item-comment{
+	background-image:url('https://kordir.s3.amazonaws.com/resources/images/lowie/comment_white_small_lowie.png');
+}
+.product-item-bottom .product-item-date{
+	background-image:url('https://kordir.s3.amazonaws.com/resources/images/lowie/clock_white_small_lowie.png')\9;
+}
+.board-top a:link{text-decoration: none; color:#fff;}
+.board-top a:active{text-decoration: none; color:#fff;}
+.board-top a:visited{text-decoration: none; color:#fff;}
+.board-top a:hover{text-decoration: none; color:#fff;}
+</style>
+<![endif]-->
+<!--[if lte IE 7]>
+<style>
+.product-item-wrapper .product-item-label-value-wrapper{
+	width:192px;
+}
+.board-center .product-item-wrapper{
+	width:211px;
+}
+.product-item-picture-inner-wrapper img{
+	max-width:202px;
+}
+</style>
+<![endif]-->
+</head>
+<body>
+{% include "service/common/processor.html" %}
+{% include "service/common/serviceheader.html" %}
+{% include "service/common/servicenavigationbox.html" %}
+<div id='content'>
+<div id='content-inner'>
+	<div class='product-board-wrapper'>
+		<div class='board-content board-top'>
+			<span class='board-title'>{{node.nodeName}}</span>
+			{% if user_info %}
+			{% if user_info.service.id == service.id %}
+			<a href='{% settings_value "WWW_MAIN_SERVER" %}/#productboardwrite?url={{tag}}' target='_blank'>
+			<button class='compose-button btn'>작성하기</button>
+			</a>
+			{% endif %}
+			{% endif %}
+			<button class='board-sort-expand-collapse btn'>▼</button>
+		</div>
+		<div class='board-content board-sort'>
+			<select class='main-sort-category inline-block-fallback'>
+				<option selected disabled value=''>항목 선택</option>
+				{% for k, v in lvp.items %}
+				{% if not v.number %}
+				<option value='{{k.strip}}' data-original='{{k}}'>{{k}}</option>
+				{% endif %}
+				{% endfor %}
+			</select>
+			<select class='sub-sort-category inline-block-fallback' disabled>
+				<option selected disabled value='' class='default-option-value'>데이터 선택</option>
+				{% for k, v in lvp.items %}
+				{% if not v.number %}
+				{% for value in v.value %}
+				<option class='{{k.strip}}' value='{{value}}'>{{value}}</option>
+				{% endfor %}
+				{% endif %}
+				{% endfor %}
+			</select>
+			<button class='sort-button btn' {% if not item %}disabled{% endif %}>불러오기</button>
+			<div class='range-select-wrapper inline-block-fallback'>
+				{% for l, v in lvp.items %}
+				{% if v.number %}
+				<div class='range-select-item {{l.strip}}'>
+					<label>{{l}}: </label>
+					<input type='text' readonly style='border:0; color:#4d4d4d; font-weight:bold;'>
+					<div class='range-slider'></div>
+				</div>
+				{% endif %}
+				{% endfor %}
+			</div>
+			<div class='sort-basket'></div>
+		</div>
+		<div class='board-content board-center'>
+			{% if item  %}
+			{% for i in item %}<div class='product-item-wrapper black-font inline-block-fallback' onclick="window.location.href='{{tag}}?seq={{i.seq}}';" {% if forloop.counter|divisibleby:4 %}style='margin-right:0; float:none;'{% endif %}>
+				<div class='product-item-picture-outer-wrapper'>
+					<div class='product-item-picture-inner-wrapper'>
+						{% if i.list_image == "" %}
+						<img src='/resources/images/no_product_image.png'>
+						{% else %}
+						<img src='{{"BOARD_PICTURE"|get_filelocation}}{{service.id}}{{tag}}/{{i.list_image}}'>
+						{% endif %}
+					</div>
+				</div>
+				<div class='product-item-subject'>{{i.subject}}</div>
+				<div class='product-item-name'><span>작성자: </span>{{i.name}}</div>
+				<div class='product-item-label-value-wrapper'>
+					{% for lvp in i.labelvaluepairs.all %}
+					<div class='product-item-label-value-line'>
+						<span class='lvp-label'>{{lvp.label}}</span>
+						<span class='lvp-value'>
+						{% if lvp.number %}{{lvp.value|intcomma}} {{lvp.unit}}{% else %}{{lvp.value}}{% endif %}
+						</span>
+					</div>
+					{% endfor %}
+				</div>
+				<div class='product-item-bottom'>
+					<span style='float:left;'></span>
+					<span class='product-item-view'>{{i.view_num}}</span>
+					<span class='product-item-comment'>{{i.replies.count}}</span>
+					{% timezone "Asia/Seoul" %}
+					<div class='product-item-date'><span>{{i.created|localtime|date:'Y-m-d'}}</span></div>
+					{% endtimezone %}
+					<div style='clear:both;'></div>
+				</div>
+			</div>{% endfor %}
+			{% else %}
+			<div class='product-item-empty'>게시물이 없습니다</div>
+			{% endif %}
+		</div>
+		<div class='board-content board-bottom'>
+			<button class='paging-nav btn left-end {% if left_paging_nav < 1 %}disabled{% endif %}' id='paging-nav-{{left_paging_nav}}'><<</button>
+			{% for pt in paging_tuple %}
+			{% if pt.1 == True %}
+				<button class='paging-nav current-page btn' id='paging-nav-{{pt.0}}'>{{pt.0}}</button>
+			{% else %}
+				<button class='paging-nav btn' id='paging-nav-{{pt.0}}'>{{pt.0}}</button>
+			{% endif %}
+			{% endfor %}
+			<button class='paging-nav btn right-end {% if right_paging_nav > total_pages %}disabled{% endif %}' id='paging-nav-{{right_paging_nav}}'>>></button>
+		</div>
+	</div>
+</div>
+</div>
+{% include "service/common/servicefeedbackplugin.html" %}
+{% include "service/common/servicefooter.html" %}
+</body>
+<!--[if lte IE 7]>
+<script type='text/javascript' src='/resources/js/boxsizingfix.js'></script>
+<![endif]-->
+<script>
+var serverData = {
+	uniqueKey: '{{connectionInfo.uniqueKey}}',
+	serviceId: '{{service.id}}',
+	userServiceId: '{{user_info.service.id}}',
+	tag: '{{tag}}',
+	filePrefix: '{{"BOARD_PICTURE"|get_filelocation}}{{service.id}}{{tag}}/',
+	captchaLocation: '{{"CAPTCHA"|get_filelocation}}{{connectionInfo.uniqueKey}}.jpg',
+	currentPage: '{{current_page}}',
+	number: {},
+	text: {},
+	filter: {}
+};
+(function (d, s) {
+	{% for k, v in lvp.items %}
+		{% if v.number %}
+			serverData.number['{{k.strip}}'] = {
+				value: [],
+				unit: '',
+				min: -1,
+				max: -1
+			};
+			serverData.number['{{k.strip}}'].unit = '{{v.unit}}';
+			{% for value in v.value %}
+			serverData.number['{{k.strip}}'].value.push({{value}});
+			{% endfor %}
+		{% else %}
+			serverData.text['{{k.strip}}'] = [];
+			{% for value in v.value %}
+			serverData.text['{{k.strip}}'].push('{{value}}');
+			{% endfor %}
+		{% endif %}
+	{% endfor %}
+})(document, 'script');
+</script>
+{% include "service/common/servicenodejs.html" %}
+<script>
+$(function(){
+	$(".board-bottom .paging-nav").bind('click', function(){
+		if($(this).hasClass('disabled') || $(this).hasClass('current-page'))
+			return;
+		var page = $(this).prop('id').split('-')[2];
+		var url = serverData.tag + '?page=' + page;
+		window.location.href = url;
+	});
+
+	product_window_size_adjustment();
+
+	$(".board-sort .sort-button").bind('click', function(){
+		do_sort();
+	});
+	$(".board-top .board-sort-expand-collapse").data('data-collapse', true);
+	$(".board-top .board-sort-expand-collapse").bind('click', function(){
+		var toggle = $(this).data('data-collapse');
+		if(toggle){
+			$(this).text('▲');
+			$(this).css('border-bottom', '1px solid #aaa');
+			$(".product-board-wrapper .board-sort").fadeIn(150);
+		} else {
+			$(this).text('▼');
+			$(this).css('border-bottom', '0');
+			$(".product-board-wrapper .board-sort").fadeOut(150);
+		}
+		$(this).data('data-collapse', !toggle);
+	});
+	$(".board-sort .main-sort-category").bind('change', function(){
+		var label = $(this).val();
+		$(".board-sort .sub-sort-category").removeAttr('disabled');
+		$(".board-sort .sub-sort-category .default-option-value").attr('selected', true);
+		$(".board-sort .sub-sort-category").children('option').each(function(idx){
+			if(idx != 0)
+				$(this).remove();
+		});
+		str = "";
+		for(var i = 0; i < serverData.text[label].length; i++){
+			str += "<option value='"+serverData.text[label][i]+"'>"+serverData.text[label][i]+"</option>";
+		}
+		$(".board-sort .sub-sort-category").append(str);
+	});
+
+	$(".board-sort .sub-sort-category").bind('change', function(){
+		var val = $(this).val();
+		if(val != ''){
+			var label = $(".board-sort .main-sort-category").val();
+			$(".board-sort .main-sort-category option").each(function(){
+				if($(this).val() == label){
+					label = $(this).attr('data-original');
+				}
+			});
+			var value = $(".board-sort .sub-sort-category").val();
+			if(typeof serverData.filter[label] === 'undefined'){
+				serverData.filter[label] = [];
+				serverData.filter[label].push(value);
+			} else {
+				var found = false;
+				for(var i = 0; i < serverData.filter[label].length; i++){
+					if(value == serverData.filter[label][i]){
+						found = true;
+					}
+				}
+				if(!found)
+					serverData.filter[label].push(value);
+			}
+			update_filter();
+		}
+	});
+
+	$(".board-sort .range-select-wrapper .range-select-item").each(function(){
+		var className = $(this).prop('class').split(' ')[1];
+		var mm = get_min_max(serverData.number[className].value);
+		var min = mm.min;
+		var max = mm.max;
+		var unit = serverData.number[className].unit;
+		var inputObj = $(this).children('input');
+		$(this).children('.range-slider').slider({
+			range: true,
+			min: min,
+			max: max,
+			values: [min, max],
+			slide: function(event, ui){
+				serverData.number[className].min = ui.values[0];
+				serverData.number[className].max = ui.values[1];
+				$(inputObj).val(ui.values[0] + unit + ' - ' + ui.values[1] + unit);
+			}
+		});
+		$(inputObj).val('0' + unit + ' - ' + max + unit);
+	});
+});
+function product_window_size_adjustment(){
+	var parentObj = $(".board-center");
+	var childObj = $(".product-item-wrapper");
+	var itemLength = $(childObj).length;
+
+	if(itemLength == 0)
+		return;
+
+	var maxSubjectHeight = 0;
+	var maxInfoHeight = 0;
+	$(childObj).each(function(idx){
+		var sh = $(this).children('.product-item-subject').height();
+		var ih = $(this).children('.product-item-label-value-wrapper').outerHeight();
+		if(sh > maxSubjectHeight){
+			maxSubjectHeight = sh;
+		}
+		if(ih > maxInfoHeight){
+			maxInfoHeight = ih;
+		}
+	});
+	if($('html').is('.ie6, .ie7')){
+		maxInfoHeight -= 16;
+	}
+	$(childObj).children('.product-item-subject').css('height', maxSubjectHeight+'px');
+	$(childObj).children('.product-item-label-value-wrapper').css('min-height', maxInfoHeight+'px');
+	var ch = $(childObj).eq(0).outerHeight();
+	var itemsPerRow = 4;
+	var rows = Math.ceil(itemLength / itemsPerRow);
+	var parentHeight = rows * (ch + 10) + 30;
+	if(parentHeight < 510) {
+		parentHeight = 510;
+	}
+	$(parentObj).css('min-height', parentHeight + 'px');
+
+}
+function update_filter(){
+	var sortBasket = $(".board-sort .sort-basket");
+	if(serverData.filter.length == 0)
+		$(sortBasket).hide();
+	else
+		$(sortBasket).show();
+	$(sortBasket).html('');
+	for(var label in serverData.filter){
+		for(var i = 0 ; i < serverData.filter[label].length; i++){
+			var value = serverData.filter[label][i];
+			var txt = label + ' - ' + value;
+			var tag = "<span>" + txt + "</span>";
+			$(sortBasket).append(tag);
+			var appendedObj = $(sortBasket).children('span').last();
+			$(appendedObj).data('data-label', label);
+			$(appendedObj).data('data-value', value);
+			$(appendedObj).bind('click', function(){
+				$(this).fadeOut(150, function(){
+					var l = $(this).data('data-label');
+					var v = $(this).data('data-value');
+					var idx = 0;
+					for(var i = 0; i < serverData.filter[l].length; i++){
+						if(v == serverData.filter[l][i])
+						{
+							idx = i;
+							break;
+						}
+					}
+					serverData.filter[l].splice(idx, 1);
+					$(this).remove();
+					if($(sortBasket).find('span').length == 0)
+						$(sortBasket).hide();
+				});;
+			});
+		}
+	}
+}
+function do_sort(){
+	var label = [];
+	var value = [];
+	var rangeLabel = [];
+	var min = [];
+	var max = [];
+	$(".board-sort .sort-basket span").each(function(){
+		label.push($(this).data('data-label'));
+		value.push($(this).data('data-value'));
+	});
+
+	for(v in serverData.number){
+		if(serverData.number[v].min != -1 ){
+			rangeLabel.push(v);
+			min.push(serverData.number[v].min);
+			max.push(serverData.number[v].max);
+		}
+	}
+	var param = '?action=datasorting';
+	for(var i = 0; i < label.length; i++){
+		param += '&label=' + label[i];
+	}
+	for(var i = 0; i < value.length; i++){
+		param += '&value=' + value[i];
+	}
+	for(var i = 0; i < rangeLabel.length; i++){
+		param += '&rangelabel=' + rangeLabel[i] + '&min=' + min[i] + '&max=' + max[i];
+	}
+
+	var location = encodeURI(serverData.tag + param);
+	window.location.href = location;
+}
+function connection_status_change(type){}
+function connection_established(){}
+</script>
+{% include "service/common/ga.html" %}
+</html>

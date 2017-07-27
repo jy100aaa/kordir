@@ -1,0 +1,2477 @@
+{% load customtags %}
+<style>
+/* START COLOR SETTING */
+.colorpicker_submit{
+	display:none !important;
+}
+.colorpicker{
+	background-color:#555 !important;
+}
+.center-control-panel{
+	position:fixed;
+	display:none;
+	top: 50%;
+	left: 50%;
+	padding: 5px 10px;
+	width:340px;
+	height:auto;
+	background-color:#E0E0D0;
+	border:1px solid #ccccbc;
+	border-radius: 4px;
+	-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.9);
+	-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.9);
+	box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.9);
+	text-align:center;
+	z-index:499;
+}
+.center-control-panel .gap{
+	height:20px;
+}
+.center-control-panel .input-line{
+	position:relative;
+	text-align:left;
+	vertical-align:baseline;
+	width:100%;
+  	border-bottom:1px solid #aaa;
+   	padding:5px 0px;
+}
+.center-control-panel .input-line .tag{
+	display:block;
+	font-weight:bold;
+	margin:6px 0px;
+}
+.center-control-panel .input-line .hassub{
+	margin-bottom:10px;
+}
+.center-control-panel .input-line .hasvalue{
+	display:inline-block;
+	margin-right:6px;
+}
+.center-control-panel .sub-input-line{
+	position:relative;
+	margin-bottom:4px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+   	padding-left:10px;
+   	vertical-align:bottom;
+}
+.center-control-panel .sub-input-line .subtag{
+	display:inline-block;
+	vertical-align:middle;
+	font-size:12px;
+	width:110px;
+}
+.center-control-panel .input-line input[type='text']{
+	width:200px;
+	padding-left:5px;
+	border:1px solid #ccccbc;
+	height:24px;
+	line-height:24px;
+	font-size:14px;
+   	margin-bottom:8px;
+   	cursor:pointer;
+}
+.center-control-panel .input-line .input-tag{
+	display:inline-block;
+	width:84px;
+	height:24px;
+	line-height:24px;
+	font-size:12px;
+	text-align:center;
+}
+.center-control-panel .input-line .color-setting-input-small{
+	width:46px !important;
+	margin-top:4px !important;
+	margin-bottom:4px !important;
+	font-size:12px !important;
+}
+.center-control-panel .input-line button{
+	width:80px;
+	height:28px;
+	border-radius:0;
+	border:0;
+}
+.center-control-panel .input-line .slider{
+	width:280px;
+	display:inline-block;
+}
+.center-control-panel .input-line .slider-value{
+	display:inline-block;
+	margin-left:10px;
+}
+.center-control-panel .ui-slider-range{
+	background:none !important;
+	background-color:orange !important;
+}
+.center-control-panel .color-setting-toggle-button{
+	position:relative !important;
+	top:0 !important;
+	right:0 !important;
+	cursor:pointer;
+	width:60px !important;
+}
+.center-control-panel label.ui-button{
+	font-size:14px !important;
+}
+.center-control-panel label.ui-state-active{
+	background:none !important;
+	background-color:orange !important;
+}
+.center-control-panel .input-line select{
+	height:24px;
+	line-height:24px;
+	width:328px;
+	border:1px solid #ccccbc;
+	border-radius:5px;
+	margin-bottom:14px;
+}
+.center-control-panel .input-line #color-setting-hyperlink-input, .center-control-panel .input-line #color-setting-placeholder-input{
+	width:320px;
+}
+.center-control-panel .input-line .background-mode, .center-control-panel .input-line .width-mode{
+	text-align:center;
+}
+.background-mode img, .width-mode img{
+	margin-left:10px;
+	margin-right:10px;
+	border:2px solid transparent;
+}
+.background-mode img:hover, .width-mode img:hover{
+	border:2px solid #ff6600;
+	cursor:pointer;
+}
+.background-mode .selected-mode, .width-mode .selected-mode{
+	border:2px solid #ff6600;
+}
+.background-mode .background-mode-tag, .width-mode .width-mode-tag{
+	display:inline-block;
+	font-size:12px;
+	width:56px;
+	text-align:center;
+	margin-bottom:6px;
+}
+.center-control-panel .center-control-panel-button-wrapper{
+	width:100%;
+	text-align:center;
+	bottom:0;
+	padding-top:5px;
+}
+.center-control-panel-button-wrapper .btn{
+	width:100px;
+	height:36px;
+	line-height:36px;
+	margin-left:10px;
+	margin-right:10px;
+}
+/* EOF COLOR SETTING */
+
+/* START EDITOR MESSAGE */
+#editor-message-panel{
+	position:fixed;
+	width:400px;
+	z-index:10;
+	background-color:orange;
+	text-align:center;
+}
+#editor-message-panel span{
+	display:inline-block;
+	color:#4d4d4d;
+	height:26px;
+	line-height:26px;
+}
+/* EOF EDITOR MESSAGE */
+
+/* PANEL COMMON */
+#editor-large-panel-masking{
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	z-index:500;
+	opacity:0.90;
+	filter:alpha(opacity: 90);
+	background-color:#fefefe;
+}
+.editor-large-panel{
+	position:fixed;
+	display:none;
+	width:960px;
+	left:50%;
+	margin-left:-480px;
+	z-index:505;
+}
+.editor-large-panel .editor-large-panel-body{
+	position:relative;
+	border:1px solid #aaa;
+	width:100%;
+	overflow-y:auto;
+	padding:10px 10px 0 10px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+	background-color:#E0E0D0;
+}
+/* EOF PANEL COMMON */
+
+/* START FULLSCREEN PICTURE SLIDE */
+.gallery .gallery-button-wrapper{
+	margin-bottom:20px;
+	margin-top:20px;
+}
+.gallery .gallery-button-wrapper .btn{
+	height:40px;
+	line-height:40px;
+	margin-left:10px;
+	margin-right:10px;
+}
+.gallery-button-wrapper .gallery-fileupload{
+	display:inline-block;
+	width:480px;
+}
+.gallery-button-wrapper .gallery-close{
+	width:100px;
+	float:right;
+}
+.gallery-button-wrapper .gallery-ok{
+	width:100px;
+	float:right;
+}
+.gallery .gallery-mode-wrapper{
+	position:relative;
+	text-align:center;
+	margin-bottom:10px;
+}
+.gallery .gallery-mode-wrapper span, .gallery .gallery-mode-wrapper div{
+	float:none;
+	vertical-align:top;
+}
+.gallery .gallery-slide-timer-wrapper{
+	text-align:center;
+	margin-bottom:10px;
+}
+.gallery .gallery-slide-timer-wrapper input[type='text']{
+	margin-left:10px;
+	width:40px !important;
+	height:24px;
+}
+.gallery span.switch-button-label{
+	display:inline-block;
+	height:40px;
+	line-height:40px;
+	margin-top:0;
+}
+.gallery .gallery-mode-wrapper .switch-button-background{
+	display:inline-block;
+}
+.gallery .trashcan{
+	position:relative;
+	width:100%;
+	line-height:64px;
+	height:64px;
+	background-color:#efefef;
+	text-align:center;
+	margin-bottom:24px;
+}
+.gallery .trashcan .trashcan-icon{
+	position:absolute;
+	left:50%;
+	top:8px;
+	margin-left:-80px;
+	display:inline-block;
+	overflow:hidden;
+	width:48px;
+	height:48px;
+	background-image:url('/resources/images/trash.png');
+	background-size:auto 48px;
+	background-repeat:no-repeat;
+}
+.gallery .trashcan .trashcan-text{
+	font-size:18px;
+	color:#4d4d4d;
+}
+.gallery .progress-area{
+	position:relative;
+	display:none;
+	width:90%;
+	margin-left:auto;
+	margin-right:auto;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+   	padding-right:50px;
+   	margin-bottom:16px;
+}
+.progress-area .progress-bar-outer{
+	display:inline-block;
+	border:1px solid gray;
+	width:100%;
+	height:30px;
+	text-align:left;
+}
+.progress-bar-outer span{
+	display:inline-block;
+	width:0%;
+	height:30px;
+	background-color:orange;
+}
+.progress-area .progress-percentage{
+	position:absolute;
+	top:1px;
+	right:0;
+	width:40px;
+	text-align:left;
+	height:30px;
+	line-height:30px;
+}
+.gallery p{
+	text-align:center;
+}
+.gallery .aid-text{
+	font-size:12px;
+    color:#ff6600;
+}
+.gallery img{
+	height:200px;
+	width:auto;
+	margin-left:5px;
+	margin-right:10px;
+	margin-bottom:10px;
+	cursor:pointer;
+}
+/* EOF FULLSCREEN PICTURE SLIDE */
+
+/* START COMBINATION */
+#editor-component-combination{
+	width:1080px;
+	margin-left:-540px;
+}
+#editor-component-combination .combination-button-wrapper{
+	margin-top:10px;
+	margin-bottom:10px;
+	height:30px;
+}
+.combination-button-wrapper .btn{
+	float:right;
+	width:100px;
+	height:40px;
+}
+.editor-large-panel-body .title-above{
+	font-weight:bold;
+	font-size:26px;
+	text-align:center;
+	color:#FF6600;
+}
+/* EOF COMBINATION */
+</style>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/component.css?version=1.0' />
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/page.css' />
+<!--  -->
+<div class='color-setting center-control-panel' style='display:none;'>
+	<div class='input-line input-line-background-color'>
+		<span class='tag'>배경색</span><br>
+		<input type='text' id='color-setting-background-input' readonly><!--
+     --><button id='color-setting-background-transparent-button' class='btn'>투명</button>
+	</div>
+	<div class='input-line input-line-background-transparency'>
+		<span class='tag'>불투명도</span><br>
+		<span class='slider' id='transparency-slider'></span>
+		<span class='slider-value' id='transparency-value'>0</span>
+		<div style='height:8px;'></div>
+	</div>
+	<div class='input-line input-line-background-image'>
+		<span class='tag'>배경이미지</span><br>
+		<input type='text' id='color-setting-background-image-input' readonly><!--
+	 --><button id='color-setting-background-image-delete-button' class='btn'>없음</button>
+		<div class='background-mode'>
+			<img src='/resources/images/background_fullscreen.png' class='background-mode-full'>
+			<img src='/resources/images/background_repeat.png' class='background-mode-repeat'>
+			<br>
+			<span class='background-mode-tag'>전체배경</span>
+			<span class='background-mode-tag'>반복배경</span>
+			<br>
+		</div>
+	</div>
+	<div class='input-line input-line-hover'>
+		<span class='tag hassub'>롤오버 이펙트</span><br>
+		<div class='sub-input-line'>
+			<span class='subtag'>배경 롤오버 색</span><br>
+			<input type='text' id='color-setting-hover-background-input' readonly><!--
+		 --><button id='color-setting-hover-background-delete-button' class='btn'>없음</button>
+		</div>
+		<div class='sub-input-line'>
+			<span class='subtag'>글자 롤오버 색</span><br>
+			<input type='text' id='color-setting-hover-text-input' readonly><!--
+		 --><button id='color-setting-hover-text-delete-button' class='btn'>없음</button>
+		</div>
+	</div>
+	<div class='input-line input-line-border'>
+		<span class='tag'>테두리 색</span><br>
+		<input type='text' id='color-setting-border-input' readonly><button id='color-setting-border-delete-button' class='btn'>없음</button>
+	</div>
+	<div class='input-line input-line-font-color' style='display:none;'>
+		<span class='tag'>폰트 색</span>
+		<input type='text' id='color-setting-fontcolor-input' readonly>
+	</div>
+	<div class='input-line input-line-margin'>
+		<span class='tag'>간격</span>
+		<div>
+			<input type='text' id='color-setting-margin-left-input' class='color-setting-input-small color-setting-input-margin'>
+			<input type='text' id='color-setting-margin-right-input' class='color-setting-input-small color-setting-input-margin'>
+			<input type='text' id='color-setting-margin-top-input' class='color-setting-input-small color-setting-input-margin'>
+			<input type='text' id='color-setting-margin-bottom-input' class='color-setting-input-small color-setting-input-margin'>
+		</div>
+		<div>
+			<span class='input-tag'>왼쪽</span><span class='input-tag'>오른쪽</span><span class='input-tag'>위</span><span class='input-tag'>아래</span>
+		</div>
+	</div>
+	<div class='input-line input-line-zindex' style='display:none;'>
+		<span class='tag'>레이어 인덱스 (z-index)</span>
+		<input type='text' id='color-setting-zindex-input' class='color-setting-input-small'>
+		<br><br>
+	</div>
+	<div class='input-line input-line-placeholder'>
+		<span class='tag'>안내 글</span>
+		<input type=text id='color-setting-placeholder-input'>
+	</div>
+	<div class='input-line input-line-hyperlink'>
+		<span class='tag'>하이퍼 링크</span>
+		<input type='text' id='color-setting-hyperlink-input'>
+		<select id='color-setting-hyperlink-target-input'>
+			<option value='' selected disabled>링크를 열 창을 선택해주세요</option>
+			<option value='_blank'>새창에서 열기</option>
+			<option value='_self'>현재 창에서 열기</option>
+		</select>
+	</div>
+	<div class='input-line input-line-lazy-loading'>
+		<span class='tag hasvalue'>이미지 lazy loading</span>
+		<button id='color-setting-lazy-loading-input' class='color-setting-lazy-loading-input color-setting-toggle-button' data-status='on'></button>
+	</div>
+	<div class='input-line input-line-mobile'>
+		<span class='tag hassub'>모바일 속성</span>
+		<div id='mobile-show' class='sub-input-line input-line-mobile-show'>
+			<span class='subtag'>모바일에서 표시</span>
+			<button id='color-setting-mobile-show-input' class='color-setting-mobile-show-input color-setting-toggle-button' data-status='on'></button>
+		</div>
+		<div id='mobile-width' class='sub-input-line input-line-mobile-maxwidth'>
+			<span class='subtag'>넓이 (부모 컨테이너 대비 사이즈)</span >
+			<input type='text' id='color-setting-mobile-maxwidth-input' class='color-setting-input-small'>
+		</div>
+		<div id='mobile-fontsize' class='sub-input-line input-line-mobile-fontsize'>
+			<span class='subtag'>모바일 폰트 사이즈</span>
+			<input type='text' id='color-setting-mobile-fontsize-input' class='color-setting-input-small'>
+			<span style='display:inline-block; margin-right:4px; font-size:10px;'>원본 크기: </span>
+			<span class='original-fontsize' style='font-size:10px;'></span>
+		</div>
+	</div>
+	<div class='center-control-panel-button-wrapper'>
+		<button class='btn' id='color-restore' onclick='color_setting_restore();'>상태복구</button>
+		<button class='btn' id='color-close' onclick='color_setting_hide();'>닫기</button>
+	</div>
+</div>
+<!--  -->
+<div class='center-control-panel' id='info-window' style='display:none;'>
+	<div class='input-line'>
+		<span class='tag'>영역 넓이</span>
+		<div class='width-mode'>
+			<img src='/resources/images/background_fullscreen.png' class='width-mode-full'>
+			<img src='/resources/images/960px.png' class='width-mode-not-full'>
+			<br>
+			<span class='width-mode-tag'>전체넓이</span>
+			<span class='width-mode-tag'>960PX</span>
+			<br>
+		</div>
+	</div>
+	<div class='input-line input-line-background-color'>
+		<span class='tag'>배경색</span>
+		<input type='text' id='background-color-input' readonly><!--
+		--><button id='background-color-transparent-button' class='btn'>투명</button>
+	</div>
+	<div class='input-line input-line-background-image'>
+		<span class='tag'>배경이미지</span>
+		<input type='text' id='background-image-input' readonly><!--
+		--><button id='background-image-delete-button' class='btn'>없음</button>
+		<div class='background-mode'>
+			<img src='/resources/images/background_fullscreen.png' class='background-mode-full'>
+			<img src='/resources/images/background_repeat.png' class='background-mode-repeat'>
+			<br>
+			<span class='background-mode-tag'>전체배경</span>
+			<span class='background-mode-tag'>반복배경</span>
+			<br>
+		</div>
+	</div>
+	<div class='input-line'>
+		<span class='tag'>스크롤 포인트</span>
+		<select id='info-window-scrollpoint-input'>
+			<option value=''>없음</option>
+		</select>
+	</div>
+	<div class='input-line'>
+		<span class='tag'>작업</span>
+		<select id='info-window-action'>
+			<option value='' disabled selected>작업을 선택해 주세요</option>
+			<option value='0' class='info-window-action-option'>화이트 스페이스 정리</option>
+			<option value='1' class='info-window-action-option'>상단 공간 생성 (내부)</option>
+			<option value='2' class='info-window-action-option'>하단 공간 생성 (내부)</option>
+			<option value='3' class='info-window-action-option'>상단 공간 생성 (외부)</option>
+			<option value='4' class='info-window-action-option'>하단 공간 생성 (외부)</option>
+			<option value='5' class='info-window-action-option'>영역 삭제</option>
+		</select>
+	</div>
+	<div class='input-line'>
+		<span class='tag'>내부 아이템 선택</span>
+		<select id ='info-window-select-item-input'></select>
+	</div>
+	<div class='center-control-panel-button-wrapper'>
+		<button class='btn' id='info-window-close' onclick='info_window_close();'>닫기</button>
+	</div>
+</div>
+
+<!--  -->
+<div id='editor-message-panel' style='display:none;'>
+	<span class='editor-message-text'></span>
+</div>
+<!--  -->
+
+<!--  -->
+<div id='editor-picture-slide' class='editor-large-panel border-shadow' style='display:none;'>
+	<iframe id='file-upload-target' name='file-upload-target' style='position:absolute;top:0;left:0;width:0px;height:0px;border:0px solid #fff;'></iframe>
+	<form action="/requestreceiver/" method="post" enctype="multipart/form-data" class='upload-form' id='gallery-file-upload-form' style='position:absolute; width:1px; height:1px; overflow:hidden;'>
+		<input type='text' name='id' value='{{user_info.service.id}}' style='display:none;'>
+		<input type='text' name='req_type' value='file_upload' style='display:none;'>
+		<input type='text' name='file_type' value='PAGE_PICTURE' style='display:none;'>
+		<input type='text' name='uuid' class='uuid' value='' style='display:none;'>
+		<input type='text' name='tag' class='tag' value='{{tag}}' style='display:none'>
+		<input type="file" name="file" class='gallery-file-input' id='gallery-file-input' accept='image/bmp, image/png, image/jpeg' multiple>
+		<input type="submit" id='gallery-file-submit' value='submit' style='display:none;'>
+	</form>
+	<div class='gallery editor-large-panel-body'>
+		<div class='gallery-button-wrapper'>
+			<label for='gallery-file-input'><span class='gallery-fileupload btn'>사진 업로드</span></label>
+			<button class='gallery-ok btn' onclick='apply_picture_slide();'>확인</button>
+			<button class='gallery-close btn' onclick='hide_picture_slide();'>취소</button>
+		</div>
+		<div class='gallery-mode-wrapper'>
+			<input type='checkbox' class='gallery-width-input'>
+		</div>
+		<div class='gallery-slide-timer-wrapper'>
+			<span>자동재생시간</span>
+			<input type='text' class='gallery-auto-slide-input'>
+			<span class='picture-slide-aid-text'>(0초: 사용안함)</span>
+		</div>
+		<div class='trashcan'>
+			<span class='trashcan-icon'></span><span class='trashcan-text'>삭제</span>
+		</div>
+		<p class='aid-text'>
+			사진의 순서를 변경하시려면 사진을 끌어다가 변경할 위치에 놓으세요.<br>
+			사진을 삭제하시려면 상단 삭제 바에 넣어주세요. <br><br>
+			<span class='picture-slide-aid-text'>사진은 균등한 크기로 올려 주세요.<br></span>
+			<span class='picture-slide-aid-text'>슬라이드의 세로 크기는 아래의 비례식으로 정해집니다.<br></span>
+			<span class='picture-slide-aid-text'>슬라이드 세로 = [사진의 세로 * (960 혹은 모니터 넓이) / 사진의 가로]px<br></span>
+			<span class='picture-slide-aid-text'>오리지널 사진의 넓이가 1600px이 넘어가는 경우 1600px로 리사이즈 됩니다.</span>
+		</p>
+		<div class='progress-area'>
+			<span class='progress-bar-outer'>
+				<span class='progress-bar-inner'>
+				</span>
+			</span>
+			<span class='progress-percentage'>
+				<span class='progress-percentage-number'>
+				</span>%
+			</span>
+		</div>
+	</div>
+</div>
+<!--  -->
+<div id='editor-component-combination' class='editor-large-panel border-shadow' style='display:none;'>
+	<div class='editor-large-panel-body'>
+		<div class='combination-button-wrapper'>
+			<button class='editor-component-combination-close btn' onclick='hide_component_combination();'>닫기</button>
+		</div>
+        <p class='title-above'> 이미지 (2단 구성) </p>
+        <hr>
+        <div class='component-wrapper component-wrapper-display dashed-border zero-font-size' style="padding:0;">
+            <div class='picture-box picture-box-two dashed-border inline-block-fallback box-sizing-fallback'>
+                <div class='image-wrapper dashed-border component-contenteditable' >
+                    <img src='https://kordir.s3.amazonaws.com/images/component/5.jpg'></div>
+            </div>
+            <div class='picture-box picture-box-two dashed-border inline-block-fallback box-sizing-fallback'>
+                <div class='image-wrapper dashed-border component-contenteditable' >
+                    <img src='https://kordir.s3.amazonaws.com/images/component/7.jpg'>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class='buffer' style='height:40px; line-height:40px;'></div>
+		<p class='title-above'> 이미지 - 텍스트 (3단 구성 X 3) </p>
+		<hr>
+		<div class='component-wrapper component-wrapper-display dashed-border' ><!--
+			--><div class="gap dashed-border component-contenteditable" >&nbsp;</div><!--
+			--><div class='picture-text-vertical-box picture-text-vertical-box-three dashed-border inline-block-fallback box-sizing-fallback'><!--
+				--><div class='image-wrapper dashed-border component-contenteditable' ><img src='https://kordir.s3.amazonaws.com/images/component/kitten.jpg'></div><!--
+				--><div class='main-title dashed-border component-contenteditable' > Lorem Ipsum </div><!--
+				--><div class='sub-text dashed-border component-contenteditable' > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div><!--
+			--></div><!--
+			--><div class='picture-text-vertical-box picture-text-vertical-box-three dashed-border inline-block-fallback box-sizing-fallback'><!--
+				--><div class='image-wrapper dashed-border component-contenteditable' ><img src='https://kordir.s3.amazonaws.com/images/component/kitten.jpg'></div><!--
+				--><div class='main-title dashed-border component-contenteditable' > Lorem Ipsum </div><!--
+				--><div class='sub-text dashed-border component-contenteditable' > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div><!--
+			--></div><!--
+			--><div class='picture-text-vertical-box picture-text-vertical-box-three dashed-border picture-text-vertical-box-last inline-block-fallback box-sizing-fallback'><!--
+				--><div class='image-wrapper dashed-border component-contenteditable' ><img src='https://kordir.s3.amazonaws.com/images/component/kitten.jpg'></div><!--
+				--><div class='main-title dashed-border component-contenteditable' > Lorem Ipsum </div><!--
+				--><div class='sub-text dashed-border component-contenteditable' > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div><!--
+			--></div><!--
+			--><div class="gap dashed-border component-contenteditable" >&nbsp;</div><!--
+		--></div>
+		<hr>
+		<div class='buffer' style='height:40px; line-height:40px;'></div>
+
+		<p class='title-above'> 이미지 - 텍스트 (3단 구성 X 4) </p>
+		<hr>
+		<div class='component-wrapper component-wrapper-display dashed-border'><!--
+			--><div class="gap dashed-border component-contenteditable" >&nbsp;</div><!--
+			--><div class='picture-text-vertical-box picture-text-vertical-box-four dashed-border inline-block-fallback box-sizing-fallback'><!--
+				--><div class='image-wrapper dashed-border component-contenteditable' ><img src='https://kordir.s3.amazonaws.com/images/component/kitten_2.jpg'></div><!--
+				--><div class='main-title dashed-border component-contenteditable' > Lorem Ipsum </div><!--
+				--><div class='sub-text dashed-border component-contenteditable' > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div><!--
+			--></div><!--
+			 --><div class='picture-text-vertical-box picture-text-vertical-box-four dashed-border inline-block-fallback box-sizing-fallback'><!--
+				--><div class='image-wrapper dashed-border component-contenteditable' ><img src='https://kordir.s3.amazonaws.com/images/component/kitten_2.jpg'></div><!--
+				--><div class='main-title dashed-border dashed-border component-contenteditable' > Lorem Ipsum </div><!--
+				--><div class='sub-text dashed-border dashed-border component-contenteditable' > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div><!--
+			--></div><!--
+			 --><div class='picture-text-vertical-box picture-text-vertical-box-four dashed-border inline-block-fallback box-sizing-fallback'><!--
+				--><div class='image-wrapper dashed-border component-contenteditable' ><img src='https://kordir.s3.amazonaws.com/images/component/kitten_2.jpg'></div><!--
+				--><div class='main-title dashed-border component-contenteditable' > Lorem Ipsum </div><!--
+				--><div class='sub-text dashed-border component-contenteditable' > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div><!--
+			--></div><!--
+			 --><div class='picture-text-vertical-box picture-text-vertical-box-four dashed-border picture-text-vertical-box-last inline-block-fallback box-sizing-fallback'><!--
+				--><div class='image-wrapper dashed-border component-contenteditable' ><img src='https://kordir.s3.amazonaws.com/images/component/kitten_2.jpg'></div><!--
+				--><div class='main-title dashed-border component-contenteditable' > Lorem Ipsum </div><!--
+				--><div class='sub-text dashed-border component-contenteditable' > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div><!--
+			--></div><!--
+			--><div class="gap dashed-border component-contenteditable" >&nbsp;</div><!--
+		--></div>
+		<hr>
+		<div class='buffer' style='height:40px; line-height:40px;'></div>
+
+		<p class='title-above'> 이미지 - 텍스트 (3단 구성 X 5) </p>
+		<hr>
+		<div class='component-wrapper component-wrapper-display dashed-border' ><!--
+			--><div class="gap dashed-border component-contenteditable" >&nbsp;</div><!--
+			--><div class='picture-text-vertical-box picture-text-vertical-box-five dashed-border inline-block-fallback box-sizing-fallback'><!--
+				--><div class='image-wrapper dashed-border component-contenteditable' ><img src='https://kordir.s3.amazonaws.com/images/component/tree.jpg'></div><!--
+				--><div class='main-title dashed-border component-contenteditable' > Lorem Ipsum </div><!--
+				--><div class='sub-text dashed-border component-contenteditable' > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div><!--
+			--></div><!--
+			--><div class='picture-text-vertical-box picture-text-vertical-box-five dashed-border inline-block-fallback box-sizing-fallback'><!--
+				--><div class='image-wrapper dashed-border component-contenteditable' ><img src='https://kordir.s3.amazonaws.com/images/component/tree.jpg'></div><!--
+				--><div class='main-title dashed-border component-contenteditable' > Lorem Ipsum </div><!--
+				--><div class='sub-text dashed-border component-contenteditable' > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div><!--
+			--></div><!--
+			--><div class='picture-text-vertical-box picture-text-vertical-box-five dashed-border inline-block-fallback box-sizing-fallback'><!--
+				--><div class='image-wrapper dashed-border component-contenteditable' ><img src='https://kordir.s3.amazonaws.com/images/component/tree.jpg'></div><!--
+				--><div class='main-title dashed-border component-contenteditable' > Lorem Ipsum </div><!--
+				--><div class='sub-text dashed-border component-contenteditable' > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div><!--
+			--></div><!--
+			--><div class='picture-text-vertical-box picture-text-vertical-box-five dashed-border inline-block-fallback box-sizing-fallback'><!--
+				--><div class='image-wrapper dashed-border component-contenteditable' ><img src='https://kordir.s3.amazonaws.com/images/component/tree.jpg'></div><!--
+				--><div class='main-title dashed-border component-contenteditable' > Lorem Ipsum </div><!--
+				--><div class='sub-text dashed-border component-contenteditable' > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div><!--
+			--></div><!--
+			--><div class='picture-text-vertical-box picture-text-vertical-box-five dashed-border picture-text-vertical-box-last inline-block-fallback box-sizing-fallback'><!--
+				--><div class='image-wrapper dashed-border component-contenteditable' ><img src='https://kordir.s3.amazonaws.com/images/component/tree.jpg'></div><!--
+				--><div class='main-title dashed-border component-contenteditable'> Lorem Ipsum </div><!--
+				--><div class='sub-text dashed-border component-contenteditable'> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div><!--
+			--></div><!--
+			--><div class="gap dashed-border component-contenteditable" >&nbsp;</div><!--
+		--></div>
+		<hr>
+		<div class='buffer' style='height:40px; line-height:40px;'></div>
+		<p class='title-above'> 이미지 - 텍스트 (병렬구조, 이미지 왼쪽) </p>
+		<hr>
+		<div class='component-wrapper component-wrapper-picture-text-horizontal component-wrapper-display dashed-border component-align-left' >
+			<table class='image-wrapper dashed-border component-table inline-block-fallback box-sizing-fallback'><tbody><tr><td class='component-table-td' style='width:100%; height:100%;'>
+				<div class='dashed-border component-contenteditable' style='width: 100%; min-width:100px; min-height:100px;'> <img src='https://kordir.s3.amazonaws.com/images/component/lorem_ipsum.png' style='width:300px;'></div>
+			</td></tr></tbody></table>
+		 	<table class='text-wrapper text-wrapper-right dashed-border component-table inline-block-fallback box-sizing-fallback'><tbody><tr><td class='component-table-td' style='width:100%; height:100%;'>
+				<div class='main-title dashed-border component-contenteditable' > Lorem Ipsum </div>
+			 	<div class='sub-text dashed-border component-contenteditable' > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+ 			</td></tr></tbody></table>
+		</div>
+		<hr>
+		<div class='buffer' style='height:40px; line-height:40px;'></div>
+
+		<p class='title-above'> 이미지 - 텍스트 (병렬구조, 이미지 오른쪽) </p>
+		<hr>
+		<div class='component-wrapper component-wrapper-picture-text-horizontal component-wrapper-display dashed-border component-align-right' >
+			 <table class='text-wrapper text-wrapper-left dashed-border component-table inline-block-fallback box-sizing-fallback'><tbody><tr><td class='component-table-td' style='width:100%; height:100%;'>
+				 <div class='main-title dashed-border component-contenteditable' > Lorem Ipsum </div>
+				 <div class='sub-text dashed-border component-contenteditable' > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+			 </td></tr></tbody></table>
+			 <table class='image-wrapper dashed-border component-table inline-block-fallback box-sizing-fallback'><tbody><tr><td class='component-table-td' style='width:100%; height:100%;'>
+			 	<div class='dashed-border component-contenteditable' style='width: 100%; min-width:100px; min-height:100px;'> <img src='https://kordir.s3.amazonaws.com/images/component/lorem_ipsum.png' style='width:260px;'></div>
+			</td></tr></tbody></table>
+		</div>
+		<hr>
+		<div class='buffer' style='height:40px; line-height:40px;'></div>
+
+		<p class='title-above'> 이미지 - 텍스트 (이미지 전체 넓이) </p>
+		<hr>
+		<div class='component-wrapper component-wrapper-picture-text-vertical component-wrapper-display dashed-border'><!--
+			 --><div class='image-wrapper dashed-border component-contenteditable' ><img src='https://kordir.s3.amazonaws.com/images/component/suwon_hwaseong.jpg'></div><!--
+			 --><div class="gap dashed-border component-contenteditable" >&nbsp;</div><!--
+			 --><div class='text-wrapper dashed-border'><!--
+				 --><div class='text-left-block main-title dashed-border component-contenteditable' >TITLE</div><!--
+				 --><div class='text-right-block sub-text dashed-border component-contenteditable' >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas est dolor, sagittis lacinia sollicitudin a, dapibus consectetur enim. Nunc in massa ligula. Mauris tincidunt tristique ante a malesuada. Sed volutpat ultrices tempor. Donec laoreet pharetra orci, at pulvinar lorem aliquam sit amet. Sed purus neque, sollicitudin ac eleifend et, fringilla vitae libero.</div><!--
+			 --></div><!--
+			 --><div class="gap dashed-border component-contenteditable" >&nbsp;</div><!--
+		 --></div>
+		<hr>
+		<div class='buffer' style='height:40px; line-height:40px;'></div>
+
+		<p class='title-above'>자주 묻는 질문</p>
+		<hr>
+		<div class='component-wrapper component-wrapper-faq component-wrapper-display dashed-border'><!--
+			 --><div class='buffer' style='height:0px;'>&nbsp;</div><!--
+			 --><h2 class="header dashed-border component-contenteditable" >자주 묻는 질문</h2><!--
+			 --><div class='faq-row dashed-border'><!--
+				 --><div class='faq-line faq-line-question box-sizing-fallback'><!--
+					 --><div class='faq-bullet dashed-border component-contenteditable' >Q.</div><!--
+					 --><div class='faq-text dashed-border component-contenteditable box-sizing-fallback' ><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit?</div><!--
+				 --></div><!--
+				 --><div class='faq-line faq-line-answer box-sizing-fallback'><!--
+					 --><div class='faq-bullet dashed-border component-contenteditable' >A.</div><!--
+					 --><div class='faq-text dashed-border component-contenteditable box-sizing-fallback' ><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div><!--
+				 --></div><!--
+			 --></div><!--
+			 --><div class="gap dashed-border component-contenteditable" >&nbsp;</div><!--
+			 --><div class='faq-row dashed-border'><!--
+				 --><div class='faq-line faq-line-question box-sizing-fallback'><!--
+					 --><div class='faq-bullet dashed-border component-contenteditable' >Q.</div><!--
+					 --><div class='faq-text dashed-border component-contenteditable box-sizing-fallback' ><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit?</div><!--
+				 --></div><!--
+				 --><div class='faq-line faq-line-answer box-sizing-fallback'><!--
+					 --><div class='faq-bullet dashed-border component-contenteditable' >A.</div><!--
+					 --><div class='faq-text dashed-border component-contenteditable box-sizing-fallback' ><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div><!--
+				 --></div><!--
+			 --></div><!--
+			 --><div class="gap dashed-border component-contenteditable" >&nbsp;</div><!--
+			 --><div class='faq-row dashed-border'><!--
+				 --><div class='faq-line faq-line-question box-sizing-fallback'><!--
+					 --><div class='faq-bullet dashed-border component-contenteditable' >Q.</div><!--
+					 --><div class='faq-text dashed-border component-contenteditable box-sizing-fallback' ><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit?</div><!--
+				 --></div><!--
+				 --><div class='faq-line faq-line-answer box-sizing-fallback'><!--
+					 --><div class='faq-bullet dashed-border component-contenteditable' >A.</div><!--
+					 --><div class='faq-text dashed-border component-contenteditable box-sizing-fallback' ><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div><!--
+				 --></div><!--
+			 --></div><!--
+			 --><div class="gap dashed-border component-contenteditable" >&nbsp;</div><!--
+			 --><div class='faq-row dashed-border'><!--
+				 --><div class='faq-line faq-line-question box-sizing-fallback'><!--
+					 --><div class='faq-bullet dashed-border component-contenteditable' >Q.</div><!--
+					 --><div class='faq-text dashed-border component-contenteditable box-sizing-fallback' ><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit?</div><!--
+				 --></div><!--
+				 --><div class='faq-line faq-line-answer box-sizing-fallback'><!--
+					 --><div class='faq-bullet dashed-border component-contenteditable' >A.</div><!--
+					 --><div class='faq-text dashed-border component-contenteditable box-sizing-fallback' ><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div><!--
+				 --></div><!--
+			 --></div><!--
+			 --><div class="gap dashed-border component-contenteditable" >&nbsp;</div><!--
+		 --></div>
+		<hr>
+		<div class='buffer' style='height:40px; line-height:40px;'></div>
+
+		<p class='title-above'>멤버 소개</p><hr>
+		<div class='component-wrapper component-wrapper-team component-wrapper-display dashed-border' >
+			<div class='buffer' style='height:0px;'>&nbsp;</div>
+            <h2 class="header dashed-border component-contenteditable" >팀 소개</h2>
+			<div class='member-row dashed-border'>
+            	<div class='member-picture dashed-border component-contenteditable inline-block-fallback' >
+            		<img src="https://kordir.s3.amazonaws.com/images/component/nikola_tesla.jpg" alt='Nikola Tesla'>
+            	</div>
+            	<div class="member-text dashed-border inline-block-fallback">
+	                <div class='member-name dashed-border component-contenteditable' >Nikola Tesla <small class='dashed-border  component-contenteditable' ><span>&nbsp;</span>Scientist</small></div>
+	                <p class='dashed-border component-contenteditable' >Nikola Tesla was a Serbian American inventor, electrical engineer, mechanical engineer, and futurist best known for his contributions to the design of the modern alternating current (AC) electricity supply system.Tesla gained experience in telephony and electrical engineering before immigrating to the United States in 1884 to work for Thomas Edison in New York City. He soon struck out on his own with financial backers, setting up laboratories and companies to develop a range of electrical devices.</p>
+                </div>
+			</div>
+			<div class="gap dashed-border component-contenteditable" >&nbsp;</div>
+			<div class='member-row dashed-border'>
+           		<div class='member-picture dashed-border component-contenteditable inline-block-fallback'>
+           			<img src="https://kordir.s3.amazonaws.com/images/component/robert_schumann.jpg" alt='Robert Schumann'>
+           		</div>
+            	<div class="member-text dashed-border inline-block-fallback">
+	            	<div class='member-name dashed-border component-contenteditable' >Robert Schumann <small class='dashed-border  component-contenteditable' ><span>&nbsp;</span>Composer</small></div>
+            		<p class='dashed-border component-contenteditable' >Robert Schumann was a German composer and influential music critic. He is widely regarded as one of the greatest composers of the Romantic era. Schumann left the study of law, intending to pursue a career as a virtuoso pianist. He had been assured by his teacher Friedrich Wieck that he could become the finest pianist in Europe, but a hand injury ended this dream. Schumann then focused his musical energies on composing.</p>
+ 				</div>
+            </div>
+             <div class="gap dashed-border component-contenteditable" >&nbsp;</div>
+            <div class='member-row dashed-border'>
+            	<div class='member-picture dashed-border component-contenteditable inline-block-fallback' >
+            		<img src="https://kordir.s3.amazonaws.com/images/component/rimbaud.jpg" alt='Arthur Rimbaud'>
+            	</div>
+            	<div class="member-text dashed-border inline-block-fallback">
+               		<div class='member-name dashed-border component-contenteditable' >Arthur Rimbaud <small class='dashed-border  component-contenteditable' ><span>&nbsp;</span>Poet</small></div>
+                    <p class='dashed-border component-contenteditable' >Jean Nicolas Arthur Rimbaud was a French poet born in Charleville, Ardennes. He influenced modern literature and arts, inspired various musicians, and prefigured surrealism. He started writing poems at a very young age, while still in primary school, and stopped completely before he turned 21. He was mostly creative in his teens (17–20). His "genius, its flowering, explosion and sudden extinction, still astonishes". </p>
+                </div>
+            </div>
+        	<div class="gap dashed-border component-contenteditable" >&nbsp;</div>
+        	<div class='member-row dashed-border'>
+				<div class='member-picture dashed-border component-contenteditable inline-block-fallback' >
+					<img src="https://kordir.s3.amazonaws.com/images/component/dostoevsky.jpg" alt='Fyodor Dostoyevsky'>
+				</div>
+	            <div class="member-text dashed-border inline-block-fallback">
+	            	<div class='member-name dashed-border component-contenteditable' >Fyodor Dostoyevsky <small class='dashed-border  component-contenteditable' ><span>&nbsp;</span>Novelist</small></div>
+	                <div class='dashed-border component-contenteditable' >Fyodor Mikhailovich Dostoyevsky, sometimes transliterated Dostoevsky, was a Russian novelist, short story writer, essayist, journalist and philosopher. Dostoyevsky's literary works explore human psychology in the context of the troubled political, social, and spiritual atmosphere of 19th-century Russia.</div>
+	            </div>
+            </div>
+            <div class="gap dashed-border component-contenteditable" >&nbsp;</div>
+        </div>
+        <hr><div class='buffer' style='height:40px; line-height:40px;'></div>
+
+		<p class='title-above'> 연락 폼 </p><hr>
+		<div class='component-wrapper-contact component-wrapper component-wrapper-display dashed-border' >
+			 <div class="gap dashed-border component-contenteditable" >&nbsp;</div>
+			 <div class='contact-box dashed-border component-contenteditable inline-block-fallback box-sizing-fallback' >&nbsp;</div>
+			 <div class="contact-form inline-block-fallback inline-block-fallback box-sizing-fallback">
+				 <div class="contact-top dashed-border">
+					 <div class="main-title dashed-border component-contenteditable" >문의 사항</div>
+					 <div class="sub-text dashed-border component-contenteditable" >문의사항이 있으시면 내용을 기입해 주세요. 확인 즉시 연락드리겠습니다.</div>
+				 </div>
+				 <div class="contact-form-tag dashed-border component-contenteditable" >이름</div>
+				 <input type="text" class="contact-name">
+				 <div class="contact-form-tag dashed-border component-contenteditable" >이메일 주소</div>
+				 <input type="text" class="contact-email">
+				 <div class="contact-form-tag dashed-border component-contenteditable" >제목</div>
+				 <input type="text" class="contact-title">
+				 <div class="contact-form-tag dashed-border component-contenteditable" >내용</div>
+				 <textarea class="contact-content" rows="10"></textarea>
+				<button class="btn">작성</button>
+			 </div>
+			 <div class='contact-box dashed-border component-contenteditable inline-block-fallback box-sizing-fallback' >&nbsp;</div>
+			 <div class="gap dashed-border component-contenteditable" >&nbsp;</div>
+		</div>
+		<hr>
+		<div class='buffer' style='height:40px; line-height:40px;'></div>
+
+		<p class='title-above'> 위치 - 연락 폼 </p>
+		<hr>
+		<div class='component-wrapper component-wrapper-contact component-wrapper-display dashed-border' ><!--
+			 --><div class="gap dashed-border component-contenteditable" >&nbsp;</div><!--
+			 --><div class='contact-info inline-block-fallback box-sizing-fallback'><!--
+				 --><div class='contact-top dashed-border'><!--
+					 --><div class='main-title dashed-border component-contenteditable' >오시는 길</div><!--
+					 --><div class='sub-text dashed-border component-contenteditable' >&nbsp;</div><!--
+				 --></div><!--
+				 --><div class='contact-info-googlemap dashed-border'><!--
+					 --><img src='https://kordir.s3.amazonaws.com/images/component/googlemap.jpg'><!--
+				 --></div><!--
+				 --><div class='contact-info-text dashed-border component-contenteditable' ><img src='/resources/images/location_icon.png' class='contact-info-icon'>&nbsp;&nbsp;서울특별시 송파구 오금동 7</div><!--
+				 --><div class='contact-info-text dashed-border component-contenteditable' ><img src='/resources/images/phone_icon.png' class='contact-info-icon'>&nbsp;&nbsp;070-7070-7070</div><!--
+				 --><div class='contact-info-text dashed-border component-contenteditable' ><img src='/resources/images/email_icon.png' class='contact-info-icon'>&nbsp;&nbsp;contact@abccompany.com</div><!--
+				 --><div class='contact-info-text dashed-border component-contenteditable' >&nbsp;</div><!--
+				 --></div><div class='contact-form inline-block-fallback box-sizing-fallback'><!--
+				 --><div class='contact-top dashed-border'><!--
+					 --><div class='main-title dashed-border component-contenteditable' >문의 사항</div><!--
+					 --><div class='sub-text dashed-border component-contenteditable' >문의사항이 있으시면 내용을 기입해 주세요. 확인 즉시 연락드리겠습니다.</div><!--
+				 --></div><!--
+				 --><div class='contact-form-tag dashed-border component-contenteditable' >이름</div><!--
+				 --><input type='text' class='contact-name'><!--
+				 --><div class='contact-form-tag dashed-border component-contenteditable' >이메일 주소</div><!--
+				 --><input type='text' class='contact-email'><!--
+				 --><div class='contact-form-tag dashed-border component-contenteditable' >제목</div><!--
+				 --><input type='text' class='contact-title'><!--
+				 --><div class='contact-form-tag dashed-border component-contenteditable' >내용</div><!--
+				 --><textarea class='contact-content' rows='10'></textarea><!--
+				 --><button class='btn'>작성</button><!--
+			 --></div><!--
+			 --><div class="gap dashed-border component-contenteditable" >&nbsp;</div><!--
+		 --></div>
+		<hr>
+		<div class='buffer' style='height:40px; line-height:40px;'></div>
+	</div>
+</div>
+<!--  -->
+<link rel="stylesheet" media="screen" type="text/css" href="/resources/plugins/colorpicker/css/colorpicker.css" />
+<script type="text/javascript" src="/resources/plugins/colorpicker/js/colorpicker.js"></script>
+<script type="text/javascript" src="/resources/plugins/autocompletion/autocompletion.js"></script>
+<script>
+var colorSettingTarget = null;
+var colorSettingCallback = null;
+var galleryTimer = null;
+var galleryCallback = null;
+var componentCallback = null;
+$(function(){
+	$(".color-setting #color-setting-background-input").ColorPicker({
+		onShow: function(obj){
+			$(obj).fadeIn(200);
+			return false;
+		},
+		onSubmit: function(hsb, hex, rgb, el) {
+		},
+		onBeforeShow: function () {
+			var val = this.value;
+			if(val == stringTable.transparent){
+				$(this).ColorPickerSetColor('#ffffff');
+			} else {
+				$(this).ColorPickerSetColor(this.value);
+			}
+			$(".colorpicker_submit").hide();
+		},
+		onHide: function(){
+			var val = $(".color-setting #color-setting-background-input").val();
+			if( $(colorSettingTarget).hasClass('editor-input') == true ){
+				$(".tree-view .tree-view-line .tree-view-line-value #background-color-input").val(val);
+				$(".tree-view .tree-view-line .tree-view-line-value #background-color-input").trigger('change');
+			}
+		},
+		onChange: function (hsb, hex, rgb) {
+			$(".color-setting #color-setting-background-input").val('#' + hex);
+			$(colorSettingTarget).css({
+				'backgroundColor': '#' + hex
+			});
+		}
+	});
+	$(".color-setting .input-line #transparency-slider").slider({
+	    range: "min",
+	    min: 0,
+	    max: 100,
+	    value: 100,
+	    step: 1,
+	    slide: function( event, ui ) {
+	    	var backgroundColor = $(colorSettingTarget).css('background-color');
+	    	var r,g,b,a = 0;
+	    	if(backgroundColor.indexOf('#') != -1){
+	    		r = parseInt(backgroundColor[1] + backgroundColor[2], 16);
+	    		g = parseInt(backgroundColor[3] + backgroundColor[4], 16);
+	    		b = parseInt(backgroundColor[5] + backgroundColor[6], 16);
+		    	if(r < 10)
+		    		r = '0' + r;
+	    		if(g < 10)
+		    		g = '0' + g;
+	    		if(b < 10)
+		    		b = '0' + b;
+	    	} else if (backgroundColor.indexOf('rgb') != -1){
+	    		backgroundColor = backgroundColor.split('(')[1];
+	    		backgroundColor = backgroundColor.split(')')[0];
+	    		backgroundColor = backgroundColor.split(',');
+	    		r = backgroundColor[0];
+	    		g = backgroundColor[1];
+	    		b = backgroundColor[2];
+	    	}
+	    	$(".color-setting .input-line #transparency-value").text(ui.value);
+	    	a = ui.value * 0.01;
+	    	var background = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
+	    	if( $(".color-setting .input-line #color-setting-background-input").val() != stringTable.transparent )
+				$(colorSettingTarget).css('background', background);
+	    }
+	});
+	$(".color-setting #color-setting-fontcolor-input").ColorPicker({
+		onShow: function(obj){
+			$(obj).fadeIn(200);
+			return false;
+		},
+		onSubmit: function(hsb, hex, rgb, el) {
+		},
+		onBeforeShow: function () {
+			$(this).ColorPickerSetColor(this.value);
+		},
+		onChange: function (hsb, hex, rgb) {
+			$(".color-setting #color-setting-fontcolor-input").val('#' + hex);
+			$(colorSettingTarget).css('color', '#' + hex);
+		},
+		onHide: function(){
+		}
+	});
+	$(".color-setting #color-setting-border-input").ColorPicker({
+		onShow: function(obj){
+			$(obj).fadeIn(200);
+			return false;
+		},
+		onSubmit: function(hsb, hex, rgb, el) {
+		},
+		onBeforeShow: function () {
+			$(this).ColorPickerSetColor(this.value);
+		},
+		onChange: function (hsb, hex, rgb) {
+			$(".color-setting #color-setting-border-input").val('#' + hex);
+			var border = '1px solid ' + '#' + hex;
+			$(colorSettingTarget).css('border', border);
+		},
+		onHide: function(){
+		}
+	});
+	$(".color-setting #color-setting-background-transparent-button").bind('click', function(){
+		$(".color-setting #color-setting-background-input").val(stringTable.transparent);
+		$(colorSettingTarget).css('background-color', 'transparent');
+		if( $(colorSettingTarget).hasClass('editor-input') == true ){
+			$(".tree-view .tree-view-line .tree-view-line-value #background-color-input").val("#ffffff");
+			$(".tree-view .tree-view-line .tree-view-line-value #background-color-input").trigger('change');
+		}
+	});
+
+	$(".color-setting #color-setting-border-delete-button").bind('click', function(){
+		$(".color-setting #color-setting-border-input").val('');
+		$(colorSettingTarget).css('border-color', '');
+	});
+
+	/* background image job here */
+	$(".color-setting #color-setting-background-image-input").bind('change', function(){
+		background_image_attribute_change(null, null, null);
+		if($(".color-setting .input-line-background-image .background-mode .selected-mode").length == 0)
+			$(".color-setting .input-line-background-image .background-mode img").eq(0).addClass('selected-mode');
+	});
+
+	$(".color-setting #color-setting-background-image-input").bind('click', function(){
+		open_background_image_manager(this);
+	});
+
+	$(".color-setting #color-setting-background-image-delete-button").bind('click', function(){
+		$(".color-setting #color-setting-background-image-input").val('');
+		$(".color-setting #color-setting-background-image-input").trigger('change');
+		$(".color-setting .input-line-background-image .background-mode img").removeClass('selected-mode');
+	});
+
+	$(".color-setting .input-line-background-image .background-mode img").bind('click', function(){
+		$(".color-setting .input-line-background-image .background-mode img").removeClass('selected-mode');
+		if($(".color-setting #color-setting-background-image-input").val().length == 0){
+			draw_general_popup(
+					null,
+					null,
+					null,
+					stringTable.firstUploadBackgroundImage,
+					stringTable.ok,
+					null
+				);
+			return;
+		} else {
+			var mode = 0;
+			if( $(this).hasClass('background-mode-fullscreen') == true ){
+				mode = 0;
+			}
+			if( $(this).hasClass('background-mode-repeat') == true ){
+				mode = 1;
+			}
+			$(this).addClass('selected-mode');
+			background_image_attribute_change(null, null, null);
+		}
+	});
+
+	$(".color-setting #color-setting-hover-background-input").ColorPicker({
+		onShow: function(obj){
+			$(obj).fadeIn(200);
+			return false;
+		},
+		onSubmit: function(hsb, hex, rgb, el) {},
+		onBeforeShow: function () {
+			$(this).ColorPickerSetColor(this.value);
+		},
+		onChange: function (hsb, hex, rgb) {
+			$(".color-setting #color-setting-hover-background-input").val('#' + hex);
+		},
+		onHide: function(){}
+	});
+	$(".color-setting #color-setting-hover-text-input").ColorPicker({
+		onShow: function(obj){
+			$(obj).fadeIn(200);
+			return false;
+		},
+		onSubmit: function(hsb, hex, rgb, el) {},
+		onBeforeShow: function () {
+			$(this).ColorPickerSetColor(this.value);
+		},
+		onChange: function (hsb, hex, rgb) {
+			$(".color-setting #color-setting-hover-text-input").val('#' + hex);
+		},
+		onHide: function(){}
+	});
+	$(".color-setting #color-setting-hover-background-delete-button").bind('click', function(){
+		$(this).parent().children('input').val('');
+	});
+	$(".color-setting #color-setting-hover-text-delete-button").bind('click', function(){
+		$(this).parent().children('input').val('');
+	});
+
+	$(".color-setting #color-setting-placeholder-input").bind('change', function(){
+		tinymce.activeEditor.dom.setAttrib(colorSettingTarget, 'placeholder', $(this).val());
+	});
+
+	$.widget( "ui.percentagespinner", $.ui.spinner, {
+	    _format: function( value ) { return value + '%'; },
+	    _parse: function(value) { return parseFloat(value); }
+	});
+	$.widget( "ui.pixelspinner", $.ui.spinner, {
+	    _format: function( value ) { return value + 'px'; },
+	    _parse: function(value) { return parseFloat(value); }
+	});
+	$(".color-setting .color-setting-input-margin").pixelspinner({
+		min: 0,
+		stop: function( event, ui ) {
+			$(".color-setting .color-setting-input-margin").trigger('change');
+		}
+	});
+	$(".color-setting .color-setting-toggle-button").bind('mouseup', function(){
+		var status = $(this).attr('data-status');
+		var backgroundColor = '';
+		if(status == 'on'){
+			status = 'off';
+			backgroundColor = '#a6a6a6';
+		} else {
+			status = 'on';
+			backgroundColor = '#ffa500';
+		}
+		$(this).attr('data-status', status);
+		$(this).css('backgroundColor', backgroundColor);
+		$(this).text(status);
+	});
+
+	$(".color-setting #color-setting-mobile-maxwidth-input").percentagespinner({
+		min: -1,
+		max: 100,
+		change: function(event, ui){
+			var val = $(".color-setting #color-setting-mobile-maxwidth-input").val();
+			if(val.indexOf('-') != -1)
+				$(".color-setting #color-setting-mobile-maxwidth-input").val('--');
+		}
+	});
+	$(".color-setting #color-setting-mobile-fontsize-input").pixelspinner({
+		min: -1,
+		change: function(event, ui){
+			var val = $(".color-setting #color-setting-mobile-fontsize-input").val();
+			if(val.indexOf('-') != -1)
+				$(".color-setting #color-setting-mobile-fontsize-input").val('--');
+		}
+	});
+
+	$(".color-setting .color-setting-input-margin").bind('change', function(){
+		var top = $("#color-setting-margin-top-input").val();
+		var right = $("#color-setting-margin-right-input").val();
+		var bottom = $("#color-setting-margin-bottom-input").val();
+		var left = $("#color-setting-margin-left-input").val();
+		var margin = top + ' ' + right + ' ' + bottom + ' ' + left;
+		$(colorSettingTarget).css('margin', margin);
+	});
+
+	$("#info-window .input-line-background-color #background-color-input").ColorPicker({
+		onShow: function(obj){
+			$(obj).fadeIn(200);
+			return false;
+		},
+		onSubmit: function(hsb, hex, rgb, el) {},
+		onBeforeShow: function () {
+			var val = this.value;
+			if(val == stringTable.transparent){
+				$(this).ColorPickerSetColor('#ffffff');
+			} else {
+				$(this).ColorPickerSetColor(this.value);
+			}
+			$(".colorpicker_submit").hide();
+		},
+		onHide: function(){},
+		onChange: function (hsb, hex, rgb) {
+			var inputObj = $("#info-window .input-line-background-color #background-color-input");
+			var target = $(inputObj).data('target');
+			$(inputObj).val('#' + hex);
+			tinymce.activeEditor.dom.setStyle(target, 'background-color', '#' + hex);
+		}
+	});
+	/* START FULLSCREEN PICTURE SLIDE */
+	$("#gallery-file-upload-form #gallery-file-input").bind('change', function(){
+		// IE !!!!!!!!!!
+		if($(this).val().length == 0)
+			return;
+		try{
+			size = this.files[0].size / 1024;
+			var files = this.files;
+			for(var i = 0; i < files.length; i++){
+				var ext = files[i].name.split('.').pop();
+				var size = files[i].size / 1024;
+				if(file_validation('image', ext, size, 10240) == false)
+					return;
+			}
+		} catch(err){
+			size = 0;
+		}
+		document.getElementById("file-upload-target").onload = gallery_image_upload_done;
+		$(this).parent().attr('target', 'file-upload-target');
+		var uuid = generate_uuid();
+		$(this).parent().children('.uuid').val(uuid);
+		document.getElementById("gallery-file-upload-form").action = "/requestreceiver/?X-Progress-ID=" + uuid;
+		galleryTimer = window.setInterval(function(){
+			var obj = {
+				root: '.gallery .progress-area',
+				bar: '.gallery .progress-area .progress-bar-outer span',
+				number: '.gallery .progress-area .progress-percentage .progress-percentage-number'
+			};
+			progress_update(galleryTimer, obj, uuid);
+		}, 1000);
+		$(this).parent().submit();
+		$(".gallery .gallery-item-empty").fadeOut(150);
+		$(".gallery .aid-text").hide();
+		$(".gallery-button-wrapper button").attr('disabled', true);
+		$("input:file").clearInputs();
+	});
+	$("#editor-picture-slide .gallery .trashcan").droppable({
+		drop: function(event, ui){
+			draw_general_popup(
+				function(){
+						$(".trashcan").css('background-color', '#efefef');
+						$(".trashcan").children('.trashcan-icon').css({
+							'background-position': '0px 0px'
+						});
+						$(ui.draggable).remove();
+						if($(".gallery img").length == 0){
+							$(".gallery .gallery-item-empty").show();
+							$(".gallery .aid-text").hide();
+						}
+					},
+					function(){
+						$(".trashcan").css('background-color', '#efefef');
+						$(".trashcan").children('.trashcan-icon').css({
+							'background-position': '0px 0px'
+						});
+					},
+					null,
+					stringTable.deletePicture,
+					stringTable.yes,
+					stringTable.no
+			);
+		},
+		over: function(event, ui){
+			$(this).css('background-color', 'orange');
+			$(this).children('.trashcan-icon').css({
+				'background-position': '-48px 0px'
+			});
+		},
+		out: function(event, ui){
+			$(this).css('background-color', '#efefef');
+			$(this).children('.trashcan-icon').css({
+				'background-position': '0px 0px'
+			});
+		},
+		tolerance: "touch"
+	});
+	$.widget( "ui.secondspinner", $.ui.spinner, {
+		_format: function( value ) { return value + ' 초'; },
+	    _parse: function(value) { return parseFloat(value); }
+	});
+	$("#editor-picture-slide .gallery .gallery-auto-slide-input").secondspinner({
+		min: 0,
+		max: 30,
+		spin: function(event, ui){},
+		change: function(event, ui){}
+	});
+	/* EOF FULLSCREEN PICTURE SLIDE */
+
+
+	/* START COMPONENT */
+	$(".component-wrapper").bind('click', function(){
+		apply_component_combination(this);
+	});
+
+	/* EOF START COMPONENT */
+});
+function set_popup_window_position(window, location){
+	try{
+		$(window).draggable('destroy');
+	} catch(err){}
+
+	$(window).draggable({
+		cursor: 'crosshair',
+		distance: 2
+	});
+	var offset = $("#editor-toolbar").offset();
+	var top = offset.top + $("#editor-toolbar").height();
+	var left = 0;
+	if(location == 'left'){
+		left = $("#editor-input").offset().left;
+	} else if (location == 'center'){
+		left = offset.left + $("#editor").width() / 2 - $(window).width() / 2;
+	} else if (location == 'right'){
+		left = $("#editor-input").offset().left + $("#editor-input").width() - $(window).width() - 20;
+	}
+	$(window).css({
+		'top': top+'px',
+		'left': left+'px',
+		'cursor': 'pointer'
+	});
+}
+function color_setting_show(param){
+	set_popup_window_position($(".color-setting"), 'left');
+
+	var obj = param.selected;
+	var callback = param.callback;
+
+	var dataBackup = {
+		background: '',
+		color: ''
+	};
+
+	colorSettingTarget = obj;
+	colorSettingCallback = callback;
+
+	var INPUT_LINE_STATUS = {
+		BACKGROUND: true,
+		BACKGROUND_IMAGE: true,
+		BACKGROUND_TRANSPARENCY: true,
+		FONT_COLOR: true,
+		BORDER: true,
+		MARGIN: true,
+		ZINDEX: true,
+		PLACEHOLDER: true,
+		HYPERLINK: true,
+		HOVER: true,
+		LAZY_LOADING: true,
+		MOBILE_SHOW: true,
+		MOBILE_MAX_WIDTH: true,
+		MOBILE_FONT_SIZE: true
+	};
+
+	var tagName = obj.tagName.toLowerCase();
+
+	// ALWAYS OFF
+	INPUT_LINE_STATUS.FONT_COLOR = false;
+	INPUT_LINE_STATUS.ZINDEX = false;
+	INPUT_LINE_STATUS.BACKGROUND_IMAGE = false;
+
+	$(".color-setting .input-line").show();
+	$(".color-setting .sub-input-line").show();
+
+	if(!($(obj).hasClass('editor-input') == true || $(obj).hasClass('body-wrapper') == true)){
+		INPUT_LINE_STATUS.BACKGROUND_IMAGE = false;
+	}
+	if(tagName.indexOf('input') != -1 || tagName.indexOf('text') != -1 ||
+			$(obj).hasClass('editor-input') == true ||
+			$(obj).hasClass('body-wrapper') == true){
+		INPUT_LINE_STATUS.HYPERLINK = false;
+	}
+	if($(obj).hasClass('editor-input') == true){
+		INPUT_LINE_STATUS.MOBILE_SHOW = false;
+	}
+	if($(obj).hasClass('body-wrapper') == true){
+		INPUT_LINE_STATUS.MARGIN = false;
+		INPUT_LINE_STATUS.HOVER = false;
+		INPUT_LINE_STATUS.HYPERLINK = false;
+		INPUT_LINE_STATUS.MOBILE_FONT_SIZE = false;
+		INPUT_LINE_STATUS.BORDER = false;
+	}
+	if(!(tagName.indexOf('table') != -1 || tagName.indexOf('div') != -1 || tagName.indexOf('span') || tagName.indexOf('strong'))){
+		INPUT_LINE_STATUS.BACKGROUND_TRANSPARENCY = false;
+	}
+	if(!(tagName.indexOf('input') != -1 || tagName.indexOf('text') != -1 )){
+		INPUT_LINE_STATUS.PLACEHOLDER = false;
+	}
+	if(tagName.indexOf('input') != -1 || tagName.indexOf('text') != -1 ){
+		INPUT_LINE_STATUS.MOBILE_FONT_SIZE = false;
+		INPUT_LINE_STATUS.HOVER = false;
+	}
+	if(tagName.indexOf('img') != -1){
+		INPUT_LINE_STATUS.BACKGROUND = false;
+		INPUT_LINE_STATUS.BACKGROUND_IMAGE = false;
+		INPUT_LINE_STATUS.PLACEHOLDER = false;
+		INPUT_LINE_STATUS.HOVER = false;
+		INPUT_LINE_STATUS.MOBILE_FONT_SIZE = false;
+	} else {
+		INPUT_LINE_STATUS.LAZY_LOADING = false;
+	}
+	if( !($(obj).hasClass('box-item') == true || tagName == 'img') ){
+		INPUT_LINE_STATUS.MOBILE_MAX_WIDTH = false;
+	}
+
+	if(!INPUT_LINE_STATUS.BACKGROUND)
+		$(".color-setting .input-line-background-color").hide();
+	if(!INPUT_LINE_STATUS.BACKGROUND_IMAGE)
+		$(".color-setting .input-line-background-image").hide();
+	if(!INPUT_LINE_STATUS.BACKGROUND_TRANSPARENCY)
+		$(".color-setting .input-line-background-transparency").hide();
+	if(!INPUT_LINE_STATUS.FONT_COLOR)
+		$(".color-setting .input-line-font-color").hide();
+	if(!INPUT_LINE_STATUS.PLACEHOLDER)
+		$(".color-setting .input-line-placeholder").hide();
+	if(!INPUT_LINE_STATUS.HYPERLINK)
+		$(".color-setting .input-line-hyperlink").hide();
+	if(!INPUT_LINE_STATUS.BORDER)
+		$(".color-setting .input-line-border").hide();
+	if(!INPUT_LINE_STATUS.MARGIN)
+		$(".color-setting .input-line-margin").hide();
+	if(!INPUT_LINE_STATUS.ZINDEX)
+		$(".color-setting .input-line-zindex").hide();
+	if(!INPUT_LINE_STATUS.HOVER)
+		$(".color-setting .input-line-hover").hide();
+	if(!INPUT_LINE_STATUS.LAZY_LOADING)
+		$(".color-setting .input-line-lazy-loading").hide();
+	if(!INPUT_LINE_STATUS.MOBILE_SHOW)
+		$(".color-setting .input-line-mobile-show").hide();
+	if(!INPUT_LINE_STATUS.MOBILE_MAX_WIDTH)
+		$(".color-setting .input-line-mobile-maxwidth").hide();
+	if(!INPUT_LINE_STATUS.MOBILE_FONT_SIZE)
+		$(".color-setting .input-line-mobile-fontsize").hide();
+
+	/* background and font */
+	if(INPUT_LINE_STATUS.BACKGROUND){
+		var background = $(obj).css('background-color');
+		var background_processed = '';
+		if (typeof background !== 'string') {
+		    return;
+        }
+		if(background == '' || background == 'transparent')
+			background_processed = stringTable.transparent;
+		else{
+			if(background.indexOf('#') != -1){
+				background_processed = background;
+			} else {
+				background = background.split('(')[1];
+				background = background.split(')')[0];
+				background = background.split(',');
+				var transparent = true;
+				background_processed = '#';
+				for(var i = 0; i < background.length; i++){
+					var t = parseInt(background[i]);
+					if(t != 0)
+						transparent = false;
+					if(i < 3){
+						var hex = t.toString(16);
+						if(hex.length == 1)
+							hex = '0' + hex;
+						background_processed += hex;
+					}
+				}
+				if(transparent == true && background.length == 4){
+					background_processed = stringTable.transparent;
+				}
+			}
+		}
+		dataBackup.background = background_processed;
+		$("#color-setting-background-input").val(background_processed);
+	}
+	if(INPUT_LINE_STATUS.BACKGROUND_TRANSPARENCY) {
+		var backgroundColor = $(obj).css('background-color');
+    	var r,g,b,a = 0;
+    	if(background_processed == stringTable.transparent){
+    		a = 100;
+    	} else if (backgroundColor.indexOf('#') != -1) {
+    		r = parseInt(backgroundColor[1] + backgroundColor[2], 16);
+    		g = parseInt(backgroundColor[3] + backgroundColor[4], 16);
+    		b = parseInt(backgroundColor[5] + backgroundColor[6], 16);
+	    	if(r < 10)
+				r = '0' + r;
+    		if(g < 10)
+	    		g = '0' + g;
+    		if(b < 10)
+	    		b = '0' + b;
+    	} else {
+    		if(backgroundColor.indexOf('rgba') != -1){
+    			backgroundColor = backgroundColor.split('(')[1];
+        		backgroundColor = backgroundColor.split(')')[0];
+        		backgroundColor = backgroundColor.split(',');
+        		a = backgroundColor[3];
+        		a = Math.ceil(parseFloat(a) * 100);
+    		} else {
+    			a = 100;
+    		}
+    	}
+    	dataBackup.backgroundTransparency = a;
+    	$(".color-setting .input-line #transparency-value").text(a);
+    	$(".color-setting .input-line #transparency-slider").slider('value', a);
+	}
+	if(INPUT_LINE_STATUS.FONT_COLOR){
+		var color = $(obj).css('color');
+		var color_processed = '';
+		if(color == '' || color == 'initial'){
+			color_processed = 'initial';
+		} else {
+			if(color.indexOf('#') != -1){
+				color_prossed = color;
+			} else {
+				color = color.split('(')[1];
+				color = color.split(')')[0];
+				color = color.split(',');
+				color_processed = '#';
+				for(var i = 0; i < 3; i++)
+					color_processed += parseInt(color[i]).toString(16);
+			}
+		}
+		dataBackup.color = color_processed;
+		$("#color-setting-fontcolor-input").val(color_processed);
+	}
+	if(INPUT_LINE_STATUS.BORDER){
+		var border = obj.style.border;
+		if($(obj).hasClass('custom-border') == true){
+			try{
+				if(border.indexOf('#') == -1){
+					border = border.split('(')[1];
+					border = border.split(')')[0];
+					border = border.split(',');
+					border_processed = '#';
+					for(var i = 0; i < 3; i++)
+						border_processed += parseInt(border[i]).toString(16);
+					border = border_processed
+				} else {
+					border = border.split('#');
+					border = '#' + border;
+				}
+			} catch(err){
+				border = '';
+			}
+		} else {
+			border = '';
+		}
+		dataBackup.border = border;
+		$("#color-setting-border-input").val(border);
+	}
+	/* background image */
+	if(INPUT_LINE_STATUS.BACKGROUND_IMAGE){
+		dataBackup.backgroundImage = param.backgroundImage;
+		dataBackup.backgroundImageMode = parseInt(param.backgroundImageMode);
+		$(".color-setting #color-setting-background-image-input").val(param.backgroundImage);
+		$(".color-setting .input-line-background-image .background-mode img").removeClass('selected-mode');
+		if(param.backgroundImage.length != 0)
+			$(".color-setting .input-line-background-image .background-mode img").eq(dataBackup.backgroundImageMode).addClass('selected-mode');
+	}
+	/* placeholder */
+	if(INPUT_LINE_STATUS.PLACEHOLDER){
+		dataBackup.placeholder = $(obj).attr('placeholder');
+		$("#color-setting-placeholder-input").val(dataBackup.placeholder);
+	}
+	if(INPUT_LINE_STATUS.HYPERLINK){
+		dataBackup.hyperlink = $(obj).attr('data-hyperlink');
+		dataBackup.hyperlinkTarget = $(obj).attr('data-hyperlink-target');
+
+		if(dataBackup.hyperlink == null || typeof dataBackup.hyperlink == 'undefined'){
+			dataBackup.hyperlink = '';
+		}
+		if(dataBackup.hyperlinkTarget == null || typeof dataBackup.hyperlinkTarget == 'undefined')
+			dataBackup.hyperlinkTarget = '';
+
+		$("#color-setting-hyperlink-input").off();
+		$("#color-setting-hyperlink-target-input").off();
+		$("#color-setting-hyperlink-input").val(dataBackup.hyperlink);
+		$("#color-setting-hyperlink-target-input").val(dataBackup.hyperlinkTarget);
+
+		$('#color-setting-hyperlink-input').autoCompletion({
+			textSet: param.hyperlink,
+			width:296,
+			maxHeight: 150,
+			marginTop: 7,
+			height:30,
+			showAllListOnBlank:true,
+			noneCancel: false,
+			boxColor:"#7a7a7a",
+			textColor:"#efefef",
+			hoverBoxColor:"orange",
+			hoverTextColor:"#efefef",
+			onSelectCallBackFn: function(){
+				var val = $("#color-setting-hyperlink-input").val();
+				if(val.length == 0){
+					$(colorSettingTarget).removeAttr('data-hyperlink');
+					$(colorSettingTarget).removeClass('hyperlink-added');
+				} else {
+					$(colorSettingTarget).attr('data-hyperlink', val);
+					$(colorSettingTarget).addClass('hyperlink-added');
+				}
+			}
+		});
+		$('#color-setting-hyperlink-input').bind('change', function(){
+			var val = $(this).val();
+			if(val.length == 0){
+				$(colorSettingTarget).removeAttr('data-hyperlink');
+				$(colorSettingTarget).removeClass('hyperlink-added');
+			} else {
+				$(colorSettingTarget).attr('data-hyperlink', val);
+				$(colorSettingTarget).addClass('hyperlink-added');
+			}
+		});
+		$("#color-setting-hyperlink-input-target").bind('change', function(){
+			var val = $(this).val();
+			if($("#color-setting-hyperlink-input").val().length == 0){
+				$(colorSettingTarget).removeAttr('data-hyperlink-target');
+			} else {
+				$(colorSettingTarget).attr('data-hyperlink-target', val);
+			}
+		});
+	}
+	if(INPUT_LINE_STATUS.HOVER){
+		var hoverBackground = '';
+		var hoverText = '';
+		if($(colorSettingTarget).hasClass('hover-added') == true){
+			hoverBackground = $(colorSettingTarget).attr('data-hover-background');
+			hoverText = $(colorSettingTarget).attr('data-hover-text');
+
+			if(typeof hoverBackground === 'undefined' ||
+					hoverBackground == null)
+				hoverBackground = '';
+			if(typeof hoverText === 'undefined' ||
+					hoverText == null)
+				hoverText = '';
+		}
+		$("#color-setting-hover-background-input").val(hoverBackground);
+		$("#color-setting-hover-text-input").val(hoverText);
+		dataBackup.hoverBackground = hoverBackground;
+		dataBackup.hoverText = hoverText;
+	}
+	if(INPUT_LINE_STATUS.MARGIN){
+		var marginTop = $(colorSettingTarget).css('margin-top');
+		var marginRight = $(colorSettingTarget).css('margin-right');
+		var marginBottom = $(colorSettingTarget).css('margin-bottom');
+		var marginLeft = $(colorSettingTarget).css('margin-left');
+
+		if(marginTop.indexOf('px') == -1)
+			marginTop = '0px';
+		if(marginRight.indexOf('px') == -1)
+			marginRight = '0px';
+		if(marginLeft.indexOf('px') == -1)
+			marginLeft = '0px';
+		if(marginBottom.indexOf('px') == -1)
+			marginBottom = '0px';
+
+		$(".color-setting #color-setting-margin-top-input").val(marginTop);
+		$(".color-setting #color-setting-margin-right-input").val(marginRight);
+		$(".color-setting #color-setting-margin-bottom-input").val(marginBottom);
+		$(".color-setting #color-setting-margin-left-input").val(marginLeft);
+
+		dataBackup.marginTop = marginTop;
+		dataBackup.marginRight = marginRight;
+		dataBackup.marginBottom = marginBottom;
+		dataBackup.marginLeft = marginLeft;
+	}
+	if(INPUT_LINE_STATUS.LAZY_LOADING){
+		var status = 'on';
+		var backgroundColor = '#ffa500';
+		if($(colorSettingTarget).hasClass('lazy-loading') == false){
+			dataBackup.lazyLoading = false;
+			status = 'off';
+			backgroundColor = '#a6a6a6';
+		} else {
+			dataBackup.lazyLoading = true;
+		}
+		$(".color-setting #color-setting-lazy-loading-input").attr('data-status', status);
+		$(".color-setting #color-setting-lazy-loading-input").text(status);
+		$(".color-setting #color-setting-lazy-loading-input").css('background-color', backgroundColor);
+	}
+	if(INPUT_LINE_STATUS.MOBILE_SHOW){
+		var status = 'on';
+		var backgroundColor = '#ffa500';
+		if($(colorSettingTarget).hasClass('mobile-hide') == true){
+			dataBackup.mobileShow = false;
+			status = 'off';
+			backgroundColor = '#a6a6a6';
+		} else {
+			dataBackup.mobileShow = true;
+		}
+		$(".color-setting #color-setting-mobile-show-input").attr('data-status', status);
+		$(".color-setting #color-setting-mobile-show-input").text(status);
+		$(".color-setting #color-setting-mobile-show-input").css('background-color', backgroundColor);
+	}
+	if(INPUT_LINE_STATUS.MOBILE_MAX_WIDTH){
+		var mobileMaxWidth = '--';
+		if ( $(colorSettingTarget).hasClass('mobile-width') == true ) {
+			mobileMaxWidth = $(colorSettingTarget).attr('data-mobile-width');
+		}
+		dataBackup.mobileMaxWidth = mobileMaxWidth;
+		$(".color-setting #color-setting-mobile-maxwidth-input").val(mobileMaxWidth);
+	}
+	if(INPUT_LINE_STATUS.MOBILE_FONT_SIZE){
+		var mobileFontSize = '--'
+		if($(colorSettingTarget).hasClass('mobile-fontsize') == true){
+			mobileFontSize = $(colorSettingTarget).attr('data-mobile-fontsize');
+		}
+		dataBackup.mobileFontSize = mobileFontSize;
+		$(".color-setting #color-setting-mobile-fontsize-input").val(mobileFontSize);
+		$("#mobile-fontsize .original-fontsize").text($(colorSettingTarget).css('font-size'));
+	}
+	dataBackup.INPUT_LINE_STATUS = INPUT_LINE_STATUS;
+	$(".color-setting").data('data-backup', dataBackup);
+	$('.color-setting').fadeIn(150);
+	if(_MSIE){
+		$(".center-control-panel .input-line .sub-input-line .btn").css({
+			'position': 'relative',
+			'top': '2px'
+		});
+	}
+}
+function color_setting_restore(){
+	var backup = $(".color-setting").data('data-backup');
+
+	if(backup.INPUT_LINE_STATUS.BACKGROUND == true){
+		if(backup.background == 'transparent')
+			backup.background = stringTable.transparent;
+
+		$(".color-setting #color-setting-background-input").val(backup.background);
+
+		if(backup.background == stringTable.transparent)
+			backup.background = 'transparent';
+
+		$(colorSettingTarget).css('background-color', backup.background);
+
+		if( $(colorSettingTarget).hasClass('editor-input') == true ){
+			var val = $(".color-setting #color-setting-background-input").val();
+			if(val == stringTable.transparent)
+				val = '#ffffff';
+			$(".tree-view .tree-view-line .tree-view-line-value #background-color-input").val(val);
+			$(".tree-view .tree-view-line .tree-view-line-value #background-color-input").trigger('change');
+		}
+	}
+	if(backup.INPUT_LINE_STATUS.BACKGROUND_TRANSPARENCY){
+		$(".color-setting .input-line #transparency-slider").slider('value', backup.backgroundTransparency);
+		$(".color-setting .input-line #transparency-value").text(backup.backgroundTransparency);
+		var backgroundColor = $(colorSettingTarget).css('background-color');
+    	var r,g,b,a = 0;
+    	if(backgroundColor.indexOf('#') != -1){
+    		r = parseInt(backgroundColor[1] + backgroundColor[2], 16);
+    		g = parseInt(backgroundColor[3] + backgroundColor[4], 16);
+    		b = parseInt(backgroundColor[5] + backgroundColor[6], 16);
+	    	if(r < 10)
+	    		r = '0' + r;
+    		if(g < 10)
+	    		g = '0' + g;
+    		if(b < 10)
+	    		b = '0' + b;
+    	} else if (backgroundColor.indexOf('rgb') != -1){
+    		backgroundColor = backgroundColor.split('(')[1];
+    		backgroundColor = backgroundColor.split(')')[0];
+    		backgroundColor = backgroundColor.split(',');
+    		r = backgroundColor[0];
+    		g = backgroundColor[1];
+    		b = backgroundColor[2];
+    	}
+    	a = 0.01 * parseInt(backup.backgroundTransparency);
+    	var background = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
+		$(colorSettingTarget).css('background', background);
+	}
+
+	if(backup.INPUT_LINE_STATUS.BACKGROUND_IMAGE == true){
+		var backgroundImage = backup.backgroundImage;
+		var backgroundImageMode = backup.backgroundImageMode;
+		$(".color-setting #color-setting-background-image-input").val(backgroundImage);
+		$(".color-setting .input-line-background-image .background-mode img").removeClass('selected-mode');
+		if(backgroundImage.length != 0)
+			$(".color-setting .input-line-background-image .background-mode img").eq(backgroundImageMode).addClass('selected-mode');
+		background_image_attribute_change(null, null, null);
+	}
+	if(backup.INPUT_LINE_STATUS.FONT_COLOR == true){
+		$(".color-setting #color-setting-fontcolor-input").val(backup.color);
+		$(colorSettingTarget).css('color', backup.color);
+	}
+	if(backup.INPUT_LINE_STATUS.BORDER == true){
+		$(".color-setting #color-setting-border-input").val(backup.border);
+		$(colorSettingTarget).css('border-color', backup.border);
+	}
+	if(backup.INPUT_LINE_STATUS.PLACEHOLDER == true){
+		tinymce.activeEditor.dom.setAttrib(colorSettingTarget, 'placeholder', backup.placeholder);
+	}
+	if(backup.INPUT_LINE_STATUS.HYPERLINK == true){
+		$(colorSettingTarget).removeAttr('data-hyperlink');
+		$(colorSettingTarget).removeClass('hyperlink-added');
+		if(backup.hyperlink.length > 0){
+			$(colorSettingTarget).attr('data-hyperlink', backup.hyperlink);
+			$(colorSettingTarget).addClass('hyperlink-added');
+		}
+		$("#color-setting-hyperlink-input").val(backup.hyperlink);
+
+		$(colorSettingTarget).removeAttr('data-hyperlink-target');
+		if(backup.hyperlinkTarget.length > 0){
+			$(colorSettingTarget).attr('data-hyperlink-target', backup.hyperlinkTarget);
+		}
+		$("#color-setting-hyperlink-target-input").val(backup.hyperlinkTarget);
+	}
+	if(backup.INPUT_LINE_STATUS.HOVER == true){
+		$(".color-setting #color-setting-hover-background-input").val(backup.hoverBackground);
+		$(".color-setting #color-setting-hover-text-input").val(backup.hoverText);
+	}
+	if(backup.INPUT_LINE_STATUS.MARGIN == true){
+		$(".color-setting #color-setting-margin-top-input").val(backup.marginTop);
+		$(".color-setting #color-setting-margin-right-input").val(backup.marginRight);
+		$(".color-setting #color-setting-margin-bottom-input").val(backup.marginBottom);
+		$(".color-setting #color-setting-margin-left-input").val(backup.marginLeft);
+	}
+
+	if(backup.INPUT_LINE_STATUS.MOBILE_SHOW){
+		var status = 'on';
+		var backgroundColor = '#ffa500';
+		if(!backup.mobileShow){
+			status = 'off';
+			backgroundColor = '#a6a6a6';
+		}
+		$(".color-setting #color-setting-mobile-show-input").attr('data-status', status);
+		$(".color-setting #color-setting-mobile-show-input").text(status);
+		$(".color-setting #color-setting-mobile-show-input").css('background-color', backgroundColor);
+	}
+	if(backup.INPUT_LINE_STATUS.LAZY_LOADING){
+		var status = 'on';
+		var backgroundColor = '#ffa500';
+		if(!backup.lazyLoading){
+			status = 'off';
+			backgroundColor = '#a6a6a6';
+		}
+		$(".color-setting #color-setting-lazy-loading-input").attr('data-status', status);
+		$(".color-setting #color-setting-lazy-loading-input").text(status);
+		$(".color-setting #color-setting-lazy-loading-input").css('background-color', backgroundColor);
+	}
+	if(backup.INPUT_LINE_STATUS.MOBILE_MAX_WIDTH){
+		var mobileMaxWidth = backup.mobileMaxWidth;
+		$(".color-setting #color-setting-mobile-maxwidth-input").val(mobileMaxWidth);
+	}
+	if(backup.INPUT_LINE_STATUS.MOBILE_FONT_SIZE){
+		var mobileFontSize = backup.mobileFontSize;
+		$(".color-setting #color-setting-mobile-fontsize-input").val(mobileFontSize);
+	}
+	attribute_change();
+}
+
+function color_setting_hide(){
+	$('#masking').remove();
+	$('.color-setting').hide();
+
+	attribute_change();
+
+	if(colorSettingCallback != null)
+		colorSettingCallback();
+}
+function color_setting_apply(){
+	$("#masking").remove();
+	$(".color-setting").hide();
+
+	attribute_change();
+
+	if(colorSettingCallback != null)
+		colorSettingCallback();
+}
+function attribute_change(){
+	var backup = $(".color-setting").data('data-backup');
+	var attrib = {
+		'background': '',
+		'backgroundTransparency': '',
+		'color': '',
+		'border': '',
+		'placeholder': '',
+		'hyperlink': '',
+		'hyperlinkTarget': '',
+		'margin': '',
+		'hoverBackground': '',
+		'hoverText': '',
+		'lazyLoading': false,
+		'mobileShow': false,
+		'mobileMaxWidth': '',
+		'status': backup.INPUT_LINE_STATUS
+	};
+	if(backup.INPUT_LINE_STATUS.BACKGROUND){
+		var val = $(".color-setting #color-setting-background-input").val();
+		if(val == stringTable.transparent)
+			val = 'transparent';
+		attrib['background'] = val;
+	}
+	if(backup.INPUT_LINE_STATUS.BACKGROUND_TRANSPARENCY){
+		var val = $(".color-setting .input-line #transparency-value").text();
+		attrib['backgroundTransparency'] = val;
+	}
+	if(backup.INPUT_LINE_STATUS.FONT_COLOR){
+		var val = $(".color-setting #color-setting-fontcolor-input").val();
+		attrib['color'] = val;
+	}
+	if(backup.INPUT_LINE_STATUS.PLACEHOLDER){
+		var val = $(".color-setting #color-setting-placeholder-input").val();
+		attrib['placeholder'] = val;
+	}
+	if(backup.INPUT_LINE_STATUS.HYPERLINK){
+		var val = $(".color-setting #color-setting-hyperlink-input").val();
+		attrib['hyperlink'] = val;
+		val = $(".color-setting #color-setting-hyperlink-target-input").val();
+		if(typeof val == 'undefined' || val == null)
+			val = '';
+		attrib['hyperlinkTarget'] = val;
+	}
+	if(backup.INPUT_LINE_STATUS.BORDER){
+		var val = $(".color-setting #color-setting-border-input").val();
+		attrib['border'] = val;
+	}
+	if(backup.INPUT_LINE_STATUS.HOVER){
+		attrib['hoverBackground'] = $(".color-setting #color-setting-hover-background-input").val();
+		attrib['hoverText'] = $(".color-setting #color-setting-hover-text-input").val();
+	}
+	if(backup.INPUT_LINE_STATUS.MARGIN){
+		var marginTop = $(".color-setting #color-setting-margin-top-input").val();
+		var marginRight = $(".color-setting #color-setting-margin-right-input").val();
+		var marginBottom = $(".color-setting #color-setting-margin-bottom-input").val();
+		var marginLeft = $(".color-setting #color-setting-margin-left-input").val();
+
+		var margin = marginTop + ' ' + marginRight + ' ' + marginBottom + ' ' + marginLeft;
+		attrib['margin'] = margin;
+	}
+	if(backup.INPUT_LINE_STATUS.MOBILE_SHOW){
+		var status = $(".color-setting #color-setting-mobile-show-input").attr('data-status');
+		if(status == 'on')
+			attrib['mobileShow'] = true;
+		else
+			attrib['mobileShow'] = false;
+	}
+	if(backup.INPUT_LINE_STATUS.LAZY_LOADING){
+		var status = $(".color-setting #color-setting-lazy-loading-input").attr('data-status');
+		if(status == 'on')
+			attrib['lazyLoading'] = true;
+		else
+			attrib['lazyLoading'] = false;
+	}
+	if(backup.INPUT_LINE_STATUS.MOBILE_MAX_WIDTH){
+		attrib['mobileMaxWidth'] = $(".color-setting #color-setting-mobile-maxwidth-input").val();
+	}
+	if(backup.INPUT_LINE_STATUS.MOBILE_FONT_SIZE){
+		attrib['mobileFontSize'] = $(".color-setting #color-setting-mobile-fontsize-input").val();
+	}
+	attribute_set(colorSettingTarget, attrib);
+}
+function info_window_show(target){
+	set_popup_window_position($("#info-window"), 'right');
+
+	var bodyWrapper = variableSettingMenu.selected;
+
+	$("#info-window").find('select').off();
+	$("#info-window").find('button').off();
+	$("#info-window img").off();
+	$("#info-window img").removeClass('selected-mode');
+
+	if($(target).hasClass('editor-input') == true){
+		$("#info-window .input-line").hide();
+		$("#info-window .input-line-background-image").show();
+	} else {
+		$("#info-window .input-line").show();
+	}
+
+	// background color
+	var background = $(target).css('background-color');
+	var background_processed = '';
+	if(background == '' || background == 'transparent')
+		background_processed = stringTable.transparent;
+	else{
+		if(background.indexOf('#') != -1){
+			background_processed = background;
+		} else {
+			background = background.split('(')[1];
+			background = background.split(')')[0];
+			background = background.split(',');
+			var transparent = true;
+			background_processed = '#';
+			for(var i = 0; i < background.length; i++){
+				var t = parseInt(background[i]);
+				if(t != 0)
+					transparent = false;
+				if(i < 3){
+					var hex = t.toString(16);
+					if(hex.length == 1)
+						hex = '0' + hex;
+					background_processed += hex;
+				}
+			}
+			if(transparent == true && background.length == 4){
+				background_processed = stringTable.transparent;
+			}
+		}
+	}
+	var backgroundColorInput = $("#info-window .input-line-background-color #background-color-input");
+	$(backgroundColorInput).val(background_processed);
+	$(backgroundColorInput).data('target', bodyWrapper);
+	$("#info-window .input-line-background-color #background-color-transparent-button").bind('click', function(){
+		$(backgroundColorInput).val(stringTable.transparent);
+		tinymce.activeEditor.dom.setStyle(bodyWrapper, 'background-color', 'transparent');
+	});
+
+	// screen width
+	if($(bodyWrapper).hasClass('entire-width') == true){
+		$("#info-window .width-mode img").eq(0).addClass('selected-mode');
+	} else {
+		$("#info-window .width-mode img").eq(1).addClass('selected-mode');
+	}
+
+	$("#info-window .width-mode img").bind('click', function(){
+		$("#info-window .width-mode img").removeClass('selected-mode');
+		$(this).addClass('selected-mode');
+		if($(this).hasClass('width-mode-full')){
+			$(bodyWrapper).addClass('entire-width');
+		} else {
+			$(bodyWrapper).removeClass('entire-width');
+		}
+		invalidate_body_wrapper();
+	});
+
+	/* background image */
+	var backgroundImage = $(target).attr('data-background-image');
+	var backgroundImageMode = $(target).attr('data-background-image-mode');
+	if(typeof backgroundImage === 'undefined')
+		backgroundImage = '';
+	if(typeof backgroundImageMode === 'undefined')
+		backgroundImageMode = 0;
+	else
+		backgroundImageMode = parseInt(backgroundImageMode);
+	$("#info-window .input-line-background-image #background-image-input").off();
+	$("#info-window .input-line-background-image #background-image-input").val(backgroundImage);
+	$("#info-window .input-line-background-image .background-mode img").removeClass('selected-mode');
+	if(backgroundImage.length != 0){
+		$("#info-window .input-line-background-image .background-mode img").eq(backgroundImageMode).addClass('selected-mode');
+	}
+	$("#info-window .input-line-background-image #background-image-delete-button").bind('click', function(){
+		$("#info-window .input-line-background-image #background-image-input").val('');
+		$("#info-window .input-line-background-image #background-image-input").trigger('change');
+		$("#info-window .input-line-background-image .background-mode img").removeClass('selected-mode');
+	});
+	$("#info-window .input-line-background-image #background-image-input").bind('change', function(){
+		if($(this).val().length == 0) {
+			$("#info-window .input-line-background-image .background-mode img").removeClass('selected-mode');
+		} else {
+			$("#info-window .input-line-background-image .background-mode img").removeClass('selected-mode');
+			$("#info-window .input-line-background-image .background-mode img").eq(0).addClass('selected-mode');
+		}
+		background_image_attribute_change(target, this, 0);
+	});
+	$("#info-window .input-line-background-image #background-image-input").bind('click', function(){
+		open_background_image_manager(this);
+	});
+	$("#info-window .input-line-background-image .background-mode img").bind('click', function(){
+		var input = $("#info-window .input-line-background-image #background-image-input");
+		if($(input).val().length == 0)
+			return;
+		$("#info-window .input-line-background-image .background-mode img").removeClass('selected-mode');
+		$(this).addClass('selected-mode');
+		var mode = 0;
+		if($(this).hasClass('background-mode-full') == true)
+			mode =  0;
+		else if ($(this).hasClass('background-mode-repeat') == true)
+			mode = 1;
+		background_image_attribute_change(target, input, mode);
+	});
+
+	// scroll point
+	$("#info-window #info-window-scrollpoint-input").children('option').each(function(){
+		if($(this).val() !== '')
+			$(this).remove();
+	});
+
+	$(".leaf-node-scrollpoint").each(function(){
+		if($(this).hasClass('add-node'))
+			return;
+		var nodeName = $(this).children('.node-name').text();
+		var option = document.createElement('option');
+		$(option).attr('value', nodeName);
+		$(option).text(nodeName);
+		if($(bodyWrapper).attr('data-scrollpoint') == nodeName){
+			$(option).prop('selected', true);
+		}
+		$("#info-window #info-window-scrollpoint-input").append(option);
+	});
+
+	$("#info-window #info-window-scrollpoint-input").bind('change', function(){
+		var val = $(this).val();
+		if(val == ''){
+			if(typeof prevScrollPointValue === 'undefined')
+				prevScrollPointValue = '';
+			$(bodyWrapper).removeClass('scrollpoint');
+			$(bodyWrapper).removeAttr('data-scrollpoint');
+
+		} else {
+			var compensate = parseInt($(".editor-input-wrapper").css('padding-top').split('px')[0]);
+			$(bodyWrapper).attr('data-scrollpoint', val);
+			$(bodyWrapper).addClass('scrollpoint');
+		}
+		invalidate_body_wrapper();
+	});
+
+	// item select
+	var selectItem = [];
+	selectItem.push({
+		obj: bodyWrapper,
+		text: stringTable.selectItemSelf
+	});
+
+	$(bodyWrapper).find('.component-wrapper').each(function(idx){
+		selectItem.push({
+			obj: this,
+			text: stringTable.selectItemComponent + ' ' + (idx + 1)
+		});
+	});
+
+	$(bodyWrapper).find('.googlemap-wrapper').each(function(idx){
+		selectItem.push({
+			obj: this,
+			text: stringTable.selectItemMap + ' ' + (idx + 1)
+		});
+	});
+
+	$(bodyWrapper).find('.mce-item-table').not('.googlemap-wrapper').each(function(idx){
+		selectItem.push({
+			obj: this,
+			text: stringTable.selectItemBox + ' ' + (idx + 1)
+		});
+	});
+
+	$(bodyWrapper).find('img').each(function(idx){
+		if($(this).parents('.googlemap-wrapper').length != 0){
+			return;
+		}
+		selectItem.push({
+			obj: this,
+			text: stringTable.selectItemImage + ' ' + (idx + 1)
+		});
+	});
+
+	$(bodyWrapper).find('.slide-wrapper').each(function(idx){
+		selectItem.push({
+			obj: this,
+			text: stringTable.selectItemSlide + ' ' + (idx + 1)
+		});
+	});
+
+	$(bodyWrapper).find('iframe').each(function(idx){
+		selectItem.push({
+			obj: this,
+			text: stringTable.selectItemIframe + ' ' + (idx + 1)
+		});
+	});
+
+	$("#info-window #info-window-select-item-input").children('option').remove();
+
+	for(var i = 0; i < selectItem.length; i++){
+		var option = document.createElement('option');
+		$(option).text(selectItem[i].text);
+		$(option).data('data-obj', selectItem[i].obj);
+		$(option).attr('value', i);
+		if(i == 0)
+			$(option).prop('selected', true);
+		$("#info-window #info-window-select-item-input").append(option);
+	}
+
+	$("#info-window #info-window-select-item-input").bind('change', function(){
+		var val = $(this).val();
+		var obj = null;
+		$(this).find('option').each(function(){
+			if($(this).attr('value') == val){
+				obj = $(this).data('data-obj');
+				return;
+			}
+		});
+		variableSettingMenu.selected = obj;
+		$("#editor-input .selected-element").removeClass('selected-element');
+		$(obj).addClass('selected-element');
+	});
+
+	$("#info-window #info-window-action").bind('change', function(){
+		try{
+			var val = $(this).val();
+			if(val == '')
+				return;
+			if(val === '0'){
+				var nodeList = [];
+				$(bodyWrapper).children().each(function(){
+					if($(this)[0].tagName != 'BR')
+						nodeList.push($(this));
+					$(this).remove();
+				});
+
+				var html = $(bodyWrapper).html();
+				html = html.replace(/&nbsp;/gi, "");
+				$(bodyWrapper).html(html);
+				for(var i = 0; i < nodeList.length; i++){
+					$(bodyWrapper).append(nodeList[i]);
+				}
+				invalidate_body_wrapper();
+			}
+			if(val == '1'){
+				var br = document.createElement('br');
+				$(bodyWrapper).prepend(br);
+			}
+			if(val == '2'){
+				var br = document.createElement('br');
+				$(bodyWrapper).append(br);
+			}
+			if(val === '3'){
+				var div = document.createElement('div');
+				div.className = 'body-wrapper';
+				div.innerHTML = '&nbsp;';
+				var body = tinymce.activeEditor.getBody();
+				$(div).attr('contenteditable', true);
+				body.insertBefore(div, bodyWrapper);
+				invalidate_body_wrapper();
+			}
+			if(val === '4'){
+				var div = document.createElement('div');
+				div.className = 'body-wrapper';
+				div.innerHTML = '&nbsp;';
+				var body = tinymce.activeEditor.getBody();
+				$(div).attr('contenteditable', true);
+				$(div).insertAfter(bodyWrapper);
+				invalidate_body_wrapper();
+			}
+			if(val == '5'){
+				draw_general_popup(
+   					function(){
+   						info_window_close();
+   						tinymce.activeEditor.dom.remove(variableSettingMenu.selected);
+   	    				variableSettingMenu.selected = null;
+   	    				invalidate_body_wrapper();
+   					},
+   					null,
+   					null,
+   					stringTable.deleteSelected,
+   					stringTable.yes,
+   					stringTable.no
+	   			);
+			}
+		} catch(err){}
+		$(this).children('option').eq(0).prop('selected', true);
+	});
+
+	$("#info-window").fadeIn(150);
+}
+function background_image_attribute_change(obj, input, mode){
+	var entire = $(obj).hasClass('editor-input');
+	var backgroundImage = $(input).val();
+	var backgroundImageMode = mode;
+
+	var attrib = {
+		image:'',
+		repeat:'',
+		size:'',
+		position:''
+	};
+	if(backgroundImage.length == 0)
+		attrib.image = 'none';
+	else
+		attrib.image = "url('"+variableSettingMenu.backgroundImageFilePreFix + backgroundImage+"')";
+	if(backgroundImageMode == 0){
+		attrib.repeat = 'no-repeat';
+		attrib.size = 'cover';
+		attrib.position = 'center';
+	} else {
+		attrib.repeat = 'repeat';
+		attrib.size = 'auto';
+		attrib.position = 'top left';
+	}
+	if(!entire){
+		tinymce.activeEditor.dom.setAttrib(obj, 'data-background-image', backgroundImage);
+		tinymce.activeEditor.dom.setAttrib(obj, 'data-background-image-mode', backgroundImageMode);
+	} else {
+		$(".tree-view .tree-view-line .tree-view-line-value #background-image-input").val(backgroundImage);
+		$(".tree-view .tree-view-line .tree-view-line-value #background-image-input").trigger('change');
+		$(".tree-view .tree-view-line .tree-view-line-value .background-mode img").removeClass('selected-mode');
+		if(backgroundImage.length != 0)
+			$(".tree-view .tree-view-line .tree-view-line-value .background-mode img").eq(backgroundImageMode).addClass('selected-mode');
+	}
+	background_set(obj, attrib);
+}
+function info_window_close(){
+	$("#masking").remove();
+	$("#info-window").fadeOut(150);
+}
+function show_editor_message(str){
+	$("#editor-message-panel").children('span').html(str);
+	$("#editor-message-panel").hide();
+
+	var offset = $(".editor-input-wrapper").offset();
+	var top = $("#editor-toolbar").offset().top + $("#editor-toolbar").height();
+	var left = offset.left + ($(".editor-input-wrapper").width() / 2) - ($("#editor-message-panel").width() / 2);
+
+	$("#editor-message-panel").css({
+		'top': top+'px',
+		'left': left+'px'
+	});
+
+	$("#editor-message-panel").fadeIn(400, function(){
+		$(this).fadeOut(1500);
+	});
+}
+function show_picture_slide(data, cbf){
+	galleryCallback = cbf;
+	$("#editor-picture-slide .gallery").find('img').remove();
+	for(var i = 0; i < data.file.length; i++){
+		var imgElem = document.createElement('img');
+		var directory = '';
+		if(data.file[i] == 'saWwsRICUE_1600_666.jpg' ||
+				data.file[i] == 'tRgxMOvbpW_1600_666.jpg' ||
+				data.file[i] == 'GWZanLrnJb_1600_666.jpg'){
+			directory = '5';
+		} else {
+			directory = serverData.service_id;
+		}
+		imgElem.src = '{{"PAGE_PICTURE"|get_filelocation}}' + directory +  '/' + data.file[i];
+		$(".gallery").append(imgElem);
+		add_image_event($(".gallery img").last());
+	}
+
+	if(data.fullScreen == null){
+		$("#editor-picture-slide .gallery .gallery-mode-wrapper").hide();
+		$("#editor-picture-slide .gallery .gallery-width-input").data('data-full', null);
+		$("#editor-picture-slide .gallery .aid-text .picture-slide-aid-text").hide();
+	}
+	else{
+		$("#editor-picture-slide .gallery .aid-text .picture-slide-aid-text").show();
+		$("#editor-picture-slide .gallery .gallery-mode-wrapper").show();
+		$("#editor-picture-slide .gallery .gallery-width-input").data('data-full', data.fullScreen);
+		$("#editor-picture-slide .gallery .gallery-width-input").off();
+		$("#editor-picture-slide .gallery .gallery-width-input").switchButton({
+			checked: data.fullScreen,
+			on_label: stringTable.fullWidth,
+			off_label: stringTable.contentWidth,
+			width: 80,
+			height: 40,
+			button_width: 40,
+			on_callback: function(){
+				$("#editor-picture-slide .gallery .gallery-width-input").data('data-full', true);
+			},
+			off_callback: function(){
+				$("#editor-picture-slide .gallery .gallery-width-input").data('data-full', false);
+			}
+		});
+	}
+	if(data.autoSlide == null){
+		$("#editor-picture-slide .gallery .gallery-slide-timer-wrapper").hide();
+		$("#editor-picture-slide .gallery .gallery-auto-slide-input").secondspinner("value", 0);
+	} else {
+		$("#editor-picture-slide .gallery .gallery-slide-timer-wrapper").show();
+		$("#editor-picture-slide .gallery .gallery-auto-slide-input").secondspinner("value", data.autoSlide);
+	}
+	$('body').prepend("<div id='editor-large-panel-masking'></div>");
+	var headerHeight = $("#header").outerHeight();
+	var h = $(window).height() - headerHeight - 30;
+	$("#editor-picture-slide .editor-large-panel-body").css('height', h + 'px');
+	$("#editor-picture-slide").css('top', headerHeight + 'px');
+	$("#editor-picture-slide").fadeIn(150);
+}
+function hide_picture_slide(){
+	$('#editor-large-panel-masking').remove();
+	$("#editor-picture-slide").fadeOut(150);
+}
+function apply_picture_slide(){
+	var imgList = [];
+	$("#editor-picture-slide .gallery img").each(function(){
+		var src=  $(this).prop('src').split('/').pop();
+		imgList.push(src);
+	});
+
+	$("#editor-picture-slide .gallery .gallery-auto-slide-input").secondspinner("value");
+
+	var data = {
+		fullScreen: $("#editor-picture-slide .gallery .gallery-width-input").data('data-full'),
+		autoSlide: 	$("#editor-picture-slide .gallery .gallery-auto-slide-input").secondspinner("value"),
+		file: imgList
+	};
+
+	galleryCallback(data);
+	$('#editor-large-panel-masking').remove();
+	$("#editor-picture-slide").fadeOut(150);
+}
+function progress_update(interval, obj, uuid){
+	$.ajax({
+		url : "/progress",
+		headers: {'X-Progress-ID': uuid},
+		type : "get",
+		success : function(res){
+			if(res.state == 'uploading')
+			{
+				var p = res.received / res.size;
+				var percentage = p * 100;
+				percentage = Math.round(percentage);
+				if(percentage == 100)
+					return;
+				if($(obj.root).css('display') == 'none'){
+					$(obj.root).show();
+				}
+				$(obj.bar).css('width', percentage + '%');
+				$(obj.number).text(percentage);
+			}
+			if(res.state == 'done')
+			{
+				window.clearInterval(interval);
+				$(obj.root).hide();
+				$(obj.bar).css('width', '0');
+				$(obj.number).text('');
+				$(".gallery .aid-text").show();
+			}
+		},
+		error:function(){
+			window.clearInterval(interval);
+		}
+	});
+}
+function gallery_image_upload_done(){
+	var txt = $("#file-upload-target").contents().text();
+	var res = '';
+	try {
+		res = JSON.parse(txt);
+	} catch(err) {
+		return;
+	}
+	$(".gallery-button-wrapper button").removeAttr('disabled');
+	for(var i = 0; i < res.filename.length; i++){
+		var imgElem = document.createElement('img');
+		imgElem.src = '{{"PAGE_PICTURE"|get_filelocation}}{{user_info.service.id}}/' + res.filename[i];
+		$(".gallery").append(imgElem);
+		add_image_event($(".gallery img").last());
+	}
+	$("#gallery-file-upload-form #gallery-file-input").val('');
+}
+function add_image_event(obj){
+	$(obj).draggable({
+		cursor: "move",
+		zIndex: 10,
+		start: function(e, u){
+			$(this).parent().css('background-color', 'black');
+		},
+		stop: function(e, u){
+			$(this).parent().css('background-color', '#E0E0D0');
+		},
+		revertDuration: 10,
+		revert: true
+	});
+	$(obj).droppable({
+		drop: function(event, ui){
+			var srcFrom = $(ui.draggable).prop('src');
+			var srcTo = $(this).prop('src');
+
+			$(ui.draggable).prop('src', srcTo);
+			$(this).prop('src', srcFrom);
+
+			$(".gallery img").each(function(){
+				$(this).css({
+					'opacity': '1'
+				});
+			});
+		},
+		over: function(event, ui){
+			$(this).css({
+				'opacity': '0.2'
+			});
+		},
+		out: function(event, ui){
+			$(this).css({
+				'opacity': '1'
+			});
+		},
+		tolerance: "intersect"
+	});
+}
+
+function show_component_combination(cbf){
+	componentCallback = cbf;
+	$('body').prepend("<div id='editor-large-panel-masking'></div>");
+
+	var headerHeight = $("#header").outerHeight();
+	var buffer = 30;
+	var h = $(window).height() - $("#header").outerHeight() - buffer;
+	//$('body').prepend($("#editor-component-combination"));
+	//$("#editor-large-panel-masking").append($("#editor-component-combination"));
+	$("#editor-component-combination .editor-large-panel-body").css('height', h + 'px');
+	$("#editor-component-combination").css('top', headerHeight + 'px');
+	$("#editor-component-combination").fadeIn(150);
+}
+function apply_component_combination(elem){
+	$("#editor-component-combination .editor-large-panel-body").scrollTop(0);
+	var clone = $(elem).clone();
+	$(clone).removeClass('component-wrapper-display');
+	hide_component_combination();
+	componentCallback($(clone)[0]);
+}
+function hide_component_combination(){
+	$("#editor-component-combination").fadeOut(150);
+	$('#editor-large-panel-masking').remove();
+}
+</script>

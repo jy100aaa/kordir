@@ -1,0 +1,28 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" >
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" sizes="192x192" href="https://kordir.s3.amazonaws.com/images/kordir_favicon.png" type='image/png'>
+<link rel="shortcut icon" href='https://kordir.s3.amazonaws.com/images/kordir_favicon.ico'>
+<link rel="apple-touch-icon" href="https://kordir.s3.amazonaws.com/images/kordir_favicon.png" />
+<meta name="robots" content="all, index, follow" />
+<meta content='코디알, KORDIR, Kordir, 홈페이지 , 웹사이트, 빌더, 솔루션, 무료 제작' name='keyword'>
+<meta content='비지니스를 운영하시는 분들에게 고객과의 접점을 만들어 주는 서비스를 제공합니다.' name='description'>
+<title>
+{% if page == 'index' %}
+코디알 - 비지니스, 영업용 웹 사이트 제작 관리 솔루션
+{% elif page == 'login' %}
+코디알 | 로그인
+{% elif page == 'signup' %}
+코디알 | 회원가입
+{% elif page == "settings" %}
+코디알 | 설정
+{% elif page == "dashboard" %}
+코디알 | 대쉬보드
+{% elif page == "pricing" %}
+코디알 | 요금
+{% endif %}
+</title>
+
+<!-- ext plugins -->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% include "common/meta.html" %}
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common.css?version=1.0' />
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/login.css?version=1.0' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common_lowie.css'/>
+<![endif]-->
+<script>
+var serverData = {
+	id: '',
+	page:'{{page}}',
+	then:'{{then}}',
+	param:'{{param}}',
+	email:'{{email}}'
+};
+</script>
+</head>
+<body>
+{% include "common/header.html" %}
+<div id='content'>
+	<div class='login-wrapper black-font white-bg' id='login-wrapper'>
+		<div class='login-wrapper-title'><span>로그인</span></div>
+		<div class='input-wrapper'>
+			<span class='input-tag'>이메일</span>
+			<input type='text' class='login-input input-normal' id='login-email-input' value='{{email}}'>
+		</div>
+		<div class='input-wrapper'>
+			<span class='input-tag'>비밀번호</span>
+			<input type='password' class='login-input input-normal' id='login-password-input'>
+		</div>
+		<div class='remember-me'>
+			<input type='checkbox' class='remember-me-input' checked/>
+			<span>로그인 상태 유지</span>
+		</div>
+		<div class='login-warning-area'>
+			<span></span>
+		</div>
+		<div class='bottom-wrapper'>
+			<div class='text-line'><a class='forgot-password'>비밀번호를 잊으셨나요?</a></div>
+			<div class='text-line'>아직 회원이 아니신가요? <a href='/signup'>지금 가입 하기</a></div>
+			<button class='login-button btn'>로그인</button>
+		</div>
+	</div>
+</div>
+{% include "common/footer.html" %}
+</body>
+<script>
+$(function(){
+	positionAdjustment();
+	$(window).resize(function(e){
+		if(this.resizeTO)
+			clearTimeout(this.resizeTO);
+	    this.resizeTO = setTimeout(function() {
+	        $(this).trigger('resizeEnd');
+	    }, 200);
+	});
+	$(window).bind('resizeEnd', function() {
+		 positionAdjustment();
+	});
+	document.getElementById('login-wrapper').style.visibility = 'visible';
+});
+function positionAdjustment(){
+	var h = document.getElementById('header-wrapper');
+	var f = document.getElementById('footer-wrapper');
+	var elem = document.getElementById('login-wrapper');
+	var elemHeight = document.getElementById('login-wrapper').clientHeight + 1;
+	var distance = $(f).position().top - ($(h).position().top + $(h).outerHeight());
+	if(distance > elemHeight + 100){
+		var newMargin = (distance - elemHeight) / 2;
+		$(elem).css('margin-top', newMargin + 'px');
+		$(elem).css('margin-bottom', newMargin + 'px');
+	}
+	$(elem).css('visibility','visible');
+}
+</script>
+<script src='/resources/js/login.js'></script>
+</html>

@@ -1,0 +1,136 @@
+div#content{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	width:960px;
+	height:auto;
+}
+#content .login-wrapper{
+	position:relative;
+	display:inline-block;
+	margin-left:210px;
+	width:540px;
+	border:1px solid #ccccbc;
+	margin-top:50px;
+	margin-bottom:50px;
+	visibility:hidden;
+}
+.login-wrapper .login-wrapper-title{
+	height:50px;
+	line-height:50px;
+	background-color:#efefef;
+	border-bottom:1px solid #aaa;
+	margin-bottom:30px;
+}
+.login-wrapper .login-wrapper-title span{
+	display:inline-block;
+	font-size:24px;
+	font-weight:bold;
+	margin-left:40px;
+}
+.login-wrapper .input-wrapper{
+	padding-left:40px;
+	margin-bottom:10px;
+}
+.login-wrapper .input-wrapper .input-tag{
+	display:inline-block;
+	width:160px;
+	font-size:16px;
+	font-weight:bold;
+}
+.login-wrapper .input-wrapper input{
+	width:260px;
+}
+.login-wrapper .remember-me{
+	margin-left:200px;
+}
+.login-wrapper .remember-me input{
+	display:inline-block;
+	float:left;
+	margin-top:2px;
+	margin-right:6px;
+}
+.login-wrapper .remember-me span{
+	display:inline-block;
+	font-size:12px;
+	vertical-align:top;
+}
+.login-wrapper .login-warning-area{
+	display:none;
+	width:100%;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+}
+.login-wrapper .login-warning-area span{
+	font-size:12px;
+	color:#ff0000;
+}
+.login-wrapper .bottom-wrapper{
+	position:relative;
+	padding-left:40px;
+	padding-top:12px;
+	padding-bottom:24px;
+	font-size:12px;
+}
+.login-wrapper .bottom-wrapper div{
+	margin-bottom:6px;
+}
+.login-wrapper .bottom-wrapper button{
+	position:absolute;
+	top:0;
+	right:40px;
+	height:40px;
+	width:120px;
+	border:0px;
+}
+.login-wrapper a{
+	text-decoration:underline;
+	color:#333;
+	font-weight:bold;
+	cursor:pointer;
+}
+.login-wrapper a:link {color:inherit;}
+.login-wrapper a:visited {color:inherit;}
+.login-wrapper a:hover {color:inherit;}
+.login-wrapper a:active {color:inherit;}
+
+@media screen and (min-width:1px) and (max-width:480px){
+	div#content{
+		width:100%;
+		min-width:100%;
+		overflow-x:hidden;
+		text-align:center;
+	}
+	#content .login-wrapper{
+		position:relative;
+		width:300px;
+		margin-left:auto;
+		margin-right:auto;
+	}
+	.login-wrapper .login-wrapper-title span{
+		margin-left:0px;
+	}
+	.login-wrapper .input-wrapper{
+		text-align:left;
+		padding-left:20px;
+		margin-bottom:10px;
+	}
+	.login-wrapper .input-wrapper input[type='text'], .login-wrapper .input-wrapper input[type='password']{	
+		margin-top:6px;
+		width:250px;
+	}
+	.login-wrapper .remember-me{
+		text-align:left;
+		margin-left:20px;
+	}
+	.login-wrapper .bottom-wrapper{
+		padding-left:20px;
+		text-align:left;
+	}
+	.login-wrapper .bottom-wrapper button{
+		position:relative;
+		margin-top:20px;
+		margin-left:180px;
+	}
+}

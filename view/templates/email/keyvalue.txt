@@ -1,0 +1,6 @@
+제목: {{title}}
+Key Name: {{title}}
+
+{{value}}
+
+KORDIR Team 드림

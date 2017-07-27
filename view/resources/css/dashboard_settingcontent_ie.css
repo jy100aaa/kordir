@@ -1,0 +1,42 @@
+.leaf-node-board .node-icon-left{
+	background-image:url('/resources/images/lowie/board_lowie.png');
+}
+.leaf-node-page .node-icon-left{
+	background-image:url('/resources/images/lowie/htmlpage_lowie.png');
+}
+.leaf-node-chat .node-icon-left{
+	background-image:url('/resources/images/lowie/chat_lowie.png');
+}
+.leaf-node-hyperlink .node-icon-left{
+	background-image:url('/resources/images/lowie/hyperlink_lowie.png');
+}
+.leaf-node-scrollpoint .node-icon-left{
+	background-image:url('/resources/images/lowie/scrollpoint_lowie.png');
+}
+.root-node .node-icon-left, .tree-add .parent-node .node-icon-left{
+	background-image:url('/resources/images/lowie/root_node_lowie.png')  !important;
+}
+.parent-node .node-icon-left{
+	background-image:url('/resources/images/lowie/plus_minus_lowie.png');
+}
+.tree-view .title .title-icon{
+	background-image:url('/resources/images/lowie/close_button_lowie.png');
+}
+.home-node .node-icon-left{
+	background-image:url('/resources/images/lowie/home_lowie.png');	
+}
+#editor-input .box-item{
+	border:2px dashed green;
+}
+/*
+.body-wrapper{
+	white-space:pre-line;
+}
+.body-wrapper .component-wrapper{
+	white-space:normal;
+}
+.body-wrapper .component-contenteditable{
+	cursor:text !important;
+	white-space:pre-line;
+}
+*/

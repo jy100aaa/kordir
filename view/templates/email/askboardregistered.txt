@@ -1,0 +1,6 @@
+제목: {{title}}
+바로가기 주소: {{link}}
+
+내용: {{body}}
+
+KORDIR Team 드림

@@ -1,0 +1,47 @@
+<script>
+var stringTable = {
+	close: "닫기",
+	ok: "확인",
+	cancel: "취소",
+	send: "보내기",
+	yes: "예",
+	no: "아니오",
+	tryAgain: "다시 시도해 주세요",
+	chatRequestReceived: '님이 대화 요청을 하셨습니다',
+	askChatRequest: '대화 요청을 수락하시겠습니까?',
+	onlineNow: '관리자가 방금 접속하였습니다.',
+	discloseYes: '공개',
+	discloseNo: '비공개',
+	wrongCaptcha: '자동입력방지 숫자를 잘못 입력 하셨습니다.',
+	{% if user_info %}
+	logout: "로그아웃 하시겠습니까?",
+	{% endif %}
+	{% if service_page == "normal" %}
+	uploadPicture: '사진 올리기',
+	nameNotProvided: '이름을 입력해 주세요.',
+	subjectNotProvided: '제목을 4글자 이상 입력해 주세요.',
+	bodyNotProvided: '내용을 입력해 주세요.',
+	{% endif %}
+	uploadFail: '파일 업로드가 정상적으로 완료되지 않았습니다',
+	sizeExceed: '50MB 이상 파일은 업로드 할 수 없습니다.',
+	nameLength: "이름은 2글자 이상으로 입력 해 주세요.",
+	passwordLength: "비밀번호는 4글자 이상 16글자 이하로 설정 해 주세요.",
+	subjectLength: "제목은 4글자 이상으로 입력해주세요",
+	captchaWrong: "자동등록방지 숫자가 잘못 입력되었습니다",
+	bodyLength: "내용을 입력해주세요",
+	telephoneWrong: "입력하신 전화번호가 잘못되었습니다",
+	uploadingNotDone: "파일 업로드 중입니다.",
+	askBoardRegisterSuccess: "정상적으로 등록되었습니다.<br><br>문의하신 내역은 담당자에게 문자로 통보되었습니다.", 
+	checkPassword: '비밀번호 확인',
+	checkPasswordIntro: '본인 확인을 위해 작성시 입력한 비밀번호를 입력해주세요.',
+	wrongPassword: '입력하신 비밀번호가 잘못되었습니다.',
+	allOffline: "모든 담당자가 오프라인 상태 입니다.",
+	askPostMessage: "입력하신 내용을 등록하겠습니까?",
+	askDelete: "삭제하시겠습니까?<br><br><span style='color:red;'>주의: 삭제된 건은 복구되지 않습니다.</span>",
+	online: '온라인',
+	busy: '다른 용무중',
+	absent: '부재중',
+	offline: '오프라인',
+	bumper: ''
+};
+</script>

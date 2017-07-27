@@ -1,0 +1,29 @@
+#footer-wrapper{
+	position:relative;
+	width:100%;
+	border-top:1px solid #ddd;
+	background-color:#4b4b4b;
+	width:100%;
+	min-width:960px;
+}
+#footer{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	max-width:960px;
+	width:100%;
+	line-height:40px;
+	height:40px;
+	text-align:center;
+}
+#footer a:link{text-decoration: none; color:#333;}
+#footer a:active{text-decoration: none; color:#333;}
+#footer a:visited{text-decoration: none; color:#333;}
+#footer a:hover{text-decoration: none; color:#333;}
+
+@media screen and (min-width:1px) and (max-width:480px){
+	#footer-wrapper{
+		width:100%;
+		min-width:100%;
+	}
+}

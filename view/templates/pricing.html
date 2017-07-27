@@ -1,0 +1,229 @@
+<html>
+<head>
+{% include "common/meta.html" %}
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common.css?version=1.0' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common_lowie.css'/>
+<![endif]-->
+<style>
+.wrapper{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	color:#4d4d4d;
+	padding-top:20px;
+	padding-bottom:20px;
+}
+.content-wrapper{
+	width:960px;
+}
+.entire-wrapper {
+	min-width:960px;
+}
+.entire-wrapper .entire-inner-wrapper{
+	position:relative;
+	width:960px;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+	padding-left:10px;
+	padding-right:10px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.wrapper .content-button-wrapper{
+	text-align:center;
+	width:960px;
+	margin-left:auto;
+	margin-right:auto;
+	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+   	padding:20px 10px 0px 10px;
+}
+.content-button-wrapper button{
+	height:40px;
+	font-size:20px;
+	padding-left:20px;
+	padding-right:20px;
+	background-color:#FFB432;
+	border-bottom:4px solid #555;
+	color:#4d4d4d;
+}
+.content-button-wrapper button:hover{
+	background-color:orange;
+	color:#fff;
+}
+.wrapper .title-text{
+	text-align:center;
+	font-size:2.2em;
+	margin-top:0;
+}
+.price-block-wrapper{
+	position:relative;
+	text-align:center;
+	font-size:0px;
+	width:600px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:16px;
+}
+.price-block-wrapper .price-block{
+	position:relative;
+	display:inline-block;
+	width:33%;
+	height:auto;
+	background-color:orange;
+	border-bottom:10px solid #333;
+}
+.off-price-block-five{
+	background-image:url('https://kordir.s3.amazonaws.com/images/priceoff_5percent.png');
+	background-repeat:no-repeat;
+	background-position:top right;
+}
+.off-price-block-twelve{
+	background-image:url('https://kordir.s3.amazonaws.com/images/priceoff.png');
+	background-repeat:no-repeat;
+	background-position:top right;
+}
+.price-block .price-text-white{
+	margin-top:10px;
+	margin-bottom:5px;
+	font-size:20px;
+	font-weight:bold;
+	color:#fff;
+}
+.price-block .price-text-dark{
+	font-size:16px;
+	margin-bottom:10px;
+	font-weight:bold;
+}
+.price-block-wrapper img{
+	width:100%;
+	height:auto;
+}
+.wrapper .list-group{
+	margin-left:auto;
+	margin-right:auto;
+	width:600px;
+	padding: 0;
+	margin-top:0;
+	list-style-type: none;
+	list-style:none;
+	border-bottom:1px solid #ccccbc;
+	border-left:1px solid #ccccbc;
+	border-right:1px solid #ccccbc;
+	background-color:#fafafa;
+}
+.list-group .list-item{
+	text-align:center;
+	height:36px;
+	line-height:36px;
+	border-top:1px solid #ccccbc;
+}
+.list-item:nth-child(odd){
+	background-color:#fafafa;
+}
+.list-item:nth-child(even){
+	background-color:#f8f8f8;
+}
+.orange-highlight{
+	color:#ff5500;
+	font-size:24px;
+}
+.navy-highlight{
+	color:#000033;
+	font-size:24px;
+}
+.bright-pastel{
+	background-color:#F5EEE6;
+}
+@media screen and (min-width:1px) and (max-width:480px){
+	.content-wrapper{
+		width:100%;
+	}
+	.entire-wrapper{
+		min-width:0;
+	}
+	.entire-wrapper .entire-inner-wrapper{
+		width:100%;
+	}
+	.wrapper h1{
+		font-size:1.5em;
+	}
+	.wrapper .title-text{
+		font-size:1.7em;
+	}
+	.price-block-wrapper{
+		width:100%;
+	}
+	.off-price-block{
+		background-image:none;
+	}
+	.wrapper .list-group{
+		width:100%;
+	}
+	.wrapper .content-button-wrapper{
+		width:100%;
+	}
+}
+</style>
+</head>
+<body>
+{% include "common/header.html" %}
+<div id='content' class='bright-pastel'>
+	<div class='entire-wrapper bright-pastel wrapper box-sizing-fallback' id='nav-price'>
+		<h2 class='title-text'><span style='color:#ffa500; font-weight:bold;'>|&nbsp;</span>요금 정책</h2>
+		<div class='entire-inner-wrapper'>
+			<hr>
+			<div class='price-block-wrapper'>
+				<div class='price-block inline-block-fallback'>
+					<div class='price-text-white'>90일</div>
+					<div class='price-text-dark'>&#8361;45,000</div>
+				</div>
+				<div class='price-block off-price-block-five inline-block-fallback' style='border-left:1px dashed #333; border-right:1px dashed #333;'>
+					<div class='price-text-white'>180일</div>
+					<div class='price-text-dark'>&#8361;85,000</div>
+				</div>
+				<div class='price-block off-price-block-twelve inline-block-fallback'>
+					<div class='price-text-white'>365일</div>
+					<div class='price-text-dark'>&#8361;160,000</div>
+				</div>
+			</div>
+			<ul class='list-group'>
+				<li class='list-item'>홈페이지 빌더</li>
+				<li class='list-item'>접속자 통계 분석</li>
+				<li class='list-item'>실시간 채팅</li>
+				<li class='list-item'>SMS 피드백</li>
+				<li class='list-item'>이메일 피드백</li>
+				<li class='list-item'>문자전송위젯</li>
+				<li class='list-item'>무료 도메인 제공</li>
+				<li class='list-item'>외부 도메인 연결 가능</li>
+				<li class='list-item'>게시판 무제한</li>
+				<li class='list-item'>페이지 무제한</li>
+				<li class='list-item'>트래픽 무제한</li>
+				<li class='list-item'>저장공간 무제한</li>
+				<li class='list-item'>검색엔진 최적화</li>
+				<li class='list-item'>모바일 최적화 (반응형 디자인)</li>
+				<li class='list-item'>외부 스크립트 삽입</li>
+				<li class='list-item'>기술지원</li>
+			</ul>
+			<hr>
+			<h5>지금 가입하시면 <span class='navy-highlight'>20일간 무료</span>로 사용하실 수 있습니다.</h5>
+			<h5>하나 더! 코디알은 시간적 여유가 없으신 분들을 위해 <span class='navy-highlight'>무료 제작대행 서비스</span>를 해 드리고 있습니다.</h5>
+			<h5>지금 가입하셔서 차별화 된 서비스를 경험해보세요.</h5>
+		</div>
+		<div class='content-button-wrapper'>
+			<button class='btn' onclick="location.href='/signup'">지금 가입하기</button>
+		</div>
+	</div>
+</div>
+{% include "common/footer.html" %}
+<script>
+var serverData = {
+	page: '{{page}}',
+	msg: '{{msg}}'
+};
+</script>
+</body>
+</html>

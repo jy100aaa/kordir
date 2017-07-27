@@ -1,0 +1,75 @@
+<!doctype html>
+{% load customtags %}
+{% load tz %}
+<!--[if lt IE 7 ]> <html class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class=""> <!--<![endif]-->
+<head>
+{% include "service/common/processor.html" %}
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/askboarditem.css?version=1.1' />
+</head>
+<body>
+{% include "service/common/servicemeta.html" %}
+{% include "service/common/serviceheader.html" %}
+<div id='content'>
+<div id='content-inner'>
+	<div class='clearfix' style='height:1px;'>&nbsp;</div>
+	<div class='box'>
+		<div class='box-control indent'>
+			<button class='box-control-button btn password-required' id='delete-button' onclick="delete_item_sub();">삭제</button>
+			<button class='box-control-button btn' id='previous-button' onclick="window.location.href='{{tag}}';">목록으로</button>
+		</div>
+		<div class='box-info indent'>
+			<div class='subject'>{{boarditem.subject}}</div>	
+			<div class='name info-item inline-block-fallback'>작성자: {{boarditem.name}}</div>
+			{% timezone "Asia/Seoul" %}
+			<div class='date info-item inline-block-fallback'>등록일: {{boarditem.created|localtime|date:'Y-m-d H:i:s'}}</div>
+			{% endtimezone %}
+			{% if boarditem.sticky == False %}
+			<div class='disclose info-item inline-block-fallback'>공개여부: {% if boarditem.open == True %}공개{% else %}비공개{% endif %}</div>
+			<div class='sms info-item inline-block-fallback'>문자알림: {% if boarditem.telephone|length == 0 %}비활성{% else %}활성{% endif %}</div>
+			{% if user_info %}
+			{% if user_info.service.id == service.id %}
+			<div class='password info-item inline-block-fallback'>비밀번호: {{boarditem.password}}</div>
+			{% endif %}
+			{% endif %}
+			{% if boarditem.file|length != 0 %}
+			<div class='file info-item inline-block-fallback'>파일: <a href='{{"BOARD_ATTACHMENT"|get_filelocation}}{{service.id}}{{tag}}/{{boarditem.file}}'>다운로드</a></div>
+			{% endif %}
+			{% endif %}
+		</div>
+		<div class='box-content'>
+			{% autoescape off %}
+			{{boarditem.body|linebreaksbr}}
+			{% endautoescape %}
+		</div>
+		<!--
+		<div class='box-content-shadow-bottom'></div>
+		-->
+	</div>
+	<div id='comment' data-boardtype='{{board_type}}' data-tag='{{tag}}' data-seq='{{seq}}'>
+		{% include "service/common/servicecomment.html" %}
+	</div>
+</div>
+</div>
+{% include "service/common/servicefeedbackplugin.html" %}
+{% include "service/common/servicefooter.html" %}
+</body>
+<!--[if lte IE 7]>
+<script type='text/javascript' src='/resources/js/boxsizingfix.js'></script>
+<![endif]-->
+<script>
+var serverData = {
+	seq: '{{seq}}',
+	serviceId: '{{service.id}}',
+	userId: '{{user_info.id}}',
+	tag: '{{tag}}',
+	boardType: {{board_type}}
+};
+</script>
+{% include "service/common/servicenodejs.html" %}
+<script src='/resources/service/js/askboarditem.js?version=1.0'></script>
+{% include "service/common/ga.html" %}
+</html>

@@ -1,0 +1,236 @@
+#header-wrapper{
+	position:relative;
+	width:100%;
+	min-width:960px;
+	border-bottom:1px solid #aaa;
+	z-index:5;
+}
+#header-wrapper #header{
+	position:relative;
+	max-width:960px;
+	width:100%;
+	height:40px;
+	margin-left:auto;
+	margin-right:auto;
+}
+#header .header-company-name{
+	display:inline-block;
+	position:relative;
+	height:40px;
+	cursor:pointer;
+	padding-left:8px;
+	padding-right:8px;
+}
+#header .header-company-name i.wide-logo{
+	background-image:url('https://kordir.s3.amazonaws.com/images/kordir_logo_header.png');
+	background-repeat:no-repeat;
+	width:133px;
+	height:40px;
+	display:inline-block;
+	cursor:pointer;
+}
+#header .header-nav{
+	position:absolute;
+	width:auto;
+	right:0;
+	top:0;
+}
+.header-nav #header-language-menu-button{
+	position:relative;
+	display:inline-block;
+	cursor:pointer;
+	height:24px;
+	margin-right:6px;
+	top:6px;
+}
+.header-nav #header-language-menu-button img{
+	display:inline-block;
+	width:24px;
+	height:24px;
+	margin-right:4px;
+}
+.header-nav #header-language-menu-button span{
+	position:relative;
+	display:inline-block;
+	bottom:6px;
+	font-size:12px;
+	color:#4d4d4d;
+}
+.header-nav .menu-nav{
+	display:inline-block;
+	height:40px;
+	line-height:40px;
+	padding-left:8px;
+	padding-right:8px;
+}
+.header-nav .active{
+	background-color:#efefef;
+}
+#header a:link{text-decoration: none; color:#6d6d6d;}
+#header a:active{text-decoration: none; color:#6d6d6d;}
+#header a:visited{text-decoration: none; color:#6d6d6d;}
+#header a:hover{text-decoration: none; color:#6d6d6d;}
+
+.header-nav .header-menu-button{
+	display:inline-block;
+	width:40px;
+	height:40px;
+	background-repeat:no-repeat;
+	background-position:4px 4px;
+	cursor:pointer;
+}
+#header-user-menu-button{
+	position:absolute;
+	top:0;
+	right:10px;
+	background-image:url('/resources/images/header_menu_icon.png');
+}
+#header-dashboard-menu-button{
+	position:absolute;
+	top:0;
+	right:60px;
+	background-position:center !important;
+	background-image:url('/resources/images/dashnav.png');
+	display:none !important;
+}
+#header-wrapper .list-menu{
+	display:none;
+	position:absolute;
+	right:14px;
+	top:36px;
+	background-color:#fefefe;
+	color:#2d2d2d;
+	width:160px;
+	text-decoration:none;
+	text-align:left;
+	border:1px solid #ccccbc;
+	margin:0;
+	padding:0;
+	-webkit-padding-start: 0;
+	list-style-type: none;
+	list-style-position:outside;
+}
+.list-menu li{
+	position:relative;
+	z-index:99;
+	padding-left:10px;
+	height:36px;
+	line-height:36px;
+	border-bottom:1px solid #ccccbc;
+	font-size:14px;
+	margin-left:0;
+}
+.list-menu li:hover{
+	background-color:#efefef;
+	color:#000;
+	cursor:pointer;
+}
+.list-menu li:last-child{
+	border-bottom:0px;
+}
+.list-menu li a{
+	text-decoration:none;
+	display:block;
+	width:100%;
+	height:100%;
+	color:#000 !important;
+}
+.list-menu li a:hover{
+	text-decoration:none;
+}
+#language-menu{
+	margin-right:22px;
+}
+#language-menu .language{
+	background-repeat:no-repeat;
+	background-position:4px 4px;
+	padding-left:36px;
+}
+#language-menu .chosen{
+	background-color:#D6D6D6;
+}
+#language-menu .ko{
+	background-image:url('/resources/images/south_korea.png');
+}
+#language-menu .en{
+	background-image:url('/resources/images/united_states.png');
+}
+.warning{
+	position:relative;
+	text-align:center;
+	padding:20px 30px;
+	background-color:#999;
+	color:#fff;
+}
+.warning button{
+	display:inline-block;
+	margin-top:20px;
+	height:40px;
+}
+.warning div{
+	font-size:18px;
+}
+.warning .warning-close{
+	position:absolute;
+	top:10px;
+	right:16px;
+	display:inline-block;
+	width:32px;
+	height:32px;
+	overflow:hidden;
+	background-image:url('/resources/images/close_button.png');
+	background-repeat:no-repeat;
+}
+.warning-close:hover{
+	background-position:-32px 0px;
+	cursor:pointer
+}
+@media screen and (min-width:1px) and (max-width:480px){
+	#header-wrapper{
+		width:100%;
+		min-width:100%;
+	}
+	#header-wrapper #header{
+		height:auto;
+	}
+	.header-company-name{
+		color:red;
+		margin-left:8px;
+	}
+	.header-company-name-normal{
+		margin:0;
+		width:100%;
+		text-align:center;
+		padding:0;
+		-webkit-box-sizing: border-box;
+    	-moz-box-sizing: border-box;
+    	box-sizing: border-box;
+	}
+	#header .header-nav-before-login{
+		position:relative;
+		width:100%;
+		text-align:center;
+		border-top:1px solid #eee;
+	}
+	#header-dashboard-menu-button{
+		display:inline-block !important;
+	}
+	#header-dashboard-menu-button #header-notification{
+		position:absolute;
+		right:-4px;
+		top:2px;
+		padding:4px;
+		background-color:red;
+		color:white;
+		font-size:12px;
+	}
+	#header-wrapper .list-menu{
+		width:200px;
+	}
+	.warning button{
+		height:30px;
+	}
+	.warning div{
+		font-size:12px;
+	}
+}

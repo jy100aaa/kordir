@@ -1,0 +1,121 @@
+{% load i18n %}
+{% load customtags %}
+{% get_current_language as LANGUAGE_CODE %}
+<html>
+<head>
+{% include "common/meta.html" %}
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common.css?version=1.0' />
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/addservice.css' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common_lowie.css'/>
+<![endif]-->
+<script>
+var serverData = {
+    id: '{{user_info.id}}'
+};
+</script>
+<!--[if lte IE 7]>
+<style>
+.input-line{
+    vertical-align:baseline;
+}
+.input-line .auth-request-button{
+    margin-left:4px;
+    margin-top:-16px;
+}
+</style>
+<![endif]-->
+</head>
+<body>
+{% include "common/header.html" %}
+<div id='content'>
+<div class='write-form-box white-bg' id='service-info'>
+    <div class='required-notice'><span style='color:red;'>*</span> 표시는 필수 입력 사항입니다.</div>
+    <div class='input-line'>
+        <span class='tag black-font'>사이트 이름<span class='required'>*</span></span>
+        <input type='text' class='service-name-input'>
+    </div>
+    <div class='input-line'>
+        <span class='tag black-font'>사이트 주소<span class='required'>*</span></span>
+        <input type='text' class='service-tag-input' id='service-tag-input'><span class='service-tag-rest black-font'>.{% settings_value "SIMPLE_MAIN_SERVER" %}</span>
+        <div class='intro-text'>서비스 홈페이지와 연결 될 인터넷 주소 입니다.<br>우리집.{% settings_value "SIMPLE_MAIN_SERVER" %} 와 같은 한글도메인도 사용 가능 합니다.</div>
+    </div> 
+    <div class='input-line'>
+        <span class='tag black-font'>연결 도메인</span>
+        <input type='text' id='service-domain-input' class='service-domain-input'>
+        <div class='intro-text box-sizing-fallback'>연결할 도메인을 가지고 계신 경우 해당 도메인 주소를 입력해 주세요.<br>예)foo.co.kr<br>호스팅 받은 도메인의 <b style='color:#000;'> A record </b> 값을 <b style='color:#000;'>{% settings_value "ELASTIC_IP_ADDRESS" %}</b> 로<br>변경해주셔야 연결이 됩니다.</div>
+    </div>
+    <div class='input-line'>
+        <span class='tag black-font'>분류<span class='required'>*</span></span>
+        <select class='service-category-input'>
+            <option value='-1' disabled selected>서비스 분류</option>
+        </select>
+    </div>
+    <div class='input-line'>
+        <span class='tag black-font'>지역<span class='required'>*</span></span>
+        <select class='service-location-input service-location-main-input' id='service-location-main-input'>
+            <option value='-1' disabled selected class='default'>시/도</option>
+        </select>
+        <select class='service-location-input service-location-sub-input' id='service-location-sub-input'>
+            <option value='-1' disabled selected class='default'>시/도/군</option>
+        </select>       
+    </div>
+    <div class='input-line' style="display:none;">
+        <span class='tag black-font'>웹 사이트</span>
+        <input type='text' class='service-website-input'>
+    </div>
+    <div class='input-line'>
+        <span class='tag black-font'>전화번호</span>
+        <input type='text' class='service-telephone-input'>
+        <div class='intro-text'>입력하신 번호는 문자 발송 시 발송 번호가 됩니다.<br>공란일 경우 사용자의 핸드폰 번호가 사용됩니다.</div>
+    </div>
+    <div class='input-line' style="display:none;">
+        <span class='tag black-font' id='description-tag'>서비스 소개</span>
+        <textarea class='service-description-input' rows='6'></textarea>
+    </div>
+    <div class='bottom-button-area'>
+        <button id='cancel-button' class='btn'>취소</button>
+        <button id='finish-button' class='btn'>서비스 생성</button>
+    </div>
+</div>
+<div class='fillinfo-warning-area white-bg'><span class='red-font'></span></div>
+</div>
+{% include "common/footer.html" %}
+</body>
+{% if LANGUAGE_CODE == "ko" %}
+<script src='/resources/js/static_kr.js'></script>
+{% else %}
+<script src='/resources/js/static_en.js'></script>
+{% endif %}
+<script src='/resources/js/addservice.js'></script>
+<script>
+$(function(){
+    $(".service-name-input").inputLengthSet({
+        maxLength:32,
+        posX: 293,
+        posY: 10
+    });
+    $(".service-tag-input").inputLengthSet({
+        maxLength:16,
+        posX: 293,
+        posY: 10
+    });
+    $(".service-tag-input").ForceAlphabetNumericOnly();
+    $(".service-domain-input").inputLengthSet({
+        maxLength:64,
+        posX: 293,
+        posY: 10
+    });
+    $(".service-website-input").inputLengthSet({
+        maxLength:64,
+        posX: 293,
+        posY: 10
+    });
+    $(".service-telephone-input").inputLengthSet({
+        maxLength:16,
+        posX: 293,
+        posY: 10
+    });
+});
+</script>
+</html>

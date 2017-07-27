@@ -1,0 +1,179 @@
+div#content{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	width:960px;
+	height:auto;
+}
+#content .signup-wrapper{
+	position:relative;
+	display:inline-block;
+	margin-left:210px;
+	width:540px;
+	border:1px solid #ccccbc;
+	margin-top:50px;
+	margin-bottom:50px;
+}
+.signup-wrapper .signup-wrapper-title{
+	height:50px;
+	line-height:50px;
+	background-color:#efefef;
+	border-bottom:1px solid #aaa;
+	margin-bottom:30px;
+}
+.signup-wrapper .signup-wrapper-title span{
+	display:inline-block;
+	font-size:24px;
+	font-weight:bold;
+	margin-left:40px;
+}
+.signup-wrapper .social-signup-wrapper{
+	width:100%;
+	text-align:center;
+	margin-bottom:20px;
+}
+.signup-wrapper .social-signup-wrapper .social-signup-button{
+	position:relative;
+	display:inline-block;
+	width:250px;
+	height:42px;
+	line-height:42px;
+	text-align:center;
+	line-height:bold;
+	background-color:#a6a697;
+	border-radius:4px;
+	font-size:14px;
+	font-weight:bold;
+	color:#fff;
+	margin-left:12x;
+	margin-right:12px
+}
+.signup-wrapper .social-signup-wrapper .social-signup-button:hover{
+	cursor:pointer;
+	background-color:#5E2B92;
+}
+.signup-wrapper .social-signup-wrapper .social-signup-button img{
+	position:absolute;
+	top:5px;
+	left:4px;
+}
+.signup-wrapper .signup-separator{
+	width:100%;
+	text-align:center;
+	height:10px;
+	line-height:10px;
+	font-size:12px;
+	margin-bottom:20px;
+}
+.signup-wrapper .input-wrapper{
+	padding-left:40px;
+	margin-bottom:10px;
+}
+.signup-wrapper .input-wrapper .input-tag{
+	display:inline-block;
+	width:160px;
+	font-size:16px;
+	font-weight:bold;
+}
+.signup-wrapper .input-wrapper input[type='text'], .signup-wrapper .input-wrapper input[type='password']{
+	width:260px;
+}
+.signup-wrapper .input-wrapper .input-desc{
+	font-size:12px;
+	padding:6px 0px;
+}
+
+.signup-wrapper .signup-warning-area{
+	width:100%;
+	height:20px;
+	line-height:20px;
+	text-align:center;
+	margin-top:6px;
+	margin-bottom:10px;
+}
+.signup-wrapper .signup-warning-area span{
+	display:none;
+	color:#ff0000;
+	font-size:12px;
+}
+.signup-wrapper .checkbox-wrapper{
+	display:inline-block;
+	font-size:12px;
+	padding-left:200px;
+}
+.signup-wrapper .checkbox-wrapper input[type='checkbox']{
+	margin-right:6px;
+	display:inline-block;
+}
+.signup-wrapper .checkbox-wrapper span{
+	display:inline-block;
+	vertical-align:top;
+}
+.signup-wrapper .bottom-wrapper{
+	position:relative;
+	height:40px;
+	margin-bottom:30px;
+	font-size:12px;
+}
+.signup-wrapper .bottom-wrapper button{
+	position:absolute;
+	top:0;
+	right:40px;
+	height:40px;
+	width:120px;
+	border:0px;
+}
+.signup-wrapper a{
+	text-decoration:underline;
+	color:#333;
+	font-weight:bold;
+	cursor:pointer;
+}
+.signup-wrapper a:link {color:#4d4d4d;}
+.signup-wrapper a:visited {color:#4d4d4d;}
+.signup-wrapper a:hover {color:#4d4d4d;}
+.signup-wrapper a:active {color:#4d4d4d;}
+
+
+@media screen and (min-width:1px) and (max-width:480px){
+	div#content{
+		width:100%;
+		min-width:100%;
+		overflow-x:hidden;
+		text-align:center;
+	}
+	#content .signup-wrapper{
+		position:relative;
+		width:300px;
+		margin-left:auto;
+		margin-right:auto;
+	}
+	.signup-wrapper .signup-wrapper-title{
+		padding:0;
+	}
+	.signup-wrapper .signup-wrapper-title span{
+		margin:0;
+	}
+	.signup-wrapper .input-wrapper{
+		text-align:left;
+		padding-left:20px;
+		margin-bottom:10px;
+	}
+	.signup-wrapper .input-wrapper input[type='text'], .signup-wrapper .input-wrapper input[type='password']{	
+		margin-top:6px;
+		width:250px;
+	}
+	.signup-wrapper .checkbox-wrapper{
+		padding-left:0;
+		width:100%;
+		margin-top:10px;
+		margin-bottom:10px;
+	}
+	.signup-wrapper .bottom-wrapper button{
+		right:30px;
+	}
+	#length-aid{
+		margin-top:34px;
+		margin-left:-50px;
+	}
+}

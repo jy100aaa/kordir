@@ -1,0 +1,127 @@
+{% load customtags %}
+{% load tz %}
+<head>
+<style>
+.dashboard-body{display:none;}
+.mce-window-head{
+	background-color:#E0E0D0;
+}
+.mce-btn{
+	color:#4d4d4d;
+	background-color:#efefef;
+}
+.mce-btn:hover{
+	background-color:orange;
+}
+.mce-primary button, .mce-primary button i{
+	color:#4d4d4d;
+	text-shadow:none !important;
+}
+</style>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/dashboard_askboarditem.css?version=1.1' />
+</head>
+<div class='dashboard-body'>
+	<div class='box compose-negative'>
+		<div class='box-control'>
+			{% if boarditem.sticky == True %}
+			<button class='box-control-button btn' id='edit-button'>수정</button>
+			{% endif %}
+			<button class='box-control-button btn' id='delete-button'>삭제</button>
+			<button class='box-control-button btn' id='previous-button'>목록으로</button>
+		</div>
+		<div class='subject'>{{boarditem.subject}}</div>
+		<div class='box-info'>
+			<div class='name'>작성자: {{boarditem.name}}</div>
+			{% timezone "Asia/Seoul" %}
+			<div class='date'>등록일: {{boarditem.created|localtime|date:'Y-m-d H:i:s'}}</div>
+			{% endtimezone %}
+			{% if boarditem.sticky == False %}
+			<div class='disclose'>공개여부: {% if boarditem.open == True %}공개{% else %}비공개{% endif %}</div>
+			<div class='sms'>문자알림: {% if boarditem.telephone|length == 0 %}비활성{% else %}활성{% endif %}</div>
+			{% endif %}
+			{% if boarditem.telephone|length != 0 %}
+			<div class='sms'>전화번호: {{boarditem.telephone}}</div>
+			{% endif %}
+			{% if boarditem.file|length != 0 %}
+			<div class='file'>파일: <a href='{{"BOARD_ATTACHMENT"|get_filelocation}}{{user_info.service.id}}{{tag}}/{{boarditem.file}}'>다운로드</a></div>
+			{% endif %}
+		</div>
+		<div class='box-content'>
+			{% autoescape off %}
+			{{boarditem.body|linebreaksbr}}
+			{% endautoescape %}
+		</div>
+	</div>
+	<div id='comment' data-boardtype='{{board_type}}' data-tag='{{tag}}' data-seq='{{seq}}' class='compose-negative'>
+		{% include "common/comment.html" %}
+	</div>
+	<div class='board-compose-wrapper'>
+		<form action="/requestreceiver/" method="post" enctype="multipart/form-data" class='upload-form' id='user-file-upload-form' style='position:absolute; width:1px; height:1px; overflow:hidden;'>
+			<input type='text' name='id' value='{{user_info.service.id}}' style='display:none;'>
+			<input type='text' name='req_type' value='file_upload' style='display:none;'>
+			<input type='text' name='file_type' value='NOTICE_PICTURE' style='display:none;'>
+			<input type='text' name='uuid' class='uuid' value='' style='display:none;'>
+			<input type='text' name='tag' class='tag' value='{{tag}}' style='display:none'>
+			<input type="file" name="file" class='file-input' id='file-input' accept='image/bmp, image/png, image/jpeg'>
+			<input type="submit" id='user-file-submit' value='submit' style='display:none;'>
+		</form>
+		<label for=file-input><span id='file-input-proxy' style='width:1px; height:1px;'></span></label>
+		<div class='input-line'>
+			<div class='tag'>이름</div><input class='name-input' value='{{boarditem.name}}' type='text'>
+		</div>
+		<div class='input-line'>
+			<div class='tag'>제목</div><input class='subject-input' value='{{boarditem.subject}}' type='text'>
+		</div>
+		<div class='input-line input-line-file'>
+			<span class='tag black-font'>첨부파일</span>
+			<div class='after-upload' {% if boarditem.file|length != 0 %}style='display:inline-block;'{% endif %}>
+				<span class='filename'><a href='{{"BOARD_ATTACHMENT"|get_filelocation}}{{service.id}}{{tag}}/{{boarditem.file}}' target='_blank'>파일</a></span>
+				<button class='remove-file btn'>삭제</button>
+				<label for='attachment-input'><span class='file-select-button btn' {% if boarditem.file|length != 0 %}style='display:none;'{% endif %}>파일 올리기</span></label>
+			</div>
+			<label for='attachment-input'><span class='file-select-button btn' {% if boarditem.file|length != 0 %}style='display:none;'{% endif %}>파일 올리기</span></label>
+			<span class='progress-bar'>
+				<span class='progress'></span>
+				<span class='number'>5%</span>
+			</span>
+		</div>
+		<textarea id='body-input'>
+			{% autoescape off %}
+			{{boarditem.body}}
+			{% endautoescape %}
+		</textarea>
+		<div class='compose-error-message'></div>
+		<div class='button-wrapper'>
+			<button class='btn' id='submit'>올리기</button>
+			<button class='btn' id='cancel'>취소</button>
+		</div>
+	</div>
+	<iframe id='user-file-upload-target' name='user-file-upload-target' style='position:absolute;top:0;left:0;width:0px;height:0px;border:0px solid #fff;'></iframe>
+</div>
+<iframe id='board-attachment-upload-target' name='board-attachment-upload-target' style='position:absolute;top:0;left:0;width:0px;height:0px;border:0px solid #fff;'></iframe>
+<form action="/requestreceiver/" method="post" enctype="multipart/form-data" class='board-attachment-upload-form' id='board-attachment-upload-form' style='position:absolute; width:1px; height:1px; overflow:hidden;'>
+<input type='text' name='id' value='{{service.id}}' style='display:none;'>`
+<input type='text' name='req_type' value='file_upload' style='display:none;'>
+<input type='text' name='tag' class='tag' value='{{tag}}' style='display:none'>
+<input type='text' name='file_type' value='BOARD_ATTACHMENT' style='display:none;'>
+<input type='text' name='filename' class='filename' value='' style='display:none;'>
+<input type='text' name='uuid' class='uuid' value='' style='display:none;'/>
+<input type="file" name="file" class='attachment-input' id='attachment-input'>
+<input type="submit" id='attachment-submit' value='submit' style='display:none;'>
+</form>
+<script>
+var boardVar = {
+	seq: '{{seq}}',
+	tag: '{{tag}}',
+	boardType: {{board_type}},
+	filePrefix: '{{"BOARD_PICTURE"|get_filelocation}}{{user_info.service.id}}{{tag}}/',
+	serviceId: serverData.service_id,
+	userId: serverData.id,
+	boardAttachmentLocation: '{{"BOARD_ATTACHMENT"|get_filelocation}}{{service.id}}{{tag}}/',
+	uploading: false,
+	attachment: '{{boarditem.file}}',
+	uploadTimer: null
+};
+</script>
+<script src="/resources/plugins/tinymce_4.6.1/tinymce.min.js"></script>
+<script src='/resources/js/dashboard_askboarditem.js?version=1.0'></script>

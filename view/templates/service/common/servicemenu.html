@@ -1,0 +1,445 @@
+<style>
+#header-button{
+	position:absolute;
+	right:10px;
+	top:10px;
+	width:30px;
+	height:30px;
+	overflow:hidden;
+	background-size:auto 30px;
+	background-image:url('/resources/images/header_menu_negative.png');
+	background-repeat:no-repeat;
+	display:none;
+	background-color:#4d4d4d;
+	border:0;
+}
+#header-button:hover{
+	cursor:pointer;
+}
+#menu{
+	display:inline-block;
+	float:right;
+}
+.node{
+	position:relative;
+	display:inline-block;
+	border-bottom:4px solid transparent;
+}
+.node .node-text{
+	display:inline-block;
+	padding-left:10px;
+	padding-right:10px;
+	height:64px;
+	line-height:64px;
+	font-size:14px;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.node .node-text:hover{
+	cursor:pointer;
+}
+.node-text a{
+	display:block;
+	width:100%;
+	height:100%;
+}
+.node-text .node-arrow{
+	display:inline-block;
+	margin-left:4px;
+}
+.node-current-leaf{
+	border-bottom:4px solid #ff6600;
+}
+.node-block{
+	position:relative;
+	display:none;
+	z-index:10;
+	background-color:#fff;
+	border-left:1px solid #ccccbc;
+	border-top:1px solid #ccccbc;
+	margin-top:4px;
+}
+.first-node-block{
+	position:absolute;
+}
+.node-block .node .node-text{
+	position:relative;
+	display:block;
+	height:40px;
+	line-height:40px;
+	width:180px;
+}
+.node-text .node-name{
+	display:block;
+	width:100%;
+	height:100%;
+}
+.node-name .node-arrow{
+	display:none;
+}
+.viewport-check{
+	display:none;
+}
+.node-nonroot-leaf .node-text .node-name::before {
+    content: '\2219  ';
+}
+@media all and (max-width:480px){
+	#menu{
+        position: fixed;
+        display: block;
+		width: 100%;
+        right: -100%;
+	}
+	.node{
+		position:relative;
+		padding:0;
+		border-bottom:1px solid #ccccbc;
+		width:100%;
+	}
+	.node-current-leaf{
+		border-bottom:1px solid #ccccbc !important;
+	}
+	.first-node-block{
+		position:relative;
+	}
+	.node .node-text{
+		height:40px;
+		line-height:40px;
+		width:100%;
+		font-size:14px;
+	}
+    .node-nonroot-leaf .node-text .node-name {
+        font-size: 12px;
+    }
+    .node-nonroot-leaf {
+        border-bottom: 0;
+    }
+	.node-block{
+		border-left: 0px;
+	}
+	.node-block .node .node-text{
+		width:100%;
+	}
+    .node-nonroot-leaf .node-leaf {
+        border-bottom: 0;
+    }
+    .node-name:hover, .node-name:active {
+        font-weight: bold;
+    }
+	#header-button{
+		display:inline-block;
+	}
+	.viewport-check{
+		display:inline-block;
+		width:0;
+		height:0;
+	}
+}
+</style>
+{% if misc %}
+<style>
+.node-current-leaf{
+	border-bottom:4px solid {{misc.header.highlight}};
+}
+#menu .node-root-leaf:hover{
+	border-bottom:4px solid {{misc.header.highlight}};
+}
+#menu .node-block .node{
+	background-color:{{misc.header.toggleMenuBackgroundColor}};
+}
+#menu .node-block .node .node-name{
+	color:{{misc.header.toggleMenuFontColor}};
+}
+@media all and (max-width:480px){
+	#menu .node-root-leaf:hover{
+		border-bottom: 1px solid #ccccbc;
+	}
+	#header-button{
+		background-color:{{misc.header.fontColor}};
+	}
+	#menu .node{
+		background-color:{{misc.header.toggleMenuBackgroundColor}};
+	}
+	#menu .node .node-name{
+		color:{{misc.header.toggleMenuFontColor}};
+	}
+	.node-current-leaf .node-text{
+		border-bottom:0;
+	}
+}
+</style>
+{% endif %}
+<!--[if lte IE 8]>
+<style>
+#header-wrapper .node-block{
+	border:1px solid #ccccbc;
+}
+</style>
+<![endif]-->
+<!--[if lte IE 7]>
+<style>
+#header-wrapper #menu{
+	margin-top:-64px;
+}
+.node .node-text{
+	height:60px;
+	line-height:60px;
+}
+#header-wrapper .node-block{
+	margin-top:64px;
+}
+</style>
+<![endif]-->
+<div id='menu' class='inline-block-fallback'>
+	{% for leaf_0 in tree %}
+	{% if leaf_0.active == True %}
+	{% if leaf_0.node == "parent" %}
+	<div class='node node-parent node-root-leaf {% for child in leaf_0.children %}{% if child.url == tag %}node-current-leaf{% endif %}{% endfor %} inline-block-fallback' id='parent-node-{{leaf_0.id}}'>
+		<span class='node-text'>
+			<span class='node-name'>{{leaf_0.nodeName}} <span class='node-arrow'>▼</span></span>
+		</span>
+		<div class='node-block first-node-block' id='children-block-{{leaf_0.id}}'>
+		{% for leaf_1 in leaf_0.children %}
+		{% if leaf_1.active == True %}
+		{% if leaf_1.node == "parent" %}
+		<div class='node node-parent node-nonroot-leaf inline-block-fallback' id='parent-node-{{leaf_1.id}}'>
+			<span class='node-text'>
+				<span class='node-name'>{{leaf_1.nodeName}}<span class='node-arrow'>▼</span></span>
+			</span>
+			<div class='node-block second-node-block' id='children-block-{{leaf_1.id}}'>
+			{% for leaf_2 in leaf_1.children %}
+			{% if leaf_2.active == True %}
+			{% if leaf_2.node == "parent" %}
+			<div class='node node-parent node-nonroot-leaf inline-block-fallback' id='parent-node-{{leaf_2.id}}'>
+				<span class='node-text'>
+					<span class='node-name'>{{leaf_2.nodeName}}<span class='node-arrow'>▼</span></span>
+				</span>
+				<div class='node-block third-node-block' id='children-block-{{leaf_2.id}}'>
+				{% for leaf_3 in leaf_2.children %}
+				<div class='node node-leaf node-nonroot-leaf inline-block-fallback'>
+					<span class='node-text' onclick="window.location.href='{{leaf_3.url}}';">
+						<span class='node-name'>{{leaf_3.nodeName}}</span>
+					</span>
+				</div>
+				{% endfor %}
+				</div>
+			</div>
+			{% else %}
+			<div class='node node-leaf node-nonroot-leaf inline-block-fallback'>
+				<span class='node-text' onclick="window.location.href='{{leaf_2.url}}';">
+					<span class='node-name'>{{leaf_2.nodeName}}</span>
+				</span>
+			</div>
+			{% endif %}
+			{% endif %}
+			{% endfor %}
+			</div>
+		</div>
+		{% else %}
+		<div class='node node-leaf node-nonroot-leaf inline-block-fallback'>
+			<span class='node-text' onclick="window.location.href='{{leaf_1.url}}';" >
+				<span class='node-name'>{{leaf_1.nodeName}}</span>
+			</span>
+		</div>
+		{% endif %}
+		{% endif %}
+		{% endfor %}
+		</div>
+	</div>
+	{% elif leaf_0.node == "leaf"  %}
+	<div class='node node-leaf node-root-leaf {% if leaf_0.url == tag %}node-current-leaf{% endif %} inline-block-fallback' {% if leaf_0.type != "scrollpoint" %} onclick="window.location.href='{{leaf_0.url}}';" {% else %} onclick="move_to_scrollpoint('{{leaf_0.nodeName}}', '{{tag}}');"{% endif %}>
+		<span class='node-text'>
+			<span class='node-name'>{{leaf_0.nodeName}}</span>
+		</span>
+	</div>
+	{% endif %}
+	{% endif %}
+	{% endfor %}
+</div>
+{% if hasActive == True %}
+<button id='header-button'></button>
+{% endif %}
+<span class='viewport-check'></span>
+<script>
+$(function(){
+	$(".node-parent").each(function(){
+		$(this).data('visible', false);
+	});
+	$(".node-parent").click(function(e){
+		$(this).siblings().each(function(){
+			var visible = $(this).data('visible');
+			if(visible){
+				$(this).children('.node-block').fadeOut(150);
+				$(this).data('visible', false);
+				$(this).children('.node-text').find('.node-arrow').text('▼');
+			}
+		});
+
+		var visible = $(this).data('visible');
+		if(visible){
+			$(this).children('.node-block').fadeOut(150);
+			$(this).data('visible', false);
+			$(this).children('.node-text').find('.node-arrow').text('▼');
+		} else {
+			$(this).children('.node-block').fadeIn(150);
+			$(this).data('visible', true);
+			$(this).children('.node-text').find('.node-arrow').text('▲');
+		}
+		return false;
+	});
+	$("#header-button").data('toggle', false);
+	$("#header-button").bind('click', function(){
+	    //var pos = $("#header").height();
+	    //var menuHeight = $("#menu").height() * (-1);
+		var toggle = $(this).data('toggle');
+		if (toggle) {
+		    $("#menu").animate({
+		        right: '-100%'
+            }, function() {
+                $(".node-parent").each(function(){
+                    $(this).data('visible', false);
+                    $(this).children('.node-text').find('.node-arrow').text('▼');
+                });
+            });
+        } else {
+            $("#menu").animate({
+                right: '0'
+            });
+        }
+		$(this).data('toggle', !toggle);
+	});
+
+	$(".first-node-block").each(function(){
+		var offset = $(this).parent().width() - $(this).width();
+		if( $(".viewport-check").css('display') == 'none' ){
+			$(this).css('left', offset/2);
+		}
+	});
+
+	$(document).bind('click', function(e){
+		var className = get_clicked_property(e, 'class');
+		var id = get_clicked_property(e, 'id');
+		if(typeof className == 'undefined' || typeof className == 'object')
+			className = '';
+		if(typeof id == 'undefined' || typeof id == 'object')
+			id = '';
+		if(id == "header-button")
+			return;
+
+		if(className.indexOf('node') == -1){
+			$(".node-block").fadeOut(150);
+			var display = $(".viewport-check").css('display');
+			if(display != 'none' && $("#header-button").data('toggle')){
+				$("#header-button").click();
+			}
+			if(display === 'none'){
+				$(".node-parent").each(function(){
+					$(this).data('visible', false);
+					$(this).children('.node-text').find('.node-arrow').text('▼');
+				});
+			}
+		}
+	});
+	serviceVariable.resizeFunc['menu'] = function(){
+		var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+		/*
+		if(width > 480) {
+			if($("#menu").css('display') == 'none')
+				$("#menu").show();
+		} else {
+			$("#menu").hide();
+		}
+		*/
+		calc_scroll_point();
+	};
+	/* scroll point */
+	calc_scroll_point();
+
+	serviceVariable.scrollFunc['menu'] = function(){
+		if(serviceVariable.scrollPointScrolling)
+			return;
+		serviceVariable.scrollPointScrolling = true;
+		var scrollTop = $(window).scrollTop();
+
+		for(var i = 0; i < serviceVariable.scrollPoint.length; i++){
+			if(scrollTop > serviceVariable.scrollPoint[i].scrollPointTop &&
+					scrollTop <= serviceVariable.scrollPoint[i].scrollPointBottom) {
+				$(".node-root-leaf").removeClass('node-current-leaf');
+				$(".node-root-leaf").each(function(){
+					var scrollPointName = $(this).find('.node-name').text();
+					if(scrollPointName == serviceVariable.scrollPoint[i].scrollPointName){
+						$(this).addClass('node-current-leaf');
+						return;
+					}
+				});
+				break;
+			}
+		}
+		serviceVariable.scrollPointScrolling = false;
+	};
+
+});
+function hash_changed(hash){
+	if($("#header-button").css('display') !== 'none' && $("#menu").css('display') !== 'none'){
+		$("#header-button").click();
+		$("#header-wrapper").css('top', '0');
+	}
+	for(var i = 0; i < serviceVariable.scrollPoint.length; i++){
+		if(serviceVariable.scrollPoint[i].scrollPointName == hash){
+			serviceVariable.scrollPointScrolling = true;
+			$('html, body').animate({
+				scrollTop: serviceVariable.scrollPoint[i].scrollPointTop
+			}, 350, function(){
+				setTimeout(function(){
+					serviceVariable.scrollPointScrolling = false;
+				}, 100);
+			});
+			break;
+		}
+	}
+	$(".node-root-leaf").removeClass('node-current-leaf');
+
+	$(".node-root-leaf").each(function(){
+		var scrollPointName = $(this).find('.node-name').text();
+		if(scrollPointName == hash){
+			$(this).addClass('node-current-leaf');
+			return;
+		}
+	});
+}
+function move_to_scrollpoint(nodeName, tag){
+	if($(".viewport-check").css('display') == 'none'){
+		calc_scroll_point();
+	}
+	if(tag == '/'){
+		hash_changed(decodeURI(nodeName));
+		location.hash = decodeURI(nodeName);
+	} else {
+		window.location.href = '/#' + decodeURI(nodeName);
+	}
+}
+function calc_scroll_point(){
+	serviceVariable.scrollPoint = [];
+	serviceVariable.scrollPointScrolling = false;
+	var headerSpace = $("#header-wrapper").outerHeight();
+	$(".scrollpoint").each(function(idx){
+		var scrollPoint = $(this).attr('data-scrollpoint');
+		var top = $(this).offset().top - headerSpace;
+		var scrollPoint = {
+			obj: $(this),
+			scrollPointName: scrollPoint,
+			scrollPointTop: top,
+			scrollPointBottom: 0
+		};
+		if(idx != 0){
+			serviceVariable.scrollPoint[idx - 1].scrollPointBottom = top;
+		}
+		serviceVariable.scrollPoint.push(scrollPoint);
+	});
+	if(serviceVariable.scrollPoint.length != 0){
+		var lastIdx = serviceVariable.scrollPoint.length - 1;
+		serviceVariable.scrollPoint[lastIdx].scrollPointBottom = serviceVariable.scrollPoint[lastIdx].scrollPointTop + $(".scrollpoint").last().height();
+	}
+}
+</script>

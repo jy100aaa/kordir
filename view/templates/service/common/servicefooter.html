@@ -1,0 +1,103 @@
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/servicefooter.css?version=1.1' />
+<style>
+{% if misc %}
+#footer-wrapper{
+	background-color:{{misc.footer.backgroundColor}};
+	color: {{misc.footer.fontColor}};
+}
+#footer{
+	text-align:{{misc.footer.align}};
+}
+#footer a:link{text-decoration: none; color:{{misc.footer.fontColor}};}
+#footer a:active{text-decoration: none; color:{{misc.footer.fontColor}};}
+#footer a:visited{text-decoration: none; color:{{misc.footer.fontColor}};}
+#footer a:hover{text-decoration: none; color:{{misc.footer.fontColor}};}
+{% else %}
+#footer-wrapper {
+	background-color:#555;
+	color:#efefef;
+}
+#footer{
+	text-align:center;
+}
+#footer a:link{text-decoration: none; color:#efefef;}
+#footer a:active{text-decoration: none; color:#efefef;}
+#footer a:visited{text-decoration: none; color:#efefef;}
+#footer a:hover{text-decoration: none; color:#efefef;}
+{% endif %}
+</style>
+{% if service %}
+<div id='footer-wrapper'>
+	<div id='footer'>
+		{% if misc.footer.text == "" %}
+		<span>Copyrights © {% now 'Y' %}, {{service.name}}. All rights reserved.</span><br>
+		<span>Powered by <a href='http://kordir.com?ref={{service.tag}}' target='_blank'>kordir.com</a></span>
+		{% else %}
+		<span>
+		{% autoescape off %}
+		{{misc.footer.text|linebreaksbr}}
+		{% endautoescape %}
+		</span>
+		{% endif %}
+	</div>
+</div>
+{% else %}
+<div id='footer-wrapper'>
+	<div id='footer'>
+		<span style='font-size:12px;'>Copyrights © 2015 - 2017, KORDIR. All rights reserved.</span>
+	</div>
+</div>
+{% endif %}
+<script>
+var footerVariable = {
+	tid:null,
+	ie: false,
+	oldIE: false
+};
+</script>
+<!--[if IE]>
+<script>
+footerVariable.ie = true;
+</script>
+<![endif]-->
+<!--[if lte IE 9]>
+<style>
+#content{}
+</style>
+<script>
+footerVariable.oldIE = true;
+</script>
+<![endif]-->
+<script>
+(function (d, s) {
+	window.onresize = function(e){
+		footerAdjustment();
+	};
+	footerAdjustment();
+	footerVariable.tid = setInterval(function(){
+		if(document.readyState !== 'complete')
+			return;
+		clearInterval(footerVariable.tid);
+		setTimeout(function(){
+			footerAdjustment();
+		}, 50);
+	}, 50);
+})(document, 'script');
+function footerAdjustment(){
+	var hh = document.getElementById('header-wrapper').clientHeight;
+	var fh = document.getElementById('footer-wrapper').clientHeight;
+	var wh = document.documentElement.clientHeight;
+	var ah = screen.availHeight;
+	var dh = Math.min(wh, ah);
+	var gap = wh  - fh - hh - 1;
+	try{
+		if(footerVariable.oldIE){
+			document.getElementById('content').style.height = 'auto';
+		} else {
+			document.getElementById('content').style.minHeight = gap + 'px';
+		}
+	} catch(err){
+		console.log(err);
+	}
+}
+</script>

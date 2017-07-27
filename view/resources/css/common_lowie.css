@@ -1,0 +1,7 @@
+body{
+	overflow:hidden;
+}
+.inline-block-fallback{
+	zoom: 1 !important;
+    *display: inline !important;
+}

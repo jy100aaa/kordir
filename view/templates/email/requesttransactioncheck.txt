@@ -1,0 +1,4 @@
+서비스 번호: {{service_id}}
+이름: {{fullname}}
+이메일 주소: {{email}}
+금액: {{amount}}

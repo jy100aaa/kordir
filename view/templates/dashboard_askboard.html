@@ -1,0 +1,163 @@
+{% load humanize %}
+{% load tz %}
+{% load customtags %}
+<head>
+<style>
+.dashboard-body{display:none;}
+.mce-window-head{
+	background-color:#E0E0D0;
+}
+.mce-btn{
+	color:#4d4d4d;
+	background-color:#efefef;
+}
+.mce-btn:hover{
+	background-color:orange;
+}
+.mce-primary button, .mce-primary button i{
+	color:#4d4d4d;
+	text-shadow:none !important;
+}
+</style>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/dashboard_askboard.css?version=1.1' />
+</head>
+<div class='dashboard-body'>
+	<div class='board-wrapper'>
+		<div class='board-content board-top'>
+			<button class='compose-button btn'>공지작성</button>
+			<select class='sort'>
+				<option value='0' {% if filter == 0 %}selected{% endif %}>전체(삭제항목제외)</option>
+				<option value='1' {% if filter == 1 %}selected{% endif %}>답변 준비중</option>
+				<option value='2' {% if filter == 2 %}selected{% endif %}>답변 완료</option>
+				<option value='3' {% if filter == 3 %}selected{% endif %}>삭제된 글</option>
+			</select>
+		</div>
+		<div class='board-content board-center'>
+			<div class='table-header black-font'>
+				<div class='table-seq'>번호</div>
+				<div class='table-subject'>제목</div>
+				<div class='table-name'>작성자</div>
+				<div class='table-date'>날짜</div>
+				<div class='table-answer'>답변</div>
+			</div>
+			<div class='table-body'>
+				{% if item  %}
+				{% for i in item %}
+				<div class='item-wrapper{% if i.sticky == True %} item-wrapper-sticky{% endif %}' id='item-wrapper-{{i.seq}}'>
+					<div class='item-seq'>
+						{{i.seq}}
+					</div>
+					<div class='item-subject'>
+						{% if i.mark == True %}
+						<span class='mark'>N</span>
+						{% endif %}
+						{% if i.open == False %}
+						<img src='/resources/images/lock.png'>
+						{% endif %}
+						{% if i.sticky == True %}
+						<span class='sticky' style='color:#ff6600'>[공지]</span>
+						{% endif %}
+						<span>{{i.subject}} <span style='font-size:12px; font-weight:normal; color:#798;'>{% if i.replies.count > 0 %}[{{i.replies.count}}]{% endif %}</span></span>
+					</div>
+					<div class='item-name'><span class='item-tag'>작성자: </span><span>{{i.name}}</span></div>
+					{% timezone "Asia/Seoul" %}
+					<div class='item-date'><span>{{i.created|localtime|date:'Y-m-d'}}</span></div>
+					{% endtimezone %}
+					<div class='item-answer'>
+						{% if i.sticky == False %}
+						{% if i.answered == True %}
+						<span class='answer-done'>답변완료</span>
+						{% else %}
+						<span class='answer-not-done'>답변 준비중</span>
+						{% endif %}
+						{% endif %}
+					</div>
+				</div>
+				{% endfor %}
+				{% else %}
+				<div class='item-empty'>
+					게시물이 없습니다
+				</div>
+				{% endif %}
+			</div>
+		</div>
+		<div class='board-content board-bottom'>
+			<div class='paging-nav btn left-end {% if left_paging_nav < 1 %}disabled{% endif %}' id='paging-nav-{{left_paging_nav}}'><<</div>
+			{% for pt in paging_tuple %}
+			{% if pt.1 == True %}
+				<div class='paging-nav current-page btn' id='paging-nav-{{pt.0}}'>{{pt.0}}</div>
+			{% else %}
+				<div class='paging-nav btn' id='paging-nav-{{pt.0}}'>{{pt.0}}</div>
+			{% endif %}
+			{% endfor %}
+			<div class='paging-nav btn right-end {% if right_paging_nav > total_pages %}disabled{% endif %}' id='paging-nav-{{right_paging_nav}}'>>></div>
+		</div>
+	</div>
+
+	<div class='board-compose-wrapper'>
+		<form action="/requestreceiver/" method="post" enctype="multipart/form-data" class='upload-form' id='user-file-upload-form' style='position:absolute; width:1px; height:1px; overflow:hidden;'>
+			<input type='text' name='id' value='{{user_info.service.id}}' style='display:none;'>
+			<input type='text' name='req_type' value='file_upload' style='display:none;'>
+			<input type='text' name='file_type' value='BOARD_PICTURE' style='display:none;'>
+			<input type='text' name='uuid' class='uuid' value='' style='display:none;'>
+			<input type='text' name='tag' class='tag' value='{{tag}}' style='display:none'>
+			<input type="file" name="file" class='file-input' id='file-input' accept='image/bmp, image/png, image/jpeg'>
+			<input type="submit" id='user-file-submit' value='submit' style='display:none;'>
+		</form>
+		<label for=file-input><span id='file-input-proxy' style='width:1px; height:1px;'></span></label>
+		<div class='input-line'>
+			<div class='tag'>이름</div><input class='name-input' value='{{user_info.fullname}}' type='text'>
+		</div>
+		<div class='input-line'>
+			<div class='tag'>제목</div><input class='subject-input' type='text'>
+		</div>
+		<div class='input-line input-line-file'>
+			<span class='tag black-font'>첨부파일</span>
+			<div class='after-upload'>
+				<span class='filename'><a href=''>파일</a></span>
+				<button class='remove-file btn'>삭제</button>
+				<label for='attachment-input'><span class='file-select-button btn'>파일 올리기</span></label>
+			</div>
+			<label for='attachment-input'><span class='file-select-button btn'>파일 올리기</span></label>
+			<span class='progress-bar'>
+				<span class='progress'></span>
+				<span class='number'>5%</span>
+			</span>
+		</div>
+		<textarea id='body-input'></textarea>
+		<div class='compose-error-message'></div>
+		<div class='button-wrapper'>
+			<button class='btn' id='submit'>올리기</button>
+			<button class='btn' id='cancel'>취소</button>
+		</div>
+	</div>
+	<iframe id='user-file-upload-target' name='user-file-upload-target' style='position:absolute;top:0;left:0;width:0px;height:0px;border:0px solid #fff;'></iframe>
+</div>
+<iframe id='board-attachment-upload-target' name='board-attachment-upload-target' style='position:absolute;top:0;left:0;width:0px;height:0px;border:0px solid #fff;'></iframe>
+<form action="/requestreceiver/" method="post" enctype="multipart/form-data" class='board-attachment-upload-form' id='board-attachment-upload-form' style='position:absolute; width:1px; height:1px; overflow:hidden;'>
+<input type='text' name='id' value='{{service.id}}' style='display:none;'>`
+<input type='text' name='req_type' value='file_upload' style='display:none;'>
+<input type='text' name='tag' class='tag' value='{{tag}}' style='display:none'>
+<input type='text' name='file_type' value='BOARD_ATTACHMENT' style='display:none;'>
+<input type='text' name='filename' class='filename' value='' style='display:none;'>
+<input type='text' name='uuid' class='uuid' value='' style='display:none;'/>
+<input type="file" name="file" class='attachment-input' id='attachment-input'>
+<input type="submit" id='attachment-submit' value='submit' style='display:none;'>
+</form>
+<script>
+var boardVar = {
+	serviceId: '{{user_info.service.id}}',
+	tag: '{{tag}}',
+	currentPage: '{{current_page}}',
+	filter: '{{filter}}',
+	body: '',
+	filePrefix: '{{"BOARD_PICTURE"|get_filelocation}}{{user_info.service.id}}{{tag}}/',
+	boardAttachmentLocation: '{{"BOARD_ATTACHMENT"|get_filelocation}}{{service.id}}{{tag}}/',
+	uploading: false,
+	attachment: '',
+	uploadTimer: null
+};
+</script>
+<!-- TINYMCE -->
+<script src="/resources/plugins/tinymce_4.6.1/tinymce.min.js"></script>
+<script src='/resources/js/dashboard_askboard.js?version=1.0'></script>

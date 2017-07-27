@@ -1,0 +1,499 @@
+{% load customtags %}
+{% load tz %}
+<style>
+#comment{
+	padding-bottom:30px;
+}
+#comment .comment-block-tag{
+	width:100px;
+	background-color:#4d4d4d;
+	color:#efefef;
+	padding:4px;
+	padding-bottom:6px;
+	border-radius:2px;
+	text-align:center;
+	font-weight:bold;
+}
+#comment .open-comment-writing-wrapper-button{
+	width:100%;
+	height:40px;
+}
+#comment .comment-writing-wrapper{
+	text-align:left;
+	width:740px;
+	padding:10px;
+	border:1px solid #ccccbc;
+	margin-top:10px;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color:#f5f5f5;
+	background:rgba(245,245,245,0.8);
+}
+.comment-writing-wrapper .comment-writing-left{
+	display:inline-block;
+	width:70px;
+	float:left;
+}
+.comment-writing-left img{
+	width:60px;
+}
+.comment-writing-wrapper .comment-writing-right{
+	position:relative;
+	display:inline-block;
+	width:640px;
+	text-align:left;
+}
+.comment-writing-right #captcha-image{
+	float:left;
+	margin-right:10px;
+	margin-bottom:5px;
+}
+.comment-writing-right input{
+	display:inline-block;
+	width:160px;
+	padding-left:5px;
+	padding-right:5px;
+	border:1px solid #ccccbc;
+	height:30px;
+	line-height:30px;
+	font-size:14px;
+	border-radius:5px;
+	margin-bottom:10px;
+}
+.comment-writing-right button{
+	float:right;
+	height:34px;
+	width:80px;
+}
+.comment-writing-right textarea{
+	display:block;
+	width:100%;
+	height:100px;
+	padding:5px;
+	border:1px solid #ccccbc;
+	font-size:14px;
+	border-radius:4px;
+	margin-bottom:8px;
+	margin-right:10px;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+} 
+.comment-writing-right button:disabled{
+	background-color:#dedede;
+	color:#aaa;
+}
+#comment .comment-wrapper{
+	width:100%;
+	text-align:left;
+	margin-top:10px;
+}
+.comment-wrapper .comment-item{
+	margin-bottom:16px;
+	padding-bottom:16px;
+	border-bottom:1px solid #ccccbc;
+}
+.comment-item .comment-left-area{
+	display:inline-block;
+	width:80px;
+	height:80px;
+	float:left;
+}
+.comment-left-area img{
+	width:70px;
+}
+.comment-item .comment-right-area{
+	position:relative;
+	display:inline-block;
+	width:650px;
+	padding:10px;
+	min-height:80px;
+	border-radius:4px;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color:#f5f5f5;
+	background:rgba(245,245,245,0.9);
+}
+.comment-right-area .triangle{
+	position:absolute;
+	display:none;
+	top:4px;
+	left:-19px;
+	width:20px;
+	height:20px;
+}
+.comment-right-area .comment-top{
+	height:20px;
+	line-height:20px;
+	font-size:14px;
+	color:#aaa;
+}
+.comment-top .comment-name{
+	color:#4d4d4d;
+	font-weight:bold;
+}
+.comment-top .comment-company{
+	color:#3E1E7C;
+}
+.comment-top .comment-timestamp{
+	float:right;
+	font-size:12px;
+}
+.comment-right-area .comment-body{
+	margin-top:10px;
+	font-size:13px;
+	line-height:1.42em;
+	color:#4d4d4d;
+	word-wrap:break-word;
+}
+.comment-right-area .comment-delete{
+	font-size:12px;
+	color:#4d4d4d;
+	text-decoration:underline;
+	float:right;
+	margin-top:10px;
+	cursor:pointer;
+}
+@media all and (max-width:480px){
+	#comment .comment-writing-wrapper{
+		width:100%;
+		padding:5px;
+		border:0;
+	}
+	.comment-writing-wrapper .comment-writing-left{
+		display:none;
+	}
+	.comment-writing-wrapper .comment-writing-right{
+		position:relative;
+		width:100%;
+		margin:0;
+	}
+	.comment-writing-right textarea{
+		width:100%;
+	}
+	#comment .comment-wrapper .comment-item{
+    	text-align:left;
+	}
+	.comment-item .comment-right-area{
+		width:100%;
+	}
+	.comment-item .comment-right-area .triangle{
+		display:none;
+	}
+	.comment-right-area .comment-top{
+		position:absolute;
+		text-align:left;
+		width:200px;
+		height:40px;
+		left:80px;
+		top:-80px;
+		background-color:#f5f5f5;
+		background:rgba(245,245,245,0.8);
+		padding:10px;
+	}
+	.comment-top .comment-timestamp, .comment-top .comment-name{
+		display:block;
+		float:none;
+	}
+	.comment-right-area .comment-delete{
+		position:absolute;
+		top:-44px;
+		right:20px;
+	}	
+}
+</style>
+<!--[if lte IE 7]>
+<style>
+.comment-writing-right textarea{
+	width:630px;
+}
+</style>
+<![endif]-->
+<div class='comment-wrapper'>
+	{% if boarditem.replies.all|length > 0 %}
+	<p class='comment-block-tag'>답변 내역</p>	
+	{% for c in boarditem.replies.all %}
+	<div class='comment-item' id='comment-item-{{c.id}}'>
+		<div class='comment-left-area'>
+		{% if c.user %}
+			<img src='{{"USER_PICTURE"|get_filelocation}}{{c.user.picture}}'>
+		{% else %}
+			<img src='/resources/images/default_user.jpg'>
+		{% endif %}				
+		</div>
+		<div class='comment-right-area'>
+			<img src='/resources/images/triangle.png' class='triangle'>
+			<div class='comment-top'>
+				<span class='comment-name'>							
+					{{c.name}}
+				</span>
+				<span class='comment-timestamp'>
+					{% timezone "Asia/Seoul" %}
+						{{c.created|localtime|date:'Y-m-d H:i:s'}}
+					{% endtimezone %}
+				</span>	
+			</div>
+			<div class='comment-body'>
+				{{c.body|linebreaksbr }}
+			</div>
+			{% if c.user %}
+			{% if user_info.id == c.user.id %}
+			<div class='comment-delete' onclick="javascript:delete_comment('{{c.id}}');">삭제</div>
+			{% endif %}
+			{% endif %}
+		</div>
+	</div>
+	{% endfor %}
+	{% endif %}	
+	<span class='comment-insert-place'></span>
+</div>
+<div id='comment-item-spare' style='display:none;'>
+	<div class='comment-left-area'>
+		{% if user_info %}
+		<img src='{{"USER_PICTURE"|get_filelocation}}{{user_info.picture}}'>
+		{% else %}
+		<img src='/resources/images/default_user.jpg'>
+		{% endif %}				
+	</div>
+	<div class='comment-right-area'>
+		<img src='{{FILE_LOCATION_WEB_STATIC_PREFIX}}/resources/images/triangle.png' class='triangle'>
+		<div class='comment-top'>
+			<span class='comment-name'></span>
+			<span class='comment-timestamp'>지금</span>
+		</div>
+		<div class='comment-body'></div>
+		{% if user_info %}
+		<div class='comment-delete'>삭제</div>
+		{% endif %}
+	</div>
+</div>
+{% if not user_info %}
+<button class='open-comment-writing-wrapper-button btn' onclick='load_captcha(this);'>코멘트 작성 ▼</button> 
+{% endif %}
+<div class='comment-writing-wrapper' {% if not user_info %}style='display:none;'{% endif %}>
+	<div class='comment-writing-left'>
+		{% if user_info %}
+		<img src='{{"USER_PICTURE"|get_filelocation}}{{user_info.picture}}'>
+		{% else %}
+		<img src='/resources/images/default_user.jpg'>
+		{% endif %}
+	</div>
+	<div class='comment-writing-right'>
+	{% if not user_info %}
+		<img src='' id='captcha-image'><input type='text' class='captcha-input' placeholder='자동입력방지 숫자입력'><br>
+	{% endif %}
+		<input type='text' class='comment-name-input' value='{{user_info.fullname}}' placeholder='이름을 입력해 주세요' style='float:left;'>
+		<button class='comment-post btn' onclick='pre_post_comment(this);'>올리기</button>
+		<div style="clear:both;"></div>
+		<textarea class='comment-body-input' placeholder='댓글을 남겨주세요' rows='7'></textarea>
+	</div>
+</div>
+<script>
+function load_captcha(obj){
+	draw_progress();
+	$.ajax({
+		url : "/requestreceiver/",
+		type : "post",
+		data :{
+			req_type : "generate_captcha",
+			uniqueKey: '{{connectionInfo.uniqueKey}}'
+		},
+		success : function(result){
+			if(result.result == 'ok'){
+				var img = new Image();
+				img.src = '{{"CAPTCHA"|get_filelocation}}{{connectionInfo.uniqueKey}}.jpg';
+				img.onload = function(){
+					remove_progress();
+					$(".comment-writing-wrapper #captcha-image").prop('src', '{{"CAPTCHA"|get_filelocation}}{{connectionInfo.uniqueKey}}.jpg');
+					$(".comment-writing-wrapper").show();
+					$(obj).remove();
+				};
+			} else {
+				remove_progress();
+				draw_general_popup(
+						null,
+						null, 
+						null, 
+						stringTable.tryAgain, 
+						stringTable.ok, 
+						null
+				);
+			}
+		},
+		error : function(){
+			remove_progress();
+			draw_general_popup(
+					null,
+					null, 
+					null, 
+					stringTable.tryAgain, 
+					stringTable.ok, 
+					null
+			);
+		}
+	});	
+}
+function pre_post_comment(obj){
+	var parentObj = $(obj).parent();
+	$(parentObj).children('textarea').css('border', '1px solid #ccccbc');
+	$(parentObj).children('.comment-name-input').css('border', '1px solid #ccccbc');
+	$(parentObj).children('.captcha-input').css('border', '1px solid #ccccbc');
+	var commentObj = $("#comment");
+	var data = {};
+	data['serviceId'] = '{{service.id}}';
+	data['boardType'] = parseInt($(commentObj).attr('data-boardtype'));
+	data['seq'] =  $(commentObj).attr('data-seq');
+	data['tag'] =  $(commentObj).attr('data-tag');
+	data['comment'] = $(parentObj).children('textarea').val();
+	data['name'] = $(parentObj).children('.comment-name-input').val();
+	data['captcha'] = $(parentObj).children('.captcha-input').val();
+	data['uniqueKey'] = '{{connectionInfo.uniqueKey}}';
+	
+	var passed = true;
+	if(data['comment'].length == 0){
+		$(parentObj).children('textarea').css('border', '1px solid red');
+		passed = false;
+	}
+	if(data['name'].length == 0){
+		$(parentObj).children('.comment-name-input').css('border', '1px solid red');
+		passed = false;
+	}
+	{% if not user_info %}
+	if(data['captcha'].length == 0){
+		$(parentObj).children('.captcha-input').css('border', '1px solid red');
+		passed = false;
+	}
+	{% endif %}
+	if(!passed){
+		return;
+	}
+	draw_general_popup(
+			function(){
+				post_comment(data);
+			},
+			null, 
+			null, 
+			stringTable.askPostMessage, 
+			stringTable.yes, 
+			stringTable.no
+	);
+}
+function post_comment(data){
+	draw_progress();	
+	$.ajax({
+		url : "/requestreceiver/",
+		type : "post",
+		data :{
+			req_type : "post_comment",
+			data: JSON.stringify(data)
+		},
+		success : function(response){
+			remove_progress();
+			if(response.result == 'ok'){
+				print_new_comment(data.comment, data.name, response.id);
+			} else {
+				if(response.error_code == 'captcha error'){
+					$("#comment .captcha-input").css('border', '1px solid red');
+					draw_general_popup(
+							null,
+							null, 
+							null, 
+							stringTable.wrongCaptcha, 
+							stringTable.ok, 
+							null
+					);				
+				} else {
+					draw_general_popup(
+							null,
+							null, 
+							null, 
+							stringTable.tryAgain, 
+							stringTable.ok, 
+							null
+					);
+				}
+			}
+		},
+		error : function(){
+			remove_progress();
+			draw_general_popup(
+					null,
+					null, 
+					null, 
+					stringTable.tryAgain, 
+					stringTable.ok, 
+					null
+			);
+		}
+	});
+}
+function print_new_comment(comment, name, id){
+	var template = $("#comment #comment-item-spare").html();
+	template = "<div class='comment-item id='comment-item-"+id+"'>" + template + "</div>";
+	$("#comment .comment-wrapper").append(template);
+	$("#comment .comment-wrapper p").show();		
+	var c = comment.split('\n').join('<br>');
+	var obj = $("#comment .comment-wrapper .comment-item").last();
+	$(obj).find('.comment-body').html(c);
+	$(obj).find('.comment-name').text(name);
+	$(obj).find('.comment-delete').bind('click', function(){
+		delete_comment(id);
+	});
+	$("#comment > div.comment-writing-wrapper > div.comment-writing-right > textarea").val('');
+}
+function delete_comment(id){
+	var commentObj = $("#comment");
+	var data = {};
+	data['commentId'] = id;
+	data['boardType'] = parseInt($(commentObj).attr('data-boardtype'));
+	data['tag'] = $(commentObj).attr('data-tag');
+	data['seq'] = $(commentObj).attr('data-seq');
+	data['serviceId'] = serverData.service_id;
+	draw_general_popup(
+			function(){
+				draw_progress();
+				$.ajax({
+					url : "/requestreceiver/",
+					type : "post",
+					data :{
+						req_type : "delete_comment",
+						data: JSON.stringify(data)
+					},
+					success : function(response){						
+						remove_progress();
+						if(response.result == 'ok'){
+							$("#comment #comment-item-"+id).remove();
+						} else {
+							draw_general_popup(
+									null,
+									null, 
+									null, 
+									stringTable.tryAgain, 
+									stringTable.ok, 
+									null
+							);
+						}
+					},
+					error : function(){
+						remove_progress();
+						draw_general_popup(
+								null,
+								null, 
+								null, 
+								stringTable.tryAgain, 
+								stringTable.ok, 
+								null
+						);
+					}
+				});
+			},
+			null, 
+			null, 
+			stringTable.askDelete, 
+			stringTable.yes, 
+			stringTable.no
+	);
+}
+</script>

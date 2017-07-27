@@ -1,0 +1,404 @@
+{% load i18n %}
+{% load customtags %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class=""> <!--<![endif]-->
+<head>
+{% include "common/meta.html" %}
+<!-- modification and adjustment -->
+<style>
+#header-wrapper{
+	min-width:100% !important;
+}
+#header-wrapper #header{
+	max-width:100% !important;
+}
+</style>
+<style>
+    .popup-layer {
+        background-color:#fdfdfd;
+        position:absolute;
+        top:60px;
+        left:50%;
+        display: none;
+        border:1px solid #ccccbc;
+        width:360px;
+        margin-bottom:10px;
+        -moz-box-shadow: 5px  6px  7px  #444;
+        -webkit-box-shadow: 5px  6px  7px  #444;
+        box-shadow: 5px  6px  7px  #444;
+        margin-left:-180px;
+        z-index:999;
+    }
+    .popup-layer .popup-head {
+        background-color:#F3F3F3;
+        height:30px;
+        line-height:30px;
+        border-bottom:1px solid #ccccbc;
+        text-align:left;
+    }
+    .popup-layer .popup-head span {
+        display:inline-block;
+        margin-left:10px;
+        font-size:12px;
+        font-weight:bold;
+    }
+    .popup-layer .popup-body {
+        padding: 10px;
+    }
+    .popup-layer .popup-button-wrapper {
+        height: 50px;
+        line-height: 50px;
+        border-top: 1px solid #ccccbc;
+        text-align: center;
+    }
+</style>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common.css' />
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/dashboard.css?version=1.2' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common_lowie.css'/>
+<![endif]-->
+</head>
+<body>
+{% include "common/header.html" %}
+<div id='content'>
+	<div id="sidebar" class='simple-scrollbar'>
+		<div class='sidebar-inner-wrapper'>
+			<div class='user-status-wrapper nostyle-anchor'>
+				<img src='{{"USER_PICTURE"|get_filelocation}}{{user_info.picture}}' class='user-picture'>
+				<div class='user-name'>{{user_info.fullname}} 님 <a href='http://{{user_info.service.tag}}.{% settings_value "SIMPLE_MAIN_SERVER" %}' target='_blank'><i class="fa fa-home fa-lg" style='margin:0px 10px; cursor:pointer;' onclick=''></i></a></div>
+				<select class='user-status'>
+					<option {% if user_info.connection_status == '{{"USER_CONNECTION_STATUS_ONLINE"|get_constant_value}}' %}selected{% endif %} id='online' value= '{{"USER_CONNECTION_STATUS_ONLINE"|get_constant_value}}'>온라인</option>
+					<option {% if user_info.connection_status == '{{"USER_CONNECTION_STATUS_BUSY"|get_constant_value}}' %}selected{% endif %} id='busy' value= '{{"USER_CONNECTION_STATUS_BUSY"|get_constant_value}}'>다른용무중</option>
+					<option {% if user_info.connection_status == '{{"USER_CONNECTION_STATUS_ABSENT"|get_constant_value}}' %}selected{% endif %} id='pseudo-offline' value= '{{"USER_CONNECTION_STATUS_ABSENT"|get_constant_value}}'>부재중</option>
+					<option {% if user_info.connection_status == '{{"USER_CONNECTION_STATUS_PSEUDO_OFFLINE"|get_constant_value}}' %}selected{% endif %} id='offline' value= '{{"USER_CONNECTION_STATUS_PSEUDO_OFFLINE"|get_constant_value}}'>오프라인</option>
+					<option id='logout' value='-1'>로그아웃</option>
+				</select>
+			</div>
+			{% if 16|bitwise_and:user_info.status == True %}
+			<div id='remaining-status-wrapper'>
+				<span>남은 사용 기간</span>
+				<div id='remaining-days' class='remaining-status-box'>
+					{% if days > 1 %}
+					<strong style='cursor:pointer;' onclick="window.location.href='/settings?nav=point';">{{days|remaining_days}} 일</strong>
+					{% elif days >= 1 %}
+					<strong style='cursor:pointer;' onclick="window.location.href='/settings?nav=point';">{{days}}일 {{hours}} 시간</strong>
+					{% elif days == 0 and hours > 0 %}
+					<strong style='cursor:pointer;' onclick="window.location.href='/settings?nav=point';">{{hours}} 시간</strong>
+					{% else %}
+					<strong style='cursor:pointer;' onclick="window.location.href='/settings?nav=point';">만료됨</strong>
+					{% endif %}
+				</div><!--
+				 <div id='remaining-points' class='remaining-status-box'>
+					<strong style='cursor:pointer;' onclick="window.location.href='/settings?nav=point';">{{point}} 점</strong>
+				</div>
+				-->
+				<span>만료일시</span>
+				<div id='remaining-datetime'>
+					<span class='datetime'>{{user_info.service.valid|date:"Y-m-d H:m:s"}}</span>
+				</div>
+			</div>
+			{% endif %}
+			<div id='sidebar-root-analytics' class='sidebar-nav-root'>
+				<span>접속자 현황</span>
+				<span class='sidebar-nav-root-toggle sidebar-nav-root-show'>보이기</span>
+				<span class='sidebar-nav-root-toggle sidebar-nav-root-hide'>감추기</span>
+			</div>
+			<ul class='sidebar-nav' id='sidebar-nav-analytics'>
+				<li class='sidebar-nav' id='sidebar-nav-realtime'>실시간 접속</li>
+				<li class='sidebar-nav' id='sidebar-nav-statistics'>접속 통계</li>
+			</ul>
+			<div id='sidebar-root-setting' class='sidebar-nav-root'>
+				<span>구성 및 설정</span>
+				<span class='sidebar-nav-root-toggle sidebar-nav-root-show'>보이기</span>
+				<span class='sidebar-nav-root-toggle sidebar-nav-root-hide'>감추기</span>
+			</div>
+			<ul class='sidebar-nav' id='sidebar-nav-setting'>
+				<li class='sidebar-nav' id='sidebar-nav-settingcontent'>컨텐츠  구성</li>
+				<li class='sidebar-nav' id='sidebar-nav-settingmisc'>기타 설정</li>
+			</ul>
+            <div id='sidebar-root-message' class='sidebar-nav-root'>
+                <span>메시지</span>
+                <span class='sidebar-nav-root-toggle sidebar-nav-root-show'>보이기</span>
+                <span class='sidebar-nav-root-toggle sidebar-nav-root-hide'>감추기</span>
+            </div>
+            <ul class='sidebar-nav' id='sidebar-nav-setting'>
+                <li class='sidebar-nav' id='sidebar-nav-smsrecord'>문자 내역</li>
+            </ul>
+			<div id='sidebar-root-chat' class='sidebar-nav-root sidebar-chat' {% if chat_node_length == 0 %}style='display:none;'{% endif %}>
+				<span>실시간 대화</span>
+				<span class='sidebar-nav-root-toggle sidebar-nav-root-show'>보이기</span>
+				<span class='sidebar-nav-root-toggle sidebar-nav-root-hide'>감추기</span>
+			</div>
+			<ul class='sidebar-nav sidebar-chat' {% if chat_node_length == 0 %}style='display:none;'{% endif %}>
+				<li class='sidebar-nav' id='sidebar-nav-chat'>
+					<span class='unread-count' id='chat-unread-count'>N</span>
+					대화 내역 보기
+				</li>
+			</ul>
+			<div id='sidebar-root-board' class='sidebar-nav-root sidebar-board'  {% if board_node_length == 0 %}style='display:none;'{% endif %}>
+				<span>게시판 리스트</span>
+				<span class='sidebar-nav-root-toggle sidebar-nav-root-show'>보이기</span>
+				<span class='sidebar-nav-root-toggle sidebar-nav-root-hide'>감추기</span>
+			</div>
+			<ul class='sidebar-nav' id='sidebar-nav-board' class='black-font sidebar-board' {% if board_node_length == 0 %}style='display:none;'{% endif %}>
+			{% for leaf_0 in tree %}
+			{% if leaf_0.node == "parent" %}
+				{% for leaf_1 in leaf_0.children %}
+					{% if leaf_1.node == "parent" %}
+						{% for leaf_2 in leaf_1.children %}
+							{% if leaf_2.node == "parent" %}
+								{% for leaf_3 in leaf_2.children %}
+									{% if leaf_3.type == "board" %}
+									<li class='sidebar-nav sidebar-nav-board' data-url='{{leaf_3.url}}'>
+										<span class='unread-count' data-url='{{leaf_3.url}}'>N</span>
+										{{leaf_3.nodeName}}
+									</li>
+									{% endif %}
+								{% endfor %}
+							{% else %}
+								{% if leaf_2.type == "board" %}
+								<li class='sidebar-nav sidebar-nav-board' data-url='{{leaf_2.url}}'>
+									<span class='unread-count' data-url='{{leaf_2.url}}'>N</span>
+									{{leaf_2.nodeName}}
+								</li>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					{% else %}
+						{% if leaf_1.type == "board" %}
+						<li class='sidebar-nav sidebar-nav-board' data-url='{{leaf_1.url}}'>
+							<span class='unread-count' data-url='{{leaf_1.url}}'>N</span>
+							{{leaf_1.nodeName}}
+						</li>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+			{% else %}
+				{% if leaf_0.type == "board" %}
+				<li class='sidebar-nav sidebar-nav-board' data-url='{{leaf_0.url}}'>
+					<span class='unread-count' data-url='{{leaf_0.url}}'>N</span>
+					{{leaf_0.nodeName}}
+				</li>
+				{% endif %}
+			{% endif %}
+		{% endfor %}
+			</ul>
+		</div>
+		<div id='sidebar-scroll-fix'></div>
+	</div>
+	<div id="area-wrapper">
+		<div id="area"  class='white-bg break-word'>
+			{% if 16|bitwise_and:user_info.status == False %}
+			<div style='position:absolute; text-align:center; width:100%; margin-top:-10px; top:50%; font-size:24px; color:#4d4d4d;'>
+			가입 신청이 완료되어야 모든 기능을 사용하실 수 있습니다.
+			</div>
+			{% endif %}
+			{% if expired == True %}
+			<div style='position:absolute; text-align:center; width:100%; margin-top:-10px; top:50%; font-size:24px; color:#4d4d4d;'>
+			사용 기간이 만료되었습니다.
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div id='invisible-content' style='position:absolute;top:0;left:0;width:0;height:0;'>
+	<audio id='soundpack'>
+		<source src='/resources/sound/new_message.mp3'>
+		<source src='/resources/sound/doorbell.mp3'>
+	</audio>
+	<span class='viewport-check'></span>
+</div>
+<!--[if lte IE 9]>
+<style>
+/* IE SPECIFIC */
+#browser-update-masking{
+	position:fixed;
+	width:100%;
+	height:100%;
+	background-color:#ccc;
+	z-index:97;
+	opacity:0.75;
+	filter:alpha(opacity: 75);
+	top:0;
+	left:0;
+}
+.browser-update-close-button:hover{
+	cursor:pointer;
+	background-color:#ddd;
+}
+</style>
+<div id='browser-update-masking' style=''></div>
+<div id='browser-update' style='position:fixed; width:900px; top:30%; margin-top:-100px; left:50%; margin-left:-480px; background-color:#fafafa; z-index:98; text-align:center; padding:30px; border-top:40px solid orange;' onclick=''>
+	<h2>이런! 인터넷 익스플로러 버전 9 이하를 사용하고 계시군요.</h2>
+
+	<div class='text'><b>KORDI<span style='color:orange;'>R</span></b>을 원할하게 이용하시려면  브라우저를 업데이트 하시거나 다른 웹 브라우저를 사용하셔야 합니다.</div>
+	<div class='text'>사용하시는 브라우저에선 파일 업로드, 페이지 편집 관련 기능이 제대로 동작하지 않을 수 있습니다.</div>
+	<div class='text'>익스플로러 버전 8이하를 사용하시면 canvas 기능을 지원하지 않기 때문에 접속자 현황 차트는 보여주지 않습니다.</div>
+	<br>
+	<div class='text text-for-ie-seven-or-under' style='display:none;'><b>인터넷 익스플로러 버전 7 이하는 대쉬보드 기능을 지원하지 않아요.<br>브라우저를 최신으로 업데이트 하시거나 다른 웹 브라우저를 사용하셔야 합니다.</b></div>
+	<br>
+
+	<p>아래 브라우저 그림을 클릭하시면 다운로드 받으실 수 있는 페이지로 이동합니다.</p>
+	<div class='browser-list' style='margin-top:40px; margin-bottom:20px;>
+		<a href='https://www.google.com/chrome/' target='_blank'><img src='/resources/images/chrome.png' style='width:64px; margin-left:20px; margin-right:20px;'></a>
+		<a href='http://windows.microsoft.com/ko-KR/internet-explorer/download-ie' target='_blank'><img src='/resources/images/internet_explorer.png'  style='width:64px; margin-left:20px; margin-right:20px;'></a>
+		<a href='https://www.mozilla.org/ko/firefox/new/?scene=2#download-fx' target='_blank'><img src='/resources/images/firefox.png'  style='width:64px; margin-left:20px; margin-right:20px;'></a>
+		<a href='http://www.apple.com/kr/safari/' target='_blank'><img src='/resources/images/safari.png'  style='width:64px; margin-left:20px; margin-right:20px;'></a>
+	</div>
+	<div class='browser-update-close-button' style='position:absolute;width:30px;height:30px;top:-40px;right:0;background-color:orange;text-align:center;line-height:40px;font-size:32px; color:#efefef;' onclick='browser_update_close();'>X</div>
+</div>
+<script>
+$(function(){
+	if($('html').is('.ie6, .ie7') == true){
+		$(".browser-update-close-button").hide();
+		$("#browser-update .text-for-ie-seven-or-under").fadeIn(250);
+	}
+});
+function browser_update_close(){
+	$("#browser-update").fadeOut(250, function(){
+		$("#browser-update-masking").hide();
+	});
+}
+</script>
+<![endif]-->
+</body>
+<script>
+(function (d, s) {
+	dashboard_adjustment();
+})(document, 'script');
+function dashboard_adjustment(){
+	var hh = document.getElementById('header-wrapper').clientHeight + 1;
+	var wh = document.documentElement.clientHeight;
+	var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+	var warningHeight = 0;
+	$(".warning").each(function(){
+		warningHeight += $(this).outerHeight();
+	});
+	hh = hh + warningHeight;
+	$("#area-wrapper").css('height', wh-hh+'px');
+	$("#area-wrapper").css('min-height', wh-hh+'px');
+	$("#area").css('min-height', wh-hh+'px');
+	if(width > 480){
+		$("#sidebar").css('height', wh-hh+'px');
+		$("#sidebar").show();
+	} else {
+		$("#sidebar").css('height', 'auto');
+	}
+}
+</script>
+<!-- JQUERY UI -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src='/resources/plugins/jquery-ui-1.11.0/jquery-ui.min.js'></script>
+<script src='/resources/plugins/jquery-ui-touch-punch-master/jquery.ui.touch-punch.min.js'></script>
+
+<!-- PROGRESS CIRCLE -->
+<script type="text/javascript" src="/resources/plugins/circle-progress/circle-progress.js"></script>
+<!-- TINYMCE -->
+<script src="/resources/plugins/tinymce_4.6.1/tinymce.min.js"></script>
+{% if LANGUAGE_CODE == "ko" %}
+<script src='/resources/js/static_kr.js'></script>
+{% else %}
+<script src='/resources/js/static_en.js'></script>
+{% endif %}
+<script>
+var serverData = {
+	id: '{{user_info.id}}',
+	page:'{{page}}',
+	fullname: '{{user_info.fullname}}',
+	connectionStatus: '{{user_info.connection_status}}',
+	picture: '{{"USER_PICTURE"|get_filelocation}}{{user_info.picture}}',
+	userStatus: {{user_info.status}},
+	session: '{{session}}',
+	remainingDays: {{days}},
+	remainingHours: {{hours}},
+	{% if expired == True %}
+	expired: true,
+	{% else %}
+	expired: false,
+	{% endif %}
+	point: {{point}},
+	{% if 16|bitwise_and:user_info.status == True %}
+	service_id: {{user_info.service.id}},
+	{% else %}
+	service_id: 0,
+	{% endif %}
+	askBoardMarker: {{askboard_marker|as_json_safe}},
+	chatMessageMarker: {{chat_message_marker|as_json_safe}},
+	{% if "NOTIFICATION_ALLOW_ASKBOARD_SOUND"|get_constant_value|bitwise_and:user_info.notification == True %}
+	askBoardSound: true,
+	{% else %}
+	askBoardSound: false,
+	{% endif %}
+	{% if "NOTIFICATION_ALLOW_CHAT_SOUND"|get_constant_value|bitwise_and:user_info.notification == True %}
+	chatSound: true,
+	{% else %}
+	chatSound: false,
+	{% endif %}
+	buffer: null
+};
+</script>
+{% if 16|bitwise_and:user_info.status == True %}
+<script src='{% settings_value "NODE_SERVER" %}/socket.io/socket.io.js' async defer></script>
+<script>
+var _qadSocket = _qadSocket || {};
+_qadSocket['session'] = '{{session}}';
+_qadSocket['userId'] = '{{user_info.id}}';
+_qadSocket['server'] = '{% settings_value "NODE_SERVER" %}';
+_qadSocket['serviceId'] = '{{user_info.service.id}}';
+_qadSocket['connectionStatus'] = '{{user_info.connection_status}}';
+_qadSocket['initTimer'] = null;
+(function (d, s) {
+	_qadSocket.initTimer = setInterval(function(){
+		try{
+			if(typeof io !== 'undefined')
+				socket_init();
+		} catch(err){}
+	}, 50);
+})(document, 'script');
+function socket_init(){
+	/* socket */
+	_qadSocket.socket = io.connect(_qadSocket.server + '/dashboard', {
+		'reconnection': true,
+		'reconnectionDelay': 3000,
+		'reconnectionDelayMax': 30000
+	});
+	var data = {};
+	data['serviceId'] = _qadSocket['serviceId'];
+	data['userId'] = _qadSocket['userId'];
+	data['session'] = _qadSocket['session'];
+	data['connectionStatus'] = _qadSocket['connectionStatus'];
+	{% if mstrlgn == False %}
+	_qadSocket.socket.on('connect', function(socket){
+		_qadSocket.socket.emit('initial-connection', data);
+	});
+	{% endif %}
+	_qadSocket.socket.on('server-message', function(d){
+		if(typeof dashboard_node_interface !== 'undefined')
+			dashboard_node_interface(d);
+	});
+	_qadSocket.socket.on('disconnect', function(socket){
+	});
+	_qadSocket.socket.on('reconnecting', function(socket){
+		var msg = {
+			type: 'reconnecting'
+		};
+		if(typeof dashboard_node_interface !== 'undefined')
+			dashboard_node_interface(msg);
+	});
+	clearInterval(_qadSocket.initTimer);
+}
+function send_client_message(msg){
+	_qadSocket.socket.emit('client-message', msg);
+}
+</script>
+{% endif %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src='/resources/js/dashboard.js?version=1.1'></script>
+<script src='/resources/js/dashboard_common.js'></script>
+{% include "common/ga.html" %}
+</html>

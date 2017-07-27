@@ -1,0 +1,7 @@
+제목: {{title}}
+보낸사람: {{name}}
+보낸사람 이메일: {{email}}
+
+내용: {{body}}
+
+KORDIR Team 드림

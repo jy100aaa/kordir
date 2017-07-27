@@ -1,0 +1,395 @@
+{% load tz %}
+{% load customtags %}
+<html>
+<head>
+{% include "common/meta.html" %}
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common.css?version=1.0' />
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/settings.css?version=1.0' />
+<!--[if lte IE 7]>
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common_lowie.css'/>
+<![endif]-->
+<script>
+var serverData = {
+	id: '{{user_info.id}}',
+	serviceId: '{{service.id}}',
+	page:'{{page}}',
+	locationMain: '{{service.location_main}}',
+	locationSub: '{{service.location_sub}}',
+	category: '{{service.category}}',
+	userPictureBase: '{{"USER_PICTURE"|get_filelocation}}',
+	servicePictureBase: '{{"SERVICE_PICTURE"|get_filelocation}}',
+	userPicture: '{{user_info.picture}}',
+	servicePicture: '{{service.picture}}',
+	notification: {},
+	{% timezone "Asia/Seoul" %}
+	valid: new Date({{service.valid|localtime|date:"U"}} * 1000),
+	{% endtimezone %}
+	point: {{service.point}},
+	pointPerDay: {{"POINT_REQUIRE_PER_DAY"|get_constant_value}}
+};
+</script>
+</head>
+<body>
+{% include "common/header.html" %}
+<div id='content'>
+	<div id='navigation-area'>
+		<div class='navigation-item {% if nav == "my" %}chosen{% endif %}'><span>내 설정</span></div>
+		<div class='navigation-item {% if nav == "password" %}chosen{% endif %}' ><span>비밀번호 설정</span></div>
+		<div class='navigation-item {% if nav == "service" %}chosen{% endif %}'><span>서비스 설정</span></div>
+		<div class='navigation-item' style='display:none;'><span>사용자 관리</span></div>
+        <div class='navigation-item {% if nav == "service-management" %}chosen{% endif %}'><span>서비스 추가/삭제</span></div>
+		<div class='navigation-item {% if nav == "notification" %}chosen{% endif %}'><span>알림 설정</span></div>
+		<div class='navigation-item {% if nav == "point" %}chosen{% endif %}'><span>이용 기간 연장</span></div>
+	</div>
+	<div id='box-area'>
+		<div class='box-item white-bg' id='my-setting' {% if nav == "my" %}style='display:block;'{% endif %}'>
+			<form action="/requestreceiver/" method="post" enctype="multipart/form-data" class='upload-form' id='user-picture-upload-form' style='position:absolute; width:1px; height:1px; overflow:hidden;'>
+				<input type='text' name='id' value='{{user_info.id}}' style='display:none;'>
+				<input type='text' name='req_type' value='file_upload' style='display:none;'>
+				<input type='text' name='file_type' value='USER_PICTURE' style='display:none;'>
+				<input type='text' name='uuid' class='uuid' value='' style='display:none;'>
+				<input type="file" name="file" class='file-input' id='user-picture-file' accept='image/bmp, image/png, image/jpeg'>
+				<input type="submit" id='user-picture-submit' value='submit' style='display:none;'>
+			</form>
+			<div class='photo-wrapper'>
+				<img src='{{"USER_PICTURE"|get_filelocation}}{{user_info.picture}}' class='picture-image' id='user-picture-image'>
+				<label for='user-picture-file'><span class='picture-image-select btn'>사진 올리기</span></label>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>이메일</span><input type='text' value='{{user_info.email}}' class='user-email-input' />
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>이름 </span><input type='text' class='user-fullname-input' value='{{user_info.fullname}}'>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>핸드폰번호</span><input type='text' class='user-telephone-input' value='{{user_info.telephone}}'><button class='btn auth-request-button' disabled>인증번호요청</button>
+			</div>
+			<div class='bottom-button-area'>
+				<button class='save-button btn'>저장</button>
+			</div>
+		</div>
+		<div class='box-item white-bg' id='password-setting' {% if nav == "password" %}style='display:block;'{% endif %}>
+			<div class='input-line'>
+				<span class='tag black-font'>현재 비밀번호</span><input type='password' class='password-input'>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>새 비밀번호</span><input type='password' class='new-password-input'>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>새 비밀번호 확인</span><input type='password' class='confirm-new-password-input'>
+			</div>
+			<div class='bottom-button-area'>
+				<button class='save-button btn'>저장</button>
+			</div>
+		</div>
+		<div class='box-item white-bg' id='service-setting' {% if nav == "service" %}style='display:block;'{% endif %}>
+			<form action="/requestreceiver/" method="post" enctype="multipart/form-data" class='upload-form' id='service-picture-upload-form' style='position:absolute; width:1px; height:1px; overflow:hidden;'>
+				<input type='text' name='id' value='{{service.id}}' style='display:none;'>
+				<input type='text' name='req_type' value='file_upload' style='display:none;'>
+				<input type='text' name='file_type' value='SERVICE_PICTURE' style='display:none;'>
+				<input type='text' name='uuid' class='uuid' value='' style='display:none;'>
+				<input type="file" name="file" id='service-picture-file' accept='image/bmp, image/png, image/jpeg'>
+				<input type="submit" class='file-input' id='service-picture-submit' value='submit'>
+			</form>
+			<!--
+			<div class='photo-wrapper' style='display:none;'>
+				<img src='{{"SERVICE_PICTURE"|get_filelocation}}{{service.picture}}' class='picture-image' id='service-picture-image'>
+				<label for='service-picture-file'><span class='picture-image-select btn'>사진 올리기</span></label>
+			</div>
+			-->
+			<div class='input-line'>
+				<span class='tag black-font'>사이트 이름</span>
+				<input type='text' class='service-name-input' value='{{service.name}}'>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>사이트 주소</span>
+				<input type='text' class='service-tag-input' id='service-tag-input' value='{{service.tag}}'><span class='service-tag-rest black-font'>.{% settings_value "SIMPLE_MAIN_SERVER" %}</span>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>도메인</span>
+				<input type='text' id='service-domain-input' class='service-domain-input' value='{{service.domain}}'>
+				<div class='intro-text'>연결할 도메인을 가지고 계신 경우 해당 도메인 주소를 입력해 주세요.<br>예)foo.co.kr<br>호스팅 받은 도메인의 <b style='color:#000;'> A record </b> 값을 <b style='color:#000;'> {% settings_value "ELASTIC_IP_ADDRESS" %} </b> 로 변경해주시면 연결이 됩니다.</div>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>분류</span>
+				<select class='service-category-input'>
+					<option value='-1' disabled selected>서비스 분류</option>
+				</select>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>지역</span>
+				<select class='service-location-input service-location-main-input' id='service-location-main-input'>
+					<option value='-1' disabled selected class='default'>시/도</option>
+				</select>
+				<select class='service-location-input service-location-sub-input' id='service-location-sub-input'>
+					<option value='-1' disabled selected class='default'>시/도/군</option>
+				</select>
+			</div>
+			<div class='input-line' style='display:none;'>
+				<span class='tag black-font'>웹 사이트</span>
+				<input type='text' class='service-website-input' value='{{service.website}}'>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>전화번호</span>
+				<input type='text' class='service-telephone-input' value='{{service.telephone}}'>
+				<div class='intro-text'>입력하신 번호는 문자 발송 시 발송 번호가 됩니다.<br>공란일 경우 사용자의 핸드폰 번호가 사용됩니다.</div>
+			</div>
+			<div class='input-line' style='display:none;'>
+				<span class='tag black-font' id='description-tag'>서비스 소개</span>
+				<textarea class='service-description-input' rows='6'>{{service.description}}</textarea>
+			</div>
+			<div class='bottom-button-area'>
+				<button class='save-button btn'>저장</button>
+			</div>
+		</div>
+		<div class='box-item white-bg' id='user-management-setting'>
+			<div class='bottom-button-area'>
+				<button class='save-button btn'>저장</button>
+			</div>
+		</div>
+        <div class="box-item white-bg" id="service-management-setting" {% if nav == "service-management" %}style='display:block;'{% endif %}>
+            {{user_info.services|length}}
+            {% for svc in user_info.services.all %}
+            <div class="input-line">
+                <span class="tag">{{svc.name}}<br/><span style="font-size:12px;">({{svc.tag}}.kordir.com)</span></span>
+                <button class='btn activate-btn{% if user_info.service == svc %} chosen{% endif %}' {% if user_info.service == svc %}disabled{% endif %} data-service-id="{{svc.id}}" data-service-name="{{svc.name}}">활성화</button>
+                <button class="btn delete-btn" data-service-id="{{svc.id}}" data-service-name="{{svc.name}}">삭제</button>
+            </div>
+            {% endfor %}
+            <div class='bottom-button-area'>
+                <a href="/addservice"><button class='btn' id="create-service">서비스 생성</button></a>
+                <button class='save-button btn'>저장</button>
+            </div>
+        </div>
+		<div class='box-item white-bg' id='notification-setting' {% if nav == "notification" %}style='display:block;'{% endif %}>
+			<div class='input-line'>
+				<span class='tag black-font'>질문 게시판 글 등록시 문자 발송</span>
+				<span class='checkbox-wrapper'><input type='checkbox' id='notify-askboard-sms' class='notify-input' {% if "NOTIFICATION_ALLOW_ASKBOARD_SMS"|get_constant_value|bitwise_and:user_info.notification == True %}checked{% endif %}></span>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>질문 게시판 글 등록시 이메일 발송</span>
+				<span class='checkbox-wrapper'><input type='checkbox' id='notify-askboard-email' class='notify-input' {% if "NOTIFICATION_ALLOW_ASKBOARD_EMAIL"|get_constant_value|bitwise_and:user_info.notification == True %}checked{% endif %}></span>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>질문 게시판 글 등록시 소리로 알림</span>
+				<span class='checkbox-wrapper'><input type='checkbox' id='notify-askboard-sound' class='notify-input' {% if "NOTIFICATION_ALLOW_ASKBOARD_SOUND"|get_constant_value|bitwise_and:user_info.notification == True %}checked{% endif %}></span>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>문의 박스에 글 등록시 문자 발송</span>
+				<span class='checkbox-wrapper'><input type='checkbox' id='notify-requestbox-sms' class='notify-input' {% if "NOTIFICATION_ALLOW_REQUESTBOX_SMS"|get_constant_value|bitwise_and:user_info.notification == True %}checked{% endif %}></span>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>문의 박스에 글 등록시 이메일 발송</span>
+				<span class='checkbox-wrapper'><input type='checkbox' id='notify-requestbox-email' class='notify-input' {% if "NOTIFICATION_ALLOW_REQUESTBOX_EMAIL"|get_constant_value|bitwise_and:user_info.notification == True %}checked{% endif %}></span>
+			</div>
+			<div class='input-line' style='display:none;'>
+				<span class='tag black-font'>문의 박스에 글 등록시 소리로 알림</span>
+				<span class='checkbox-wrapper'><input type='checkbox' id='notify-requestbox-sound' class='notify-input' {% if "NOTIFICATION_ALLOW_REQUESTBOX_SOUND"|get_constant_value|bitwise_and:user_info.notification == True %}checked{% endif %}></span>
+			</div>
+			<div class='input-line'>
+				<span class='tag black-font'>실시간 문의 요청시 소리로 알림</span>
+				<span class='checkbox-wrapper'><input type='checkbox' id='notify-chat-sound' class='notify-input' {% if "NOTIFICATION_ALLOW_CHAT_SOUND"|get_constant_value|bitwise_and:user_info.notification == True %}checked{% endif %}></span>
+			</div>
+			<div class='bottom-button-area'>
+				<button class='save-button btn'>저장</button>
+			</div>
+		</div>
+		<div class='box-item white-bg' id='point-setting' {% if nav == "point" %}style='display:block;'{% endif %}>
+			<div class='point-setting-title'>현재 상태</div>
+			<!--
+			<div class='input-line'>
+				<span class='tag black-font' style='float:left; height:24px; line-height:24px;'>잔여 포인트</span>
+				<div class='value'><span class='value-point'>{{service.point}}</span></div>
+			</div>
+			-->
+			<div class='input-line'>
+				<span class='tag black-font' style='float:left; height:24px; line-height:24px;'>사용 종료 시각</span>
+				<div class='value'>
+					<span class='value-date'>
+						{% timezone "Asia/Seoul" %}
+						{{service.valid|localtime|date:'Y년 m월 d일 H시m분'}}
+						{% endtimezone %}
+					</span>
+				</div>
+			</div>
+			<div style='display:none;'>
+			<div class='point-setting-title'>포인트 사용하기</div>
+			<div class='input-line'>
+				<div class='use-point-info'>
+					사용 포인트: <span class='use-point use-point-info-value'>0</span>
+				</div>
+				<div class='use-point-info'>
+					추가 일수: <span class='added-day use-point-info-value'>0</span>
+				</div>
+				<div class='use-point-slider'></div>
+				<div class='' style='text-align:center; padding:10px; font-size:12px;'>
+					<b>↖</b>네모 모양의 핸들러를 눌러 우측 방향으로 이동시켜 포인트 사용을 하실 수 있습니다.
+				</div>
+				<button class='extend-use-button btn' disabled>기간 연장</button>
+			</div>
+			<div class='point-setting-title'>포인트 변동 내역</div>
+			<div class='table-header black-font point-table '>
+				<div class='table-type table-item'>종류</div>
+				<div class='table-diff table-item'>증감액</div>
+				<div class='table-balance table-item'>남은 포인트</div>
+				<div class='table-date table-item'>시간</div>
+			</div>
+			<div class='table-body point-table'>
+			{% for pr in point_record %}
+			<div class='table-item-row point-table'>
+				<div class='table-type table-item'>
+					{% if pr.type == "POINT_ADD_INITIAL"|get_constant_value %}
+					초기 지급
+					{% elif pr.type == "POINT_ADD_TRANSACTION"|get_constant_value %}
+					충전
+					{% elif pr.type == "POINT_ADD_SPECIAL"|get_constant_value %}
+					충전 (특별지급)
+					{% elif pr.type == "POINT_MINUS_EXTEND_USE"|get_constant_value %}
+					사용(기간연장)
+					{% endif %}
+				</div>
+				<div class='table-diff table-item'>{{pr.point|stringformat:"i"}}</div>
+				<div class='table-balance table-item'>{{pr.balance}}</div>
+				<div class='table-date table-item'>
+					{% timezone "Asia/Seoul" %}
+					{{pr.created|localtime|date:'Y-m-d H:i:s'}}
+					{% endtimezone %}
+				</div>
+			</div>
+			{% endfor %}
+			</div>
+			</div>
+			<div class='bottom-button-area'>
+				<div style='font-weight:bold; font-size:18px; margin-bottom:10px;'>기간 연장</div>
+				<div class='point-info' style="display:none;">
+					<div class="note">
+						<div class='period'>90일</div>
+						<div class='price'>45,000원</div>
+					</div>
+					<div class="note">
+						<div class='period'>180일</div>
+						<div class='price'><strike>90,000</strike> -> 85,000원</div>
+					</div>
+					<div class="note">
+						<div class='period'>365일</div>
+						<div class='price'><strike>182,500</strike> -> 160,000원</div>
+					</div>
+				</div>
+				<div class='intro-text' style="display:none;">
+					무통장 입금으로 결재를 진행하고 있습니다.<br>
+					아래 계좌 번호 전송을 누르시면 이체하실 은행과 계좌번호를 문자로 받으실 수 있습니다.<br>
+					3가지 사용기간 중 선택하신 기간에 해당하는 금액을 입금을 하신 후 입금 확인 요청에서 입금자명과 금액을 기입해 주시면 확인 후 처리 해 드리겠습니다.<br><br>
+					<span style='font-size:16px; color:#4d4d4d;'>입금계좌 : <b>1005-502-691281</b></span><br>
+					<span style='font-size:16px; color:#4d4d4d;'>은행명    : <b>우리은행</b></span><br>
+					<span style='font-size:16px; color:#4d4d4d;'>예금주    : <b>진장연(코디알)</b></span><br>
+				</div>
+				<button class='recharge-sendsms btn'>계좌 번호 전송</button>
+				<button class='recharge-confirm btn'>입금 확인 요청</button>
+			</div>
+		</div>
+		<div class='box-warning-area white-bg'><span class='red-font'></span></div>
+	</div>
+</div>
+<div id='request-confirmation-window' class='border-shadow'>
+	<input type='text' class='request-confirmation-name' value='{{user_info.fullname}}' placeholder='입금자명을 기입해 주세요'>
+	<input type='text' class='request-confirmation-amount' placeholder='금액을 기입해 주세요'>
+	<div class='button-wrapper'>
+		<button class='btn request-confirmation-ok'>확인</button>
+		<button class='btn request-confirmation-cancel'>취소</button>
+	</div>
+</div>
+
+<iframe id='user-file-upload-target' name='user-file-upload-target' style='position:absolute;top:0;left:0;width:0px;height:0px;border:0px solid #fff;'></iframe>
+<iframe id='service-file-upload-target' name='service-file-upload-target' style='position:absolute;top:0;left:0;width:0px;height:0px;border:0px solid #fff;'></iframe>
+{% include "common/footer.html" %}
+</body>
+{% if LANGUAGE_CODE == "ko" %}
+<script src='/resources/js/static_kr.js'></script>
+{% else %}
+<script src='/resources/js/static_en.js'></script>
+{% endif %}
+<!-- plugin -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src='/resources/plugins/jquery-ui-1.11.0/jquery-ui.min.js'></script>
+<script src='/resources/plugins/jquery-ui-touch-punch-master/jquery.ui.touch-punch.min.js'></script>
+<script src='/resources/plugins/jQuery-switchButton-master/jquery.switchButton.js'></script>
+<link rel="stylesheet" href="/resources/plugins/jQuery-switchButton-master/jquery.switchButton.css">
+<style>
+/* customization */
+span.switch-button-label{
+	margin-top:8px !important;
+}
+span.switch-button-label.on{
+	color:#111 !important;
+}
+div.switch-button-button{
+	background-color:orange;
+}
+</style>
+<script src='/resources/js/settings.js'></script>
+<script>
+$(function(){
+	try{
+		serverData.notification.NOTIFICATION_ALLOW_ASKBOARD_SMS = {{"NOTIFICATION_ALLOW_ASKBOARD_SMS"|get_constant_value}};
+		serverData.notification.NOTIFICATION_ALLOW_ASKBOARD_EMAIL = {{"NOTIFICATION_ALLOW_ASKBOARD_EMAIL"|get_constant_value}};
+		serverData.notification.NOTIFICATION_ALLOW_ASKBOARD_SOUND = {{"NOTIFICATION_ALLOW_ASKBOARD_SOUND"|get_constant_value}};
+		serverData.notification.NOTIFICATION_ALLOW_REQUESTBOX_SMS = {{"NOTIFICATION_ALLOW_REQUESTBOX_SMS"|get_constant_value}};
+		serverData.notification.NOTIFICATION_ALLOW_REQUESTBOX_EMAIL = {{"NOTIFICATION_ALLOW_REQUESTBOX_EMAIL"|get_constant_value}};
+		serverData.notification.NOTIFICATION_ALLOW_REQUESTBOX_SOUND = {{"NOTIFICATION_ALLOW_REQUESTBOX_SOUND"|get_constant_value}};
+		serverData.notification.NOTIFICATION_ALLOW_CHAT_SOUND = {{"NOTIFICATION_ALLOW_CHAT_SOUND"|get_constant_value}};
+	} catch(err){}
+
+	$(".user-fullname-input").inputLengthSet({
+		maxLength:32,
+		posX: 294,
+		posY: 10
+	});
+	$(".user-telephone-input").inputLengthSet({
+		maxLength:16,
+		posX: 294,
+		posY: 10
+	});
+	$(".password-input").inputLengthSet({
+		maxLength:16,
+		posX: 294,
+		posY: 10
+	});
+	$(".new-password-input").inputLengthSet({
+		maxLength:16,
+		posX: 294,
+		posY: 10
+	});
+	$(".confirm-new-password-input").inputLengthSet({
+		maxLength:16,
+		posX: 294,
+		posY: 10
+	});
+	$(".service-name-input").inputLengthSet({
+		maxLength:32,
+		posX: 286,
+		posY: 10
+	});
+	$(".service-tag-input").inputLengthSet({
+		maxLength:16,
+		posX: 268,
+		posY: 10
+	});
+	$(".service-tag-input").ForceAlphabetNumericOnly();
+	$(".service-domain-input").inputLengthSet({
+		maxLength:64,
+		posX: 286,
+		posY: 10
+	});
+	$(".service-website-input").inputLengthSet({
+		maxLength:64,
+		posX: 294,
+		posY: 10
+	});
+	$(".service-telephone-input").inputLengthSet({
+		maxLength:16,
+		posX: 286,
+		posY: 10
+	});
+});
+</script>
+</html>

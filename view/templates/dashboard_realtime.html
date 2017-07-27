@@ -1,0 +1,100 @@
+<head>
+<style>
+.dashboard-body{display:none;}
+</style>
+<!--[if lte IE 8]>
+<style>
+#online-user-chart-minute, #online-user-chart-second{
+	overflow:hidden;
+}
+</style>
+<![endif]-->
+<link rel='stylesheet' type='text/css' media='screen' href='/resources/css/dashboard_realtime.css?version=1.0' />
+</head>
+<div class='dashboard-body'>
+	<div class='analytics-wrapper' id='analytics-realtime'>
+		<div class='analytics-box' id='online-user'>
+			<div class='analytics-title'><span class='black-font'>현재 접속자 수</span></div>
+			<div class='analytics-body'>
+				<div class='online-user-number'>
+					<div class='online-user-number-title'>
+						<span>현재 온라인</span>
+					</div>
+					<div class='online-user-number-value'>
+						<span></span>명
+					</div>
+				</div>
+				<div class='online-user-chart-minute' id='online-user-chart-minute'></div>
+				<div class='online-user-chart-second' id='online-user-chart-second'></div>
+				<div class='online-user-list-table' id='online-user-list-table'>
+					<p>활성 사용자 리스트</p>
+					<table>
+						<thead>
+							<tr>
+								<th>번호</th>
+								<th>지역</th>
+								<th>시간</th>
+								<th>페이지</th>
+								<th>단말기</th>
+								<th>재방문</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class='analytics-no-data'>데이터가 없습니다.</div>
+				</div>
+			</div>
+		</div>
+		<div class='analytics-box-wrapper'>
+			<div class='analytics-box'>
+				<div class='analytics-title black-font'>
+					<span class='black-font'>지역 (누적)</span>
+				</div>
+				<div class='analytics-body'>
+					<div class='analytics-no-data'>데이터가 없습니다.</div>
+					<div id='realtime-region-chart' class='realtime-chart'></div>
+				</div>
+			</div>
+			<div class='analytics-box'>
+				<div class='analytics-title black-font'>
+					<span class='black-font'>방문경로 (누적)</span>
+				</div>
+				<div class='analytics-body'>
+					<div class='analytics-no-data'>데이터가 없습니다.</div>
+					<div id='realtime-referral-chart' class='realtime-chart'></div>
+				</div>
+			</div>
+		</div>
+		<div class='analytics-box-wrapper analytics-box-wrapper-right'>
+			<div class='analytics-box'>
+				<div class='analytics-title black-font'>
+					<span class='black-font'>신규/재방문 (누적)</span>
+				</div>
+				<div class='analytics-body'>
+					<div class='analytics-no-data'>데이터가 없습니다.</div>
+					<div id='realtime-new-return-chart' class='realtime-chart'></div>
+				</div>
+			</div>
+			<div class='analytics-box'>
+				<div class='analytics-title black-font block'>
+					<span class='black-font'>디바이스 (누적)</span>
+				</div>
+				<div class='analytics-body'>
+					<div class='analytics-no-data'>데이터가 없습니다.</div>
+					<div id='realtime-device-chart' class='realtime-chart'></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+var variableRealTime = {
+	chatURL: '{{chat}}',
+	chatRequest: {
+		waiting: false,
+		uniqueKey: ''
+	}
+};
+</script>
+<script src='/resources/js/dashboard_realtime.js?version=1.0'></script>
