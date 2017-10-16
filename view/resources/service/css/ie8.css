@@ -1,0 +1,13 @@
+.body-wrapper .body-content{
+    padding-left:0px !important;
+    padding-right:0px !important;
+    width:962px;
+}
+.contact-form TEXTAREA{
+    padding-left:5px;
+    padding-right:0px;
+}
+.contact-form INPUT{
+    padding-left:5px;
+    padding-right:0px;
+}

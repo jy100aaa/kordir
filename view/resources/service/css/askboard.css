@@ -24,7 +24,7 @@ div#content{
 	color:#6d6d6d;
 	font-size:18px;
 	font-weight:bold;
-	margin-left:20px;	
+	margin-left:20px;
 }
 .board-top #show-register-form-button{
 	display:inline-block;
@@ -51,7 +51,7 @@ div#content{
 	width:100%;
 	-webkit-box-sizing: border-box;
    	-moz-box-sizing: border-box;
-   	box-sizing: border-box;	
+   	box-sizing: border-box;
    	padding-left:80px;
    	padding-right:300px;
 }
@@ -74,7 +74,7 @@ div#content{
 	top:0;
 	right:200px;
 	width:100px;
-}	
+}
 .table-header .table-date{
 	position:absolute;
 	top:0;
@@ -108,7 +108,7 @@ div#content{
 	width:100%;
 	-webkit-box-sizing: border-box;
    	-moz-box-sizing: border-box;
-   	box-sizing: border-box;	
+   	box-sizing: border-box;
    	padding-left:80px;
    	padding-right:300px;
    	overflow:hidden;
@@ -125,14 +125,14 @@ div#content{
 	float:left;
 }
 .item-wrapper .item-tag{
-	display:none;	
+	display:none;
 }
 .item-wrapper .item-seq{
 	position:absolute;
 	left:0;
 	width:80px;
 	text-align:center;
-} 
+}
 .item-wrapper .item-subject{
 	position:relative;
 	width:100%;
@@ -206,7 +206,7 @@ div#content{
 	margin-left:4px;
 	margin-right:4px;
 }
-.board-bottom .paging-nav.current-page{	
+.board-bottom .paging-nav.current-page{
 	background-color:#789;
 	color:#fff;
 }
@@ -227,7 +227,7 @@ div#content{
 	padding:14px;
 	-webkit-box-sizing: border-box;
    	-moz-box-sizing: border-box;
-   	box-sizing: border-box;	
+   	box-sizing: border-box;
 	font-size:14px;
 	text-align:left;
 	color:#4d4d4d;
@@ -331,7 +331,7 @@ div#content{
 	display:none;
 	height:30px;
 	width:550px;
-	border:1px solid #ccccbc;	
+	border:1px solid #ccccbc;
 }
 .progress-bar .progress{
 	display:inline-block;
@@ -341,7 +341,7 @@ div#content{
 }
 .progress-bar .number{
 	position:absolute;
-	right:0;	
+	right:0;
 	font-size:12px;
 	color:#ff6600;
 	top:34px;
@@ -379,20 +379,20 @@ div#content{
  	height:40px;
  	margin-left:auto;
  	margin-right:auto;
- 	background:url('/resources/images/shadow_bottom.png') no-repeat;
+ 	background:url('https://asset.kordir.com/resources/images/shadow_bottom.png') no-repeat;
  	background-size:100% auto;
 }
 .board-register .board-register-form .input-line .after-upload a:link {color:inherit;}
 .board-register .board-register-form .input-line .after-upload a:visited {color:inherit;}
 .board-register .board-register-form .input-line .after-upload a:hover {color:inherit;}
 .board-register .board-register-form .input-line .after-upload a:active {color:inherit;}
- 
+
 
 .board-register .board-register-form .input-line .long-input{
 	width:540px;
 }
- 
- 
+
+
 @media screen and (min-width:1px) and (max-width:480px){
 	#content-inner{
 		width:100%;
@@ -407,7 +407,7 @@ div#content{
     	padding:10px;
     	-webkit-box-sizing: border-box;
     	-moz-box-sizing: border-box;
-    	box-sizing: border-box;	
+    	box-sizing: border-box;
 	}
 	.board-register .board-register-form .input-line .tag{
 		display:block;
@@ -431,7 +431,7 @@ div#content{
 	.board-center .table-body .item-wrapper{
 		-webkit-box-sizing: content-box;
 	   	-moz-box-sizing: content-box;
-	   	box-sizing: content-box;	
+	   	box-sizing: content-box;
 	   	display:block;
 		height:72px;
 		line-height:0;
@@ -467,7 +467,7 @@ div#content{
     	line-height:18px;
     	margin-top:20px;
 		width:100%;
-		font-size:14px;	
+		font-size:14px;
 	}
 	.item-wrapper .item-subject img{
 		float:left;
@@ -495,7 +495,7 @@ div#content{
 		width:auto;
 		height:16px;
 		line-height:16px;
-		margin:0;		
+		margin:0;
 	}
 	.item-name span{
 		height:100%;

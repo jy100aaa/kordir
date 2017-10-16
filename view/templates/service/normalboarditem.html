@@ -8,7 +8,7 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <html class=""> <!--<![endif]-->
 <head>
 {% include "service/common/servicemeta.html" %}
-<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/normalboarditem.css?version=1.0'/>
+<link rel='stylesheet' type='text/css' media='screen' href='https://asset.kordir.com/resources/service/css/normalboarditem.css?version=1.0'/>
 </head>
 <body>
 {% include "service/common/processor.html" %}
@@ -44,7 +44,7 @@
 			{{boarditem.body}}
 			{% endautoescape %}
 		</div>
-		<!-- 
+		<!--
 		<div class='box-content-shadow-bottom'></div>
 		 -->
 	</div>
@@ -67,16 +67,16 @@ var serverData = {
 	tag: '{{tag}}',
 	boardType: {{board_type}}
 };
-$(function(){	
+$(function(){
 	$("iframe").each(function(){
 		var w = $(this).width();
 		var h = $(this).height();
 		var allowance = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 		allowance -= 36;
-				
+
 		if(w > allowance){
 			h = allowance * h / w;
-			w = allowance;			
+			w = allowance;
 			$(this).css({
 				'width': w + 'px',
 				'height': h + 'px'
@@ -87,6 +87,6 @@ $(function(){
 
 </script>
 {% include "service/common/servicenodejs.html" %}
-<script src='/resources/service/js/normalboarditem.js'></script>
+<script src='https://asset.kordir.com/resources/service/js/normalboarditem.js'></script>
 {% include "service/common/ga.html" %}
 </html>

@@ -1,6 +1,7 @@
 {% load i18n %}
 {% load customtags %}
 {% get_current_language as LANGUAGE_CODE %}
+{% load compress %}
 <html>
 <head>
 {% include "common/meta.html" %}
@@ -96,7 +97,7 @@ var serverData = {
 		<span class='tag black-font'>사이트 주소<span class='required'>*</span></span>
 		<input type='text' class='service-tag-input' id='service-tag-input'><span class='service-tag-rest black-font'>.{% settings_value "SIMPLE_MAIN_SERVER" %}</span>
 		<div class='intro-text'>서비스 홈페이지와 연결 될 인터넷 주소 입니다.<br>우리집.{% settings_value "SIMPLE_MAIN_SERVER" %} 와 같은 한글도메인도 사용 가능 합니다.</div>
-	</div> 
+	</div>
 	<div class='input-line'>
 		<span class='tag black-font'>연결 도메인</span>
 		<input type='text' id='service-domain-input' class='service-domain-input'>
@@ -115,7 +116,7 @@ var serverData = {
 		</select>
 		<select class='service-location-input service-location-sub-input' id='service-location-sub-input'>
 			<option value='-1' disabled selected class='default'>시/도/군</option>
-		</select>		
+		</select>
 	</div>
 	<div class='input-line' style="display:none;">
 		<span class='tag black-font'>웹 사이트</span>
@@ -147,6 +148,7 @@ var serverData = {
 <script src='/resources/js/static_en.js'></script>
 {% endif %}
 <script src='/resources/js/fillinfo.js'></script>
+{% compress js inline %}
 <script>
 $(function(){
 	$(".user-fullname-input").inputLengthSet({
@@ -160,7 +162,7 @@ $(function(){
 		posY: 10
 	});
 	$(".user-telephone-input").ForceNumericOnly();
-	
+
 	$(".service-name-input").inputLengthSet({
 		maxLength:32,
 		posX: 293,
@@ -189,4 +191,5 @@ $(function(){
 	});
 });
 </script>
+{% endcompress %}
 </html>

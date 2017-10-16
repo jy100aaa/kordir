@@ -74,7 +74,7 @@
 	position: absolute;
 	cursor: pointer;
 	display: block;
-	background: url(/resources/plugins/Jssor.Slider.FullPack/img/a11.png) no-repeat;
+	background: url(https://asset.kordir.com/resources/plugins/Jssor.Slider.FullPack/img/a11.png) no-repeat;
 	overflow: hidden;
 }
 .jssora11l {
@@ -108,7 +108,7 @@
    	position: absolute;
    	cursor: pointer;
    	display: block;
-    background: url(/resources/plugins/Jssor.Slider.FullPack/img/a02.png) no-repeat;
+    background: url(https://asset.kordir.com/resources/plugins/Jssor.Slider.FullPack/img/a02.png) no-repeat;
     overflow:hidden;
 }
 .jssora02l { background-position: -3px -33px; }
@@ -128,7 +128,7 @@ div#content{
 	margin-right:auto;
 	-webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-    box-sizing: border-box;	
+    box-sizing: border-box;
     width:960px;
 }
 #content-inner .product-box{
@@ -202,7 +202,7 @@ div#content{
 .product-box  .box-content-shadow-bottom{
 	width:100%;
 	height:60px;
-	background:url('/resources/images/shadow_bottom_960.png');
+	background:url('https://asset.kordir.com/resources/images/shadow_bottom_960.png');
 	background-size:100% auto;
 	background-repeat:no-repeat;
 }
@@ -323,13 +323,13 @@ div#content{
 	                    <thumbnailtemplate class="i" style="position:absolute;"></thumbnailtemplate>
 	                    <div class="o"></div>
 	                </div>
-	            </div>   
+	            </div>
 	            <span u="arrowleft" class="jssora11l" style="width: 37px; height: 37px; top: 123px; left: 8px;"></span>
 	            <span u="arrowright" class="jssora11r" style="width: 37px; height: 37px; top: 123px; right: 8px"></span>
 	        </div>
     	</div>
     	{% endif %}
-    	
+
     	{% if boarditem.labelvaluepairs.all %}
     	<div class='label-value'>
 			{% for i in boarditem.labelvaluepairs.all %}<div class='label-value-line inline-block-fallback'>
@@ -338,15 +338,15 @@ div#content{
 			</div>{% endfor %}{% if boarditem.labelvaluepairs.all|length|modulo:2 == 1 %}<div class='label-value-line inline-block-fallback label-value-line-filler'><span class='label'></span><span class='value'></span></div>{% endif %}
 		</div>
     	{% endif %}
-    	<!-- 
+    	<!--
     	<p class='block-tag indent'>상세 설명</p>
     	 -->
     	<div class='box-content'>
 			{% autoescape off %}
 			{{boarditem.body}}
 			{% endautoescape %}
-		</div> 
-		
+		</div>
+
 	</div>
 	<div id='comment' class='indent' data-boardtype='{{board_type}}' data-tag='{{tag}}' data-seq='{{seq}}'>
 		{% include "service/common/servicecomment.html" %}
@@ -357,7 +357,7 @@ div#content{
 {% include "service/common/servicefooter.html" %}
 </body>
 <!--[if lte IE 7]>
-<script type='text/javascript' src='/resources/js/boxsizingfix.js'></script>
+<script type='text/javascript' src='https://asset.kordir.com/resources/js/boxsizingfix.js'></script>
 <![endif]-->
 <script>
 var serverData = {
@@ -369,9 +369,9 @@ var serverData = {
 };
 </script>
 {% include "service/common/servicenodejs.html" %}
-<script type="text/javascript" src="/resources/plugins/Jssor.Slider.FullPack/js/jssor.core.js"></script>
-<script type="text/javascript" src="/resources/plugins/Jssor.Slider.FullPack/js/jssor.utils.js"></script>
-<script type="text/javascript" src="/resources/plugins/Jssor.Slider.FullPack/js/jssor.slider.js"></script>
+<script type="text/javascript" src="https://asset.kordir.com/resources/plugins/Jssor.Slider.FullPack/js/jssor.core.js"></script>
+<script type="text/javascript" src="https://asset.kordir.com/resources/plugins/Jssor.Slider.FullPack/js/jssor.utils.js"></script>
+<script type="text/javascript" src="https://asset.kordir.com/resources/plugins/Jssor.Slider.FullPack/js/jssor.slider.js"></script>
 <script>
 $(function(){
 	var options = {
@@ -381,23 +381,23 @@ $(function(){
 	    $DragOrientation: 1,                                //[Optional] Orientation to drag slide, 0 no drag, 1 horizental, 2 vertical, 3 either, default value is 1 (Note that the $DragOrientation should be the same as $PlayOrientation when $DisplayPieces is greater than 1, or parking position is not 0)
 	    $UISearchMode: 0,                                   //[Optional] The way (0 parellel, 1 recursive, default value is 1) to search UI components (slides container, loading screen, navigator container, arrow navigator container, thumbnail navigator container etc).
 		$FillMode: 1,
-			
+
 	    $ArrowNavigatorOptions: {
 	        $Class: $JssorArrowNavigator$,              //[Requried] Class to create arrow navigator instance
 	        $ChanceToShow: 1,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
 	        $Steps: 1                                       //[Optional] Steps to go for each navigation request, default value is 1
 	    },
-	    
+
 	    $ThumbnailNavigatorOptions: {
 	        $Class: $JssorThumbnailNavigator$,              //[Required] Class to create thumbnail navigator instance
 	        $ChanceToShow: 1,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
-	
+
 	        $Loop: 2,                                       //[Optional] Enable loop(circular) of carousel or not, 0: stop, 1: loop, 2 rewind, default value is 1
 	        $SpacingX: 3,                                   //[Optional] Horizontal space between each thumbnail in pixel, default value is 0
 	        $SpacingY: 3,                                   //[Optional] Vertical space between each thumbnail in pixel, default value is 0
 	        $DisplayPieces: 6,                              //[Optional] Number of pieces to display, default value is 1
 	        $ParkingPosition: 204,                          //[Optional] The offset position to park thumbnail,
-	
+
 	        $ArrowNavigatorOptions: {
 	            $Class: $JssorArrowNavigator$,              //[Requried] Class to create arrow navigator instance
 	            $ChanceToShow: 1,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
@@ -410,7 +410,7 @@ $(function(){
     var jssor_slider1 = new $JssorSlider$("slider1_container", options);
     function ScaleSlider() {
         var parentWidth = jssor_slider1.$Elmt.parentNode.clientWidth;
-       
+
         if (parentWidth){
         	 jssor_slider1.$SetScaleWidth(Math.min(parentWidth, 960));
         } else {
@@ -423,7 +423,7 @@ $(function(){
 	    $(window).bind('resize', ScaleSlider);
 	}
 	{% endif %}
-	
+
 	$("#content iframe").each(function(){
 		var w = $(this).width();
 		var h = $(this).height();
@@ -431,13 +431,13 @@ $(function(){
 		allowance -= 36;
 		if(w > allowance){
 			h = allowance * h / w;
-			w = allowance;			
+			w = allowance;
 			$(this).css({
 				'width': w + 'px',
 				'height': h + 'px'
 			});
 		}
-	});	
+	});
 });
 function connection_status_change(type){}
 function connection_established(){}

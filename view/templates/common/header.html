@@ -1,6 +1,7 @@
 {% load i18n %}
 {% load customtags %}
 {% get_current_language as LANGUAGE_CODE %}
+{% load compress %}
 <script>
 var oldIE = false;
 var _MSIE = false;
@@ -94,6 +95,7 @@ oldIE = true;
 <!--[if lte IE 8]>
 <script src='/resources/plugins/placeholders/placeholders.min.js'></script>
 <![endif]-->
+{% compress js inline %}
 <script>
 $(function(){
 	$(document).bind('click', function(e){
@@ -170,3 +172,4 @@ function document_click_event_listener(e){
 	}
 }
 </script>
+{% endcompress %}

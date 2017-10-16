@@ -1,3 +1,4 @@
+{% load compress %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,6 +56,7 @@ var serverData = {
 </div>
 {% include "common/footer.html" %}
 </body>
+{% compress js inline %}
 <script>
 $(function(){
 	positionAdjustment();
@@ -83,7 +85,9 @@ function positionAdjustment(){
 	$(elem).css('visibility','visible');
 }
 </script>
+{% endcompress %}
 <script src='/resources/js/signup.js?version=1.1'></script>
+{% compress js inline %}
 <script>
 $(function(){
 	$("#signup-fullname-input").inputLengthSet({
@@ -113,4 +117,5 @@ $(function(){
 	});
 });
 </script>
+{% endcompress %}
 </html>

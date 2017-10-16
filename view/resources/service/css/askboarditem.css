@@ -83,7 +83,7 @@ div#content{
 .box .box-content-shadow-bottom{
 	width:100%;
 	height:60px;
-	background:url('/resources/images/shadow_bottom_960.png');
+	background:url('https://asset.kordir.com/resources/images/shadow_bottom_960.png');
 	background-size:100% auto;
 	background-repeat:no-repeat;
 }

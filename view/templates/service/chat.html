@@ -8,7 +8,7 @@
 <head>
 {% include "service/common/servicemeta.html" %}
 <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0">
-<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/chat.css?version=1.1' />
+<link rel='stylesheet' type='text/css' media='screen' href='https://asset.kordir.com/resources/service/css/chat.css?version=1.1' />
 <!--[if lte IE 7]>
 <style>
 .connection-status .connection-status-item{
@@ -94,7 +94,7 @@
 var serverData = {
 	counterpartId: {{counterpart.id}},
 	serviceId: {{service.id}},
-	myPicture: '/resources/images/default_user.jpg',
+	myPicture: 'https://asset.kordir.com/resources/images/default_user.jpg',
 	uniqueKey: '{{connectionInfo.uniqueKey}}',
 	userInfo: {}
 };
@@ -102,7 +102,7 @@ var chatInitTimer = null;
 (function (d, s) {
 	heightAdjustment();
 	$(".chat-control-wrapper").css('visibility', 'visible');
-	
+
 	{% if user_id %}
 	serverData.userId = {{user_id}};
 	var msg = {
@@ -131,17 +131,17 @@ var chatInitTimer = null;
 	{% else %}
 	serverData.userId = 0;
 	{% endif %}
-	
+
 	{% for user in service.users.all %}
 	serverData.userInfo['{{user.id}}'] = {};
 	serverData.userInfo['{{user.id}}']['fullname'] = '{{user.fullname}}';
-	serverData.userInfo['{{user.id}}']['picture'] = '{{"USER_PICTURE"|get_filelocation}}{{user.picture}}';	
+	serverData.userInfo['{{user.id}}']['picture'] = '{{"USER_PICTURE"|get_filelocation}}{{user.picture}}';
 	{% endfor %}
-	
+
 	serviceVariable.resizeFunc['chat'] = function(){
 		heightAdjustment();
 	};
-	
+
 })(document, 'script');
 function heightAdjustment(){
 	var hh = document.getElementById('header-wrapper').clientHeight;
@@ -157,6 +157,6 @@ function heightAdjustment(){
 	$(".chat-content-wrapper").css('height', chatContentHeight + 'px');
 }
 </script>
-<script src='/resources/service/js/chat.js?version=1.0'></script>
+<script src='https://asset.kordir.com/resources/service/js/chat.js?version=1.0'></script>
 {% include "service/common/ga.html" %}
 </html>

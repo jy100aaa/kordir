@@ -1,3 +1,4 @@
+{% load compress %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,6 +47,7 @@ var serverData = {
 </div>
 {% include "common/footer.html" %}
 </body>
+{% compress js inline %}
 <script>
 $(function(){
 	positionAdjustment();
@@ -75,5 +77,6 @@ function positionAdjustment(){
 	$(elem).css('visibility','visible');
 }
 </script>
+{% endcompress %}
 <script src='/resources/js/login.js'></script>
 </html>

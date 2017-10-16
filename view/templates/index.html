@@ -1,6 +1,7 @@
 <html>
 <head>
 {% include "common/meta.html" %}
+{% load compress %}
 <link rel='stylesheet' type='text/css' media='screen' href='/resources/css/common.css?version=1.0' />
 <link rel='stylesheet' type='text/css' media='screen' href='/resources/css/landing.css?version=1.9' />
 <!--[if lte IE 7]>
@@ -18,13 +19,6 @@
 }
 </style>
 <![endif]-->
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-1151633825359615",
-        enable_page_level_ads: true
-    });
-</script>
 </head>
 <body>
 {% include "common/header.html" %}
@@ -149,6 +143,7 @@
 <!--[if lte IE 7]>
 <script type='text/javascript' src='/resources/js/boxsizingfix.js'></script>
 <![endif]-->
+{% compress js inline %}
 <script>
 var serverData = {
 	page: '{{page}}',
@@ -197,5 +192,6 @@ $(function(){
 	});
 });
 </script>
+{% endcompress %}
 </body>
 </html>

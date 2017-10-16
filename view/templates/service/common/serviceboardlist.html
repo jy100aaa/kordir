@@ -131,7 +131,7 @@
 }
 .board-list-product .board-list-product-top{
 	text-align:left;
-} 
+}
 .board-list-product .board-item-inner-wrapper{
 	margin-left:auto;
 	margin-right:auto;
@@ -186,7 +186,7 @@
 }
 .board-item-product .subject{
 	position:absolute;
-	left:0;	
+	left:0;
 	width:100%;
 	text-align:center;
 	bottom:10px;
@@ -336,20 +336,20 @@
 	{% for bl in board_list %}<div id='board-item-{{bl.tag|remove_forward_slash}}' {% if bl.type == "PRODUCT_BOARD"|get_constant_value %} class='board-list-product board-list box-sizing-fallback inline-block-fallback {% if bl.displayType == 1 %}board-list-mobile-only{% endif %}' {% else %} class='board-list-normal board-list box-sizing-fallback inline-block-fallback {% if bl.margin %}margin-left{% endif %}' {% endif %} >
 		<div {% if bl.type == "PRODUCT_BOARD"|get_constant_value %} class='board-list-product-top board-list-top' {% else %} class='board-list-normal-top board-list-top' {% endif %} >
 			<span class='name'>{{bl.name}}</span>
-			<span class='view-more'><a href ='{{bl.tag}}'>+ 더보기</a></span>	
+			<span class='view-more'><a href ='{{bl.tag}}'>+ 더보기</a></span>
 		</div>
 		{% if bl.type == "PRODUCT_BOARD"|get_constant_value %}
 		<div class='board-item-outer-wrapper'>
 		<div class='board-item-inner-wrapper'>
 		{% endif %}
-			{% for i in bl.item %}	
+			{% for i in bl.item %}
 			<div {% if bl.type == "PRODUCT_BOARD"|get_constant_value %} class='board-item-product inline-block-fallback' {% else %} class='board-item-normal inline-block-fallback box-sizing-fallback' {% endif %} onclick="window.location.href='{{bl.tag}}?seq={{i.seq}}';">
 				{% if bl.type == "PRODUCT_BOARD"|get_constant_value %}
 				<span class='image-outer'>
 					<span class='image-inner'>
 						{% if i.list_image == "" %}
-						<img src='/resources/images/no_product_image.png'>
-						{% else %}					
+						<img src='https://asset.kordir.com/resources/images/no_product_image.png'>
+						{% else %}
 						<img src='{{"BOARD_PICTURE"|get_filelocation}}{{service.id}}{{bl.tag}}/{{i.list_image}}'>
 						{% endif %}
 					</span>
@@ -390,14 +390,14 @@
 		<div class='board-list-product board-list-desktop-only' style='text-align:left; margin-bottom:20px;'>
 			<div {% if bl.type == "PRODUCT_BOARD"|get_constant_value %} class='board-list-product-top board-list-top' {% else %} class='board-list-normal-top board-list-top' {% endif %} >
 				<span class='name' style='margin-left:10px;'>{{bl.name}}</span>
-				<span class='view-more' style='margin-right:10px;'><a href ='{{bl.tag}}'>+더보기</a></span>	
-			</div>	
-			{% if bl.item  %}																				
+				<span class='view-more' style='margin-right:10px;'><a href ='{{bl.tag}}'>+더보기</a></span>
+			</div>
+			{% if bl.item  %}
 			{% for i in bl.item %}<div class='product-item-wrapper black-font inline-block-fallback box-sizing-fallback' onclick="window.location.href='{{bl.tag}}?seq={{i.seq}}';" {% if forloop.counter|divisibleby:4 %}style='margin-right:0; float:none;'{% endif %}>
 				<div class='product-item-picture-outer-wrapper'>
 					<div class='product-item-picture-inner-wrapper'>
 						{% if i.list_image == "" %}
-						<img src='/resources/images/no_product_image.png'>
+						<img src='https://asset.kordir.com/resources/images/no_product_image.png'>
 						{% else %}
 						<img src='{{"BOARD_PICTURE"|get_filelocation}}{{service.id}}{{bl.tag}}/{{i.list_image}}'>
 						{% endif %}

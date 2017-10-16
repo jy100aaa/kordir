@@ -22,9 +22,10 @@ from kordir.models import UserAccount, Service, ChatCounterpart, ChatMessage, As
 from kordir.service_views import ServiceView
 from cachemanager.cachemanager import UserConnectionManager, UserMessageCacheManager, UserAskBoardCacheManager, PreventViewCountManager, ResetPasswordCacheManager
 from smsmanager.models import SmsRecord
-
 from sessionmanager.sessionmanager import SessionManager
+from htmlmin.decorators import minified_response
 
+@minified_response
 @never_cache
 def home(request):
     session_manager = SessionManager()
@@ -188,6 +189,7 @@ def logout(request):
     session_manager.delete_active_account(request)
     return redirect('/')
 
+@minified_response
 @never_cache
 def login(request):
     session_manager = SessionManager()
@@ -233,6 +235,7 @@ def passwordreset(request):
                                              'expired': expired
                                                })
 
+@minified_response
 @never_cache
 def signup(request):
     session_manager = SessionManager()
@@ -244,7 +247,7 @@ def signup(request):
     return render_to_response('signup.html', {
                                               'page': 'signup'
                                               })
-
+@minified_response
 @never_cache
 def signupdone(request):
     session_manager = SessionManager()
@@ -263,7 +266,7 @@ def signupdone(request):
                                                'user_info': user_info,
                                               'page': 'signup'
                                               })
-
+@minified_response
 @never_cache
 def fillinfo(request):
     session_manager = SessionManager()

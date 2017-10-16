@@ -79,7 +79,7 @@
 	-webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-} 
+}
 .comment-writing-right button:disabled{
 	background-color:#dedede;
 	color:#aaa;
@@ -201,7 +201,7 @@
 		position:absolute;
 		top:-44px;
 		right:20px;
-	}	
+	}
 }
 </style>
 <!--[if lte IE 7]>
@@ -213,27 +213,27 @@
 <![endif]-->
 <div class='comment-wrapper'>
 	{% if boarditem.replies.all|length > 0 %}
-	<p class='comment-block-tag'>답변 내역</p>	
+	<p class='comment-block-tag'>답변 내역</p>
 	{% for c in boarditem.replies.all %}
 	<div class='comment-item' id='comment-item-{{c.id}}'>
 		<div class='comment-left-area'>
 		{% if c.user %}
 			<img src='{{"USER_PICTURE"|get_filelocation}}{{c.user.picture}}'>
 		{% else %}
-			<img src='/resources/images/default_user.jpg'>
-		{% endif %}				
+			<img src='https://asset.kordir.com/resources/images/default_user.jpg'>
+		{% endif %}
 		</div>
 		<div class='comment-right-area'>
-			<img src='/resources/images/triangle.png' class='triangle'>
+			<img src='https://asset.kordir.com/resources/images/triangle.png' class='triangle'>
 			<div class='comment-top'>
-				<span class='comment-name'>							
+				<span class='comment-name'>
 					{{c.name}}
 				</span>
 				<span class='comment-timestamp'>
 					{% timezone "Asia/Seoul" %}
 						{{c.created|localtime|date:'Y-m-d H:i:s'}}
 					{% endtimezone %}
-				</span>	
+				</span>
 			</div>
 			<div class='comment-body'>
 				{{c.body|linebreaksbr }}
@@ -246,7 +246,7 @@
 		</div>
 	</div>
 	{% endfor %}
-	{% endif %}	
+	{% endif %}
 	<span class='comment-insert-place'></span>
 </div>
 <div id='comment-item-spare' style='display:none;'>
@@ -254,8 +254,8 @@
 		{% if user_info %}
 		<img src='{{"USER_PICTURE"|get_filelocation}}{{user_info.picture}}'>
 		{% else %}
-		<img src='/resources/images/default_user.jpg'>
-		{% endif %}				
+		<img src='https://asset.kordir.com/resources/images/default_user.jpg'>
+		{% endif %}
 	</div>
 	<div class='comment-right-area'>
 		<img src='{{FILE_LOCATION_WEB_STATIC_PREFIX}}/resources/images/triangle.png' class='triangle'>
@@ -270,14 +270,14 @@
 	</div>
 </div>
 {% if not user_info %}
-<button class='open-comment-writing-wrapper-button btn' onclick='load_captcha(this);'>코멘트 작성 ▼</button> 
+<button class='open-comment-writing-wrapper-button btn' onclick='load_captcha(this);'>코멘트 작성 ▼</button>
 {% endif %}
 <div class='comment-writing-wrapper' {% if not user_info %}style='display:none;'{% endif %}>
 	<div class='comment-writing-left'>
 		{% if user_info %}
 		<img src='{{"USER_PICTURE"|get_filelocation}}{{user_info.picture}}'>
 		{% else %}
-		<img src='/resources/images/default_user.jpg'>
+		<img src='https://asset.kordir.com/resources/images/default_user.jpg'>
 		{% endif %}
 	</div>
 	<div class='comment-writing-right'>
@@ -314,10 +314,10 @@ function load_captcha(obj){
 				remove_progress();
 				draw_general_popup(
 						null,
-						null, 
-						null, 
-						stringTable.tryAgain, 
-						stringTable.ok, 
+						null,
+						null,
+						stringTable.tryAgain,
+						stringTable.ok,
 						null
 				);
 			}
@@ -326,14 +326,14 @@ function load_captcha(obj){
 			remove_progress();
 			draw_general_popup(
 					null,
-					null, 
-					null, 
-					stringTable.tryAgain, 
-					stringTable.ok, 
+					null,
+					null,
+					stringTable.tryAgain,
+					stringTable.ok,
 					null
 			);
 		}
-	});	
+	});
 }
 function pre_post_comment(obj){
 	var parentObj = $(obj).parent();
@@ -350,7 +350,7 @@ function pre_post_comment(obj){
 	data['name'] = $(parentObj).children('.comment-name-input').val();
 	data['captcha'] = $(parentObj).children('.captcha-input').val();
 	data['uniqueKey'] = '{{connectionInfo.uniqueKey}}';
-	
+
 	var passed = true;
 	if(data['comment'].length == 0){
 		$(parentObj).children('textarea').css('border', '1px solid red');
@@ -373,15 +373,15 @@ function pre_post_comment(obj){
 			function(){
 				post_comment(data);
 			},
-			null, 
-			null, 
-			stringTable.askPostMessage, 
-			stringTable.yes, 
+			null,
+			null,
+			stringTable.askPostMessage,
+			stringTable.yes,
 			stringTable.no
 	);
 }
 function post_comment(data){
-	draw_progress();	
+	draw_progress();
 	$.ajax({
 		url : "/requestreceiver/",
 		type : "post",
@@ -398,19 +398,19 @@ function post_comment(data){
 					$("#comment .captcha-input").css('border', '1px solid red');
 					draw_general_popup(
 							null,
-							null, 
-							null, 
-							stringTable.wrongCaptcha, 
-							stringTable.ok, 
+							null,
+							null,
+							stringTable.wrongCaptcha,
+							stringTable.ok,
 							null
-					);				
+					);
 				} else {
 					draw_general_popup(
 							null,
-							null, 
-							null, 
-							stringTable.tryAgain, 
-							stringTable.ok, 
+							null,
+							null,
+							stringTable.tryAgain,
+							stringTable.ok,
 							null
 					);
 				}
@@ -420,10 +420,10 @@ function post_comment(data){
 			remove_progress();
 			draw_general_popup(
 					null,
-					null, 
-					null, 
-					stringTable.tryAgain, 
-					stringTable.ok, 
+					null,
+					null,
+					stringTable.tryAgain,
+					stringTable.ok,
 					null
 			);
 		}
@@ -433,7 +433,7 @@ function print_new_comment(comment, name, id){
 	var template = $("#comment #comment-item-spare").html();
 	template = "<div class='comment-item id='comment-item-"+id+"'>" + template + "</div>";
 	$("#comment .comment-wrapper").append(template);
-	$("#comment .comment-wrapper p").show();		
+	$("#comment .comment-wrapper p").show();
 	var c = comment.split('\n').join('<br>');
 	var obj = $("#comment .comment-wrapper .comment-item").last();
 	$(obj).find('.comment-body').html(c);
@@ -461,17 +461,17 @@ function delete_comment(id){
 						req_type : "delete_comment",
 						data: JSON.stringify(data)
 					},
-					success : function(response){						
+					success : function(response){
 						remove_progress();
 						if(response.result == 'ok'){
 							$("#comment #comment-item-"+id).remove();
 						} else {
 							draw_general_popup(
 									null,
-									null, 
-									null, 
-									stringTable.tryAgain, 
-									stringTable.ok, 
+									null,
+									null,
+									stringTable.tryAgain,
+									stringTable.ok,
 									null
 							);
 						}
@@ -480,19 +480,19 @@ function delete_comment(id){
 						remove_progress();
 						draw_general_popup(
 								null,
-								null, 
-								null, 
-								stringTable.tryAgain, 
-								stringTable.ok, 
+								null,
+								null,
+								stringTable.tryAgain,
+								stringTable.ok,
 								null
 						);
 					}
 				});
 			},
-			null, 
-			null, 
-			stringTable.askDelete, 
-			stringTable.yes, 
+			null,
+			null,
+			stringTable.askDelete,
+			stringTable.yes,
 			stringTable.no
 	);
 }

@@ -49,7 +49,7 @@
         <option selected disabled value="">사용을 연장할 페이지를 선택해 주세요.</option>
         {% for user in operator.users.all %}
             {% for service in user.services.all %}
-                <option value="{{ service.id }}">번호: {{ service.id }}, 주소: {{ service.tag }}.kordir.com, 이름: {{ service.name }}</option>
+                <option value="{{ service.id }}">번호: {{ service.id }}, 주소: {{ service.tag }}.kordir.com, 이름: {{ service.name }}, 서비스종료일: {{ service.valid }}</option>
             {% endfor %}
         {% endfor %}
     </select>

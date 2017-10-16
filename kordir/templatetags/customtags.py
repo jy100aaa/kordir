@@ -78,11 +78,11 @@ def epoch(value):
         return int(time.mktime(value.timetuple())*1000)
     except AttributeError:
         return ''
-    
+
 @register.filter
 def page_body_manipulation(body):
     from bs4 import BeautifulSoup
-    soup = BeautifulSoup(body)  
+    soup = BeautifulSoup(body)
     node = []
     return body
 
@@ -98,3 +98,9 @@ def modulo(num, val):
 def remove_forward_slash(value):
     return value.replace('/', '')
 
+@register.filter
+def replace_string(value, args):
+    if args is None:
+        return value
+    arg = args.split(',')
+    return value.replace(arg[0], arg[1])

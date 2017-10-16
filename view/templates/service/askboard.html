@@ -8,7 +8,7 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <html class="ie"> <!--<![endif]-->
 <head>
 {% include "service/common/servicemeta.html" %}
-<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/askboard.css?version=1.2' />
+<link rel='stylesheet' type='text/css' media='screen' href='https://asset.kordir.com/resources/service/css/askboard.css?version=1.2' />
 <!--[if lte IE 7]>
 <style>
 .board-center .table-header{
@@ -38,14 +38,14 @@
 			<div class='table-date'>날짜</div>
 			<div class='table-answer'>답변</div>
 		</div>
-		<div class='table-body'> 
+		<div class='table-body'>
 			{% if item  %}
 			{% for i in item %}
 			<div class='item-wrapper {% if i.open == True %}disclose{% endif %}{% if i.sticky == True %} item-wrapper-sticky{% endif %} box-sizing-fallback' id='item-wrapper-{{i.seq}}'>
 				<div class='item-seq'>{{i.seq}}</div>
 				<div class='item-subject'>
 					{% if i.open == False %}
-					<img src='/resources/images/lock.png'>
+					<img src='https://asset.kordir.com/resources/images/lock.png'>
 					{% endif %}
 					{% if i.sticky == True %}
 					<span style='color:#ffa500;'>[공지]</span>
@@ -105,7 +105,7 @@
 				<span class='tag black-font'>비밀번호<span class='required'>*</span></span>
 				<input type='password' class='password-input'>
 				<div class='intro-text'>
-					비밀번호는 비공개 글 접근 혹은 삭제시 본인 확인을 위해 사용이 됩니다.<br> 
+					비밀번호는 비공개 글 접근 혹은 삭제시 본인 확인을 위해 사용이 됩니다.<br>
 					비밀번호 분실 시에는 비밀번호 확인이 불가능 합니다.<br>
 					비밀번호 길이는 4글자 이상 16글자 이하 입니다.
 				</div>
@@ -185,7 +185,7 @@ var serverData = {
 };
 </script>
 <!-- plugins -->
-<link rel="stylesheet" href="/resources/plugins/jQuery-switchButton-master/jquery.switchButton.css">
+<link rel="stylesheet" href="https://asset.kordir.com/resources/plugins/jQuery-switchButton-master/jquery.switchButton.css">
 <style>
 /* customization */
 span.switch-button-label{
@@ -199,7 +199,7 @@ div.switch-button-button{
 }
 </style>
 {% include "service/common/servicenodejs.html" %}
-<script src='/resources/plugins/jQuery-switchButton-master/jquery.switchButton.js'></script>
-<script src='/resources/service/js/askboard.js?version=1.4'></script>
+<script src='https://asset.kordir.com/resources/plugins/jQuery-switchButton-master/jquery.switchButton.js'></script>
+<script src='https://asset.kordir.com/resources/service/js/askboard.js?version=1.4'></script>
 {% include "service/common/ga.html" %}
 </html>

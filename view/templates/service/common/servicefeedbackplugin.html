@@ -1,5 +1,7 @@
 {% load customtags %}
 {% load tz %}
+{% load compress %}
+{% compress css inline %}
 <style>
 #feedback-icon{
 	position:fixed;
@@ -182,6 +184,7 @@
 }
 </style>
 <![endif]-->
+{% endcompress %}
 <div id='feedback-icon'></div>
 <div id='feedback-body'>
 	<div class='feedback-body-title'><span class='title-text'>문자 상담 문의</span><span class='close-button'>X</span></div>
@@ -203,7 +206,7 @@
 		<textarea id='feedback-sms-text' rows='4' placeholder='문의하실 내용을 입력해주세요.'></textarea>
 		<input id='feedback-sms-number' type='text' placeholder='연락 받으실 전화번호를 입력해주세요'>
 		<div class='feedback-terms'>
-			<input id="feedback-terms-check" checked="checked" type="checkbox"><span style="vertical-align: top;">개인정보 수집/이용 동의 <a style='vertical-align:top;' href='https://kordir.s3.amazonaws.com/static/smsterms.html' onclick="return open_popup('https://kordir.s3.amazonaws.com/static/smsterms.html');">[보기]</a></span>
+			<input id="feedback-terms-check" checked="checked" type="checkbox"><span style="vertical-align: top;">개인정보 수집/이용 동의 <a style='vertical-align:top;' href='https://asset.kordir.com/static/smsterms.html' onclick="return open_popup('https://asset.kordir.com/static/smsterms.html');">[보기]</a></span>
 		</div>
 		<div class='feedback-button-wrapper'>
 			<button id='feedback-sms-send-button' onclick='send_sms_request();'>전송</button>
@@ -212,6 +215,7 @@
 	<hr>
 	<div id='feedback-footer'>Powered by <a href='http://kordir.com?ref={% if service %}{{service.tag}}{% else %}support{% endif %}' target='_blank'>KORDI<span style='color:#ffa500;'>R</span></a></div>
 </div>
+{% compress js inline %}
 <script>
 var kordirFeedback = {
 	serviceId: {% if service %}{{service.id}}{% else %}1{% endif %},
@@ -371,3 +375,4 @@ function send_sms_request(){
 	}
 }
 </script>
+{% endcompress %}

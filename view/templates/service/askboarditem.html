@@ -8,7 +8,7 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <html class=""> <!--<![endif]-->
 <head>
 {% include "service/common/processor.html" %}
-<link rel='stylesheet' type='text/css' media='screen' href='/resources/service/css/askboarditem.css?version=1.1' />
+<link rel='stylesheet' type='text/css' media='screen' href='https://asset.kordir.com/resources/service/css/askboarditem.css?version=1.1' />
 </head>
 <body>
 {% include "service/common/servicemeta.html" %}
@@ -22,7 +22,7 @@
 			<button class='box-control-button btn' id='previous-button' onclick="window.location.href='{{tag}}';">목록으로</button>
 		</div>
 		<div class='box-info indent'>
-			<div class='subject'>{{boarditem.subject}}</div>	
+			<div class='subject'>{{boarditem.subject}}</div>
 			<div class='name info-item inline-block-fallback'>작성자: {{boarditem.name}}</div>
 			{% timezone "Asia/Seoul" %}
 			<div class='date info-item inline-block-fallback'>등록일: {{boarditem.created|localtime|date:'Y-m-d H:i:s'}}</div>
@@ -58,7 +58,7 @@
 {% include "service/common/servicefooter.html" %}
 </body>
 <!--[if lte IE 7]>
-<script type='text/javascript' src='/resources/js/boxsizingfix.js'></script>
+<script type='text/javascript' src='https://asset.kordir.com/resources/js/boxsizingfix.js'></script>
 <![endif]-->
 <script>
 var serverData = {
@@ -70,6 +70,6 @@ var serverData = {
 };
 </script>
 {% include "service/common/servicenodejs.html" %}
-<script src='/resources/service/js/askboarditem.js?version=1.0'></script>
+<script src='https://asset.kordir.com/resources/service/js/askboarditem.js?version=1.0'></script>
 {% include "service/common/ga.html" %}
 </html>
